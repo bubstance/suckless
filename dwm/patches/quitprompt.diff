@@ -1,0 +1,92 @@
+From eb558048819ed916b272765e64e1ea795a85740e Mon Sep 17 00:00:00 2001
+From: Lerrrtaste <lerrrtaste@protonmail.com>
+Date: Mon, 18 Jul 2022 12:22:39 +0200
+Subject: [PATCH] This Patch replaces the default quit behavior with an dmenu
+ prompt. Possible selections are (Quit DWM?) "yes", "no" and "restart". The
+ additional confirmation can save your work from accidentally hitting the quit
+ key by requiring two additional keystrokes (y/yes and RET). Additionally it
+ allows for restarting / reloading dwm without ending the xsession and closing
+ all open x windows. To abort press ESC or n/no and RET.
+
+---
+ config.def.h |  2 +-
+ dwm.c        | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index a2ac963..9e3b394 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -94,7 +94,7 @@ static Key keys[] = {
+ 	TAGKEYS(                        XK_7,                      6)
+ 	TAGKEYS(                        XK_8,                      7)
+ 	TAGKEYS(                        XK_9,                      8)
+-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
++	{ MODKEY|ShiftMask,             XK_q,      quitprompt,           {0} },
+ };
+ 
+ /* button definitions */
+diff --git a/dwm.c b/dwm.c
+index 7c0f978..3761ba4 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -188,6 +188,7 @@ static Client *nexttiled(Client *c);
+ static void pop(Client *c);
+ static void propertynotify(XEvent *e);
+ static void quit(const Arg *arg);
++static void quitprompt(const Arg *arg);
+ static Monitor *recttomon(int x, int y, int w, int h);
+ static void resize(Client *c, int x, int y, int w, int h, int interact);
+ static void resizeclient(Client *c, int x, int y, int w, int h);
+@@ -262,6 +263,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
+ };
+ static Atom wmatom[WMLast], netatom[NetLast];
+ static int running = 1;
++static int restart = 1;
+ static Cur *cursor[CurLast];
+ static Clr **scheme;
+ static Display *dpy;
+@@ -1258,6 +1260,31 @@ quit(const Arg *arg)
+ 	running = 0;
+ }
+ 
++void
++quitprompt(const Arg *arg)
++{
++	FILE *pp = popen("echo -e \"no\nrestart\nyes\" | dmenu -i -sb red -p \"Quit DWM?\"", "r");
++	if(pp != NULL) {
++		char buf[1024];
++		if (fgets(buf, sizeof(buf), pp) == NULL) {
++			fprintf(stderr, "Quitprompt: Error reading pipe!\n");
++			return;
++		}
++		if (strcmp(buf, "yes\n") == 0) {
++			pclose(pp);
++			restart = 0;
++			quit(NULL);
++		} else if (strcmp(buf, "restart\n") == 0) {
++			pclose(pp);
++			restart = 1;
++			quit(NULL);
++		} else if (strcmp(buf, "no\n") == 0) {
++			pclose(pp);
++			return;
++		}
++	}
++}
++
+ Monitor *
+ recttomon(int x, int y, int w, int h)
+ {
+@@ -2155,5 +2182,8 @@ main(int argc, char *argv[])
+ 	run();
+ 	cleanup();
+ 	XCloseDisplay(dpy);
++	if (restart == 1) {
++		execlp("dwm", "dwm", NULL);
++	}
+ 	return EXIT_SUCCESS;
+ }
+-- 
+2.36.0
+

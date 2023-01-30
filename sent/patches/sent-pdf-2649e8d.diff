@@ -1,0 +1,126 @@
+From 78a5f5d263c5209d685abbe657bbc5bd3f756994 Mon Sep 17 00:00:00 2001
+From: tuckerrrrrrrrrr <tucker1014@hotmail.com>
+Date: Sat, 14 Nov 2020 12:54:53 +0100
+Subject: [PATCH] Conversion to PDF
+
+Add the ability to convert presentations to PDF. Adds an additional
+dependency: cairo.
+---
+ config.def.h |  1 +
+ config.mk    |  7 +++++--
+ sent.c       | 42 ++++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 44 insertions(+), 6 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 60eb376..e68a099 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -47,6 +47,7 @@ static Shortcut shortcuts[] = {
+ 	{ XK_n,           advance,        {.i = +1} },
+ 	{ XK_p,           advance,        {.i = -1} },
+ 	{ XK_r,           reload,         {0} },
++	{ XK_g,           pdf,            {0} },
+ };
+ 
+ static Filter filters[] = {
+diff --git a/config.mk b/config.mk
+index d61c554..9174687 100644
+--- a/config.mk
++++ b/config.mk
+@@ -7,14 +7,17 @@ VERSION = 1
+ PREFIX = /usr/local
+ MANPREFIX = ${PREFIX}/share/man
+ 
++PKG_CONFIG = pkg-config
++
+ X11INC = /usr/X11R6/include
+ X11LIB = /usr/X11R6/lib
+ 
+ # includes and libs
+ INCS = -I. -I/usr/include -I/usr/include/freetype2 -I${X11INC}
+-LIBS = -L/usr/lib -lc -lm -L${X11LIB} -lXft -lfontconfig -lX11
++LIBS = -L/usr/lib -lc -lm -L${X11LIB} -lXft -lfontconfig -lX11 -lcairo
+ # OpenBSD (uncomment)
+-#INCS = -I. -I${X11INC} -I${X11INC}/freetype2
++INCS = -I. -I${X11INC} -I${X11INC}/freetype2 `${PKG_CONFIG} --cflags cairo`
++LIBS += -L/usr/local/lib
+ # FreeBSD (uncomment)
+ #INCS = -I. -I/usr/local/include -I/usr/local/include/freetype2 -I${X11INC}
+ #LIBS = -L/usr/local/lib -lc -lm -L${X11LIB} -lXft -lfontconfig -lX11
+diff --git a/sent.c b/sent.c
+index 9534fca..dc5cf89 100644
+--- a/sent.c
++++ b/sent.c
+@@ -19,6 +19,10 @@
+ #include <X11/Xutil.h>
+ #include <X11/Xft/Xft.h>
+ 
++#include <cairo/cairo.h>
++#include <cairo/cairo-xlib.h>
++#include <cairo/cairo-pdf.h>
++
+ #include "arg.h"
+ #include "util.h"
+ #include "drw.h"
+@@ -97,6 +101,7 @@ static void cleanup(int slidesonly);
+ static void reload(const Arg *arg);
+ static void load(FILE *fp);
+ static void advance(const Arg *arg);
++static void pdf();
+ static void quit(const Arg *arg);
+ static void resize(int width, int height);
+ static void run();
+@@ -428,10 +433,6 @@ load(FILE *fp)
+ 		maxlines = 0;
+ 		memset((s = &slides[slidecount]), 0, sizeof(Slide));
+ 		do {
+-			/* if there's a leading null, we can't do blen-1 */
+-			if (buf[0] == '\0')
+-				continue;
+-
+ 			if (buf[0] == '#')
+ 				continue;
+ 
+@@ -479,6 +480,39 @@ advance(const Arg *arg)
+ 	}
+ }
+ 
++void
++pdf()
++{
++	const Arg next = { .i = 1 };
++	Arg first;
++	cairo_surface_t *cs;
++
++	char filename[strlen(fname) + 5];
++	sprintf(filename, "%s.pdf", fname);
++	cairo_surface_t *pdf = cairo_pdf_surface_create(filename, xw.w, xw.h);
++
++	cairo_t *cr = cairo_create(pdf);
++
++	first.i = -idx;
++	advance(&first);
++
++	cs = cairo_xlib_surface_create(xw.dpy, xw.win, xw.vis, xw.w, xw.h);
++	cairo_set_source_surface(cr, cs, 0.0, 0.0);
++	for (int i = 0; i < slidecount; ++i) {
++		cairo_paint(cr);
++		cairo_show_page(cr);
++		cairo_surface_flush(cs);
++		advance(&next);
++		cairo_surface_mark_dirty(cs);
++	}
++	cairo_surface_destroy(cs);
++
++	cairo_destroy(cr);
++	cairo_surface_destroy(pdf);
++	first.i = -(slidecount-1);
++	advance(&first);
++}
++
+ void
+ quit(const Arg *arg)
+ {
+-- 
+2.29.2
+
