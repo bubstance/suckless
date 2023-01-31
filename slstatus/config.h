@@ -76,7 +76,7 @@ static const struct arg args[] = {
 
 	/* { netspeed_rx,       "| ▼ %sB/s ", "wlp3s0" }, */
 	/* { netspeed_tx,       "▲ %sB/s ", "wlp3s0" }, */
-	{ wifi_essid,        "  %s ",    "wlp3s0" },
+	{ wifi_essid,        "|  %s ",    "wlp3s0" },
 	{ wifi_perc,         "(%s%%) ",  "wlp3s0" },
 
 	/* { cpu_perc,          "| CPU: %s%% ", NULL }, */

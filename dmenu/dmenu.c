@@ -26,7 +26,9 @@
 #define TEXTW(X)              (drw_fontset_getwidth(drw, (X)) + lrpad)
 
 /* enums */
-enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeNormHighlight, SchemeSelHighlight,
+       SchemeOut, SchemeLast }; /* color schemes */
+
 
 struct item {
 	char *text;
@@ -37,7 +39,7 @@ struct item {
 static char text[BUFSIZ] = "";
 static char *embed;
 static int bh, mw, mh;
-static int inputw = 0, promptw;
+static int inputw = 0, promptw, passwd = 0;
 static int lrpad; /* sum of left and right padding */
 static size_t cursor;
 static struct item *items = NULL;
@@ -84,7 +86,7 @@ calcoffsets(void)
 	int i, n;
 
 	if (lines > 0)
-		n = lines * bh;
+		n = lines * columns * bh;
 	else
 		n = mw - (promptw + inputw + TEXTW("<") + TEXTW(">"));
 	/* calculate which items will begin the next page and previous page */
@@ -94,6 +96,15 @@ calcoffsets(void)
 	for (i = 0, prev = curr; prev && prev->left; prev = prev->left)
 		if ((i += (lines > 0) ? bh : textw_clamp(prev->left->text, n)) > n)
 			break;
+}
+
+static int
+max_textw(void)
+{
+	int len = 0;
+	for (struct item *item = items; item && item->text; item++)
+		len = MAX(TEXTW(item->text), len);
+	return len;
 }
 
 static void
@@ -130,9 +141,49 @@ cistrstr(const char *h, const char *n)
 	return NULL;
 }
 
+static void
+drawhighlights(struct item *item, int x, int y, int maxw)
+{
+	int i, indent;
+	char *highlight;
+	char c;
+
+	if (!(strlen(item->text) && strlen(text)))
+		return;
+
+	drw_setscheme(drw, scheme[item == sel
+	                   ? SchemeSelHighlight
+	                   : SchemeNormHighlight]);
+	for (i = 0, highlight = item->text; *highlight && text[i];) {
+		if (*highlight == text[i]) {
+			/* get indentation */
+			c = *highlight;
+			*highlight = '\0';
+			indent = TEXTW(item->text);
+			*highlight = c;
+
+			/* highlight character */
+			c = highlight[1];
+			highlight[1] = '\0';
+			drw_text(
+				drw,
+				x + indent - (lrpad / 2),
+				y,
+				MIN(maxw - indent, TEXTW(highlight) - lrpad),
+				bh, 0, highlight, 0
+			);
+			highlight[1] = c;
+			i++;
+		}
+		highlight++;
+	}
+}
+
+
 static int
 drawitem(struct item *item, int x, int y, int w)
 {
+	int r;
 	if (item == sel)
 		drw_setscheme(drw, scheme[SchemeSel]);
 	else if (item->out)
@@ -140,7 +191,9 @@ drawitem(struct item *item, int x, int y, int w)
 	else
 		drw_setscheme(drw, scheme[SchemeNorm]);
 
-	return drw_text(drw, x, y, w, bh, lrpad / 2, item->text, 0);
+	r = drw_text(drw, x, y, w, bh, lrpad / 2, item->text, 0);
+	drawhighlights(item, x, y, w);
+	return r;
 }
 
 static void
@@ -149,6 +202,7 @@ drawmenu(void)
 	unsigned int curpos;
 	struct item *item;
 	int x = 0, y = 0, w;
+	char *censort;
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
@@ -160,7 +214,12 @@ drawmenu(void)
 	/* draw input field */
 	w = (lines > 0 || !matches) ? mw - x : inputw;
 	drw_setscheme(drw, scheme[SchemeNorm]);
-	drw_text(drw, x, 0, w, bh, lrpad / 2, text, 0);
+	if (passwd) {
+	        censort = ecalloc(1, sizeof(text));
+		memset(censort, '.', strlen(text));
+		drw_text(drw, x, 0, w, bh, lrpad / 2, censort, 0);
+		free(censort);
+	} else drw_text(drw, x, 0, w, bh, lrpad / 2, text, 0);
 
 	curpos = TEXTW(text) - TEXTW(&text[cursor]);
 	if ((curpos += lrpad / 2 - 1) < w) {
@@ -169,9 +228,15 @@ drawmenu(void)
 	}
 
 	if (lines > 0) {
-		/* draw vertical list */
-		for (item = curr; item != next; item = item->right)
-			drawitem(item, x, y += bh, mw - x);
+		/* draw grid */
+		int i = 0;
+		for (item = curr; item != next; item = item->right, i++)
+			drawitem(
+				item,
+				x + ((i / lines) *  ((mw - x) / columns)),
+				y + (((i % lines) + 1) * bh),
+				(mw - x) / columns
+			);
 	} else if (matches) {
 		/* draw horizontal list */
 		x += inputw;
@@ -328,6 +393,8 @@ keypress(XKeyEvent *ev)
 	int len;
 	KeySym ksym = NoSymbol;
 	Status status;
+	int i, offscreen = 0;
+	struct item *tmpsel;
 
 	len = XmbLookupString(xic, ev, buf, sizeof buf, &ksym, &status);
 	switch (status) {
@@ -459,6 +526,28 @@ insert:
 		calcoffsets();
 		break;
 	case XK_Left:
+		if (columns > 1) {
+			if (!sel)
+				return;
+			tmpsel = sel;
+			for (i = 0; i < lines; i++) {
+				if (!tmpsel->left || tmpsel->left->right != tmpsel) {
+					if (offscreen)
+						break;
+					return;
+				}
+				if (tmpsel == curr)
+					offscreen = 1;
+				tmpsel = tmpsel->left;
+			}
+			sel = tmpsel;
+			if (offscreen) {
+				curr = prev;
+				calcoffsets();
+			}
+			break;
+		}
+
 	case XK_KP_Left:
 		if (cursor > 0 && (!sel || !sel->left || lines > 0)) {
 			cursor = nextrune(-1);
@@ -499,6 +588,27 @@ insert:
 			sel->out = 1;
 		break;
 	case XK_Right:
+		if (columns > 1) {
+			if (!sel)
+				return;
+			tmpsel = sel;
+			for (i = 0; i < lines; i++) {
+				if (!tmpsel->right ||  tmpsel->right->left != tmpsel) {
+					if (offscreen)
+						break;
+					return;
+				}
+				tmpsel = tmpsel->right;
+				if (tmpsel == next)
+					offscreen = 1;
+			}
+			sel = tmpsel;
+			if (offscreen) {
+				curr = next;
+				calcoffsets();
+			}
+			break;
+		}
 	case XK_KP_Right:
 		if (text[cursor] != '\0') {
 			cursor = nextrune(+1);
@@ -552,6 +662,11 @@ readstdin(void)
 	char *line = NULL;
 	size_t i, junk, itemsiz = 0;
 	ssize_t len;
+
+	if(passwd){
+    	inputw = lines = 0;
+    	return;
+  	}
 
 	/* read each line from stdin and add it to the item list */
 	for (i = 0; (len = getline(&line, &junk, stdin)) != -1; i++) {
@@ -636,6 +751,7 @@ setup(void)
 	bh = drw->fonts->h + 2;
 	lines = MAX(lines, 0);
 	mh = (lines + 1) * bh;
+	promptw = (prompt && *prompt) ? TEXTW(prompt) - lrpad / 4 : 0;
 #ifdef XINERAMA
 	i = 0;
 	if (parentwin == root && (info = XineramaQueryScreens(dpy, &n))) {
@@ -662,9 +778,16 @@ setup(void)
 				if (INTERSECT(x, y, 1, 1, info[i]) != 0)
 					break;
 
-		x = info[i].x_org;
-		y = info[i].y_org + (topbar ? 0 : info[i].height - mh);
-		mw = info[i].width;
+		if (centered) {
+			mw = MIN(MAX(max_textw() + promptw, min_width), info[i].width);
+			x = info[i].x_org + ((info[i].width  - mw) / 2);
+			y = info[i].y_org + ((info[i].height - mh) / 2);
+		} else {
+			x = info[i].x_org;
+			y = info[i].y_org + (topbar ? 0 : info[i].height - mh);
+			mw = info[i].width;
+		}
+
 		XFree(info);
 	} else
 #endif
@@ -672,9 +795,16 @@ setup(void)
 		if (!XGetWindowAttributes(dpy, parentwin, &wa))
 			die("could not get embedding window attributes: 0x%lx",
 			    parentwin);
-		x = 0;
-		y = topbar ? 0 : wa.height - mh;
-		mw = wa.width;
+
+		if (centered) {
+			mw = MIN(MAX(max_textw() + promptw, min_width), wa.width);
+			x = (wa.width  - mw) / 2;
+			y = (wa.height - mh) / 2;
+		} else {
+			x = 0;
+			y = topbar ? 0 : wa.height - mh;
+			mw = wa.width;
+		}
 	}
 	promptw = (prompt && *prompt) ? TEXTW(prompt) - lrpad / 4 : 0;
 	inputw = mw / 3; /* input width: ~33% of monitor width */
@@ -714,8 +844,9 @@ setup(void)
 static void
 usage(void)
 {
-	die("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
-	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
+	die("usage: dmenu [-bfivP] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
+        "             [-nb color] [-nf color] [-sb color] [-sf color]\n"
+        "             [-nhb color] [-nhf color] [-shb color] [-shf color] [-w windowid]\n");
 }
 
 int
@@ -733,15 +864,23 @@ main(int argc, char *argv[])
 			topbar = 0;
 		else if (!strcmp(argv[i], "-f"))   /* grabs keyboard before reading stdin */
 			fast = 1;
+		else if (!strcmp(argv[i], "-c"))   /* centers dmenu on screen */
+			centered = 1;
 		else if (!strcmp(argv[i], "-i")) { /* case-insensitive item matching */
 			fstrncmp = strncasecmp;
 			fstrstr = cistrstr;
-		} else if (i + 1 == argc)
+		} else if (!strcmp(argv[i], "-P"))   /* is the input a password */
+			passwd = 1;
+		else if (i + 1 == argc)
 			usage();
 		/* these options take one argument */
-		else if (!strcmp(argv[i], "-l"))   /* number of lines in vertical list */
+		else if (!strcmp(argv[i], "-g")) {   /* number of columns in grid */
+			columns = atoi(argv[++i]);
+			if (lines == 0) lines = 1;
+		} else if (!strcmp(argv[i], "-l")) { /* number of lines in grid */
 			lines = atoi(argv[++i]);
-		else if (!strcmp(argv[i], "-m"))
+			if (columns == 0) columns = 1;
+		} else if (!strcmp(argv[i], "-m"))
 			mon = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-p"))   /* adds prompt to left of input field */
 			prompt = argv[++i];
@@ -755,6 +894,14 @@ main(int argc, char *argv[])
 			colors[SchemeSel][ColBg] = argv[++i];
 		else if (!strcmp(argv[i], "-sf"))  /* selected foreground color */
 			colors[SchemeSel][ColFg] = argv[++i];
+		else if (!strcmp(argv[i], "-nhb")) /* normal hi background color */
+			colors[SchemeNormHighlight][ColBg] = argv[++i];
+		else if (!strcmp(argv[i], "-nhf")) /* normal hi foreground color */
+			colors[SchemeNormHighlight][ColFg] = argv[++i];
+		else if (!strcmp(argv[i], "-shb")) /* selected hi background color */
+			colors[SchemeSelHighlight][ColBg] = argv[++i];
+		else if (!strcmp(argv[i], "-shf")) /* selected hi foreground color */
+			colors[SchemeSelHighlight][ColFg] = argv[++i];
 		else if (!strcmp(argv[i], "-w"))   /* embedding window id */
 			embed = argv[++i];
 		else
@@ -793,3 +940,4 @@ main(int argc, char *argv[])
 
 	return 1; /* unreachable */
 }
+
