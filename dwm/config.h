@@ -127,7 +127,7 @@ static void (*bartabfloatfns[])(Monitor *) = { NULL /* , customlayoutfn */ };
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-c", "-l", "20", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#eb6f92", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#eb6f92", "-shf", "#31748f", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#eb6f92", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#eb6f92", "-shf", "#31748f", NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *tabtermcmd[] = { "tabbed", "-r 2", TERMINAL, "-w", "''", NULL };
 

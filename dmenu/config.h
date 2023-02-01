@@ -2,8 +2,9 @@
 /* Default settings; can be overriden by command line. */
 
 static int topbar = 1;                      /* -b  option; if 0, dmenu appears at bottom     */
+static int fuzzy = 1;                      /* -F  option; if 0, dmenu doesn't use fuzzy matching     */
 static int centered = 0;                    /* -c option; centers dmenu on screen */
-static int min_width = 500;                    /* minimum width when centered */
+static int min_width = 1000;                    /* minimum width when centered */
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
 	"Terminus:pixelsize=14:antialias=true:autohint=true"
@@ -17,7 +18,7 @@ static const char *colors[SchemeLast][2] = {
 	[SchemeSel] = { "#e0def4", "#eb6f92" },
 	[SchemeSelHighlight] = { "#31748f", "#eb6f92" },
 	[SchemeNormHighlight] = { "#e0def4", "#191724" },
-	[SchemeOut] = { "#000000", "#00ffff" },
+	[SchemeOut] = { "#eb6f92", "#191724" },
 };
 /* -l and -g options; controls number of lines and columns in grid if > 0 */
 static unsigned int lines      = 0;
