@@ -7,7 +7,7 @@
  */
 /* static char *font = "Source Code Pro:pixelsize=14:antialias=true:autohint=true"; */
 static char *font = "Terminus:pixelsize=14:antialias=true:autohint=true";
-static char *font2[] = { "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true", "Font Awsome 5:pixelsize=14:antialias=true:autohint=true", "Symbola:pixelsize=14:antialias=true:autohint=true" };
+static char *font2[] = { "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true", "Font Awsome 6:pixelsize=14:antialias=true:autohint=true", "Symbola:pixelsize=14:antialias=true:autohint=true" };
 static int borderpx = 2;
 
 /*
@@ -108,7 +108,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 0.9;
 float alphaOffset = 0.0;
 float alphaUnfocus;
 

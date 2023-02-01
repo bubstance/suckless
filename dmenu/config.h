@@ -7,12 +7,16 @@ static int min_width = 500;                    /* minimum width when centered */
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
 	"Terminus:pixelsize=14:antialias=true:autohint=true"
+	"NotoColorEmoji:pixelsize=14:antialias=true:autohint=true"
+	"Font Awesome 6:pixelsize=14:antialias=true:autohint=true"
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
 static const char *colors[SchemeLast][2] = {
 	/*     fg         bg       */
-	[SchemeNorm] = { "#bbbbbb", "#222222" },
-	[SchemeSel] = { "#eeeeee", "#005577" },
+	[SchemeNorm] = { "#e0def4", "#191724" },
+	[SchemeSel] = { "#e0def4", "#eb6f92" },
+	[SchemeSelHighlight] = { "#31748f", "#eb6f92" },
+	[SchemeNormHighlight] = { "#e0def4", "#191724" },
 	[SchemeOut] = { "#000000", "#00ffff" },
 };
 /* -l and -g options; controls number of lines and columns in grid if > 0 */
