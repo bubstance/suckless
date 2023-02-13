@@ -9,34 +9,24 @@
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayonleft = 1;    /* 0: systray in the right corner, >0: systray on left of status text */
-static const unsigned int systrayspacing = 2;   /* systray spacing */
-static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;        /* 0 means no systray */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 0;        /* vertical padding for statusbar */
 static const char *fonts[]          = { "Terminus:pixelsize=14:antialias=true:autohint=true", "Font Awesome 6:pixelsize=14:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=14:antialias=true:autohint=true";
 static const char col_gray1[]       = "#26233a";
 static const char col_gray2[]       = "#191724";
 static const char col_gray3[]       = "#e0def4";
-static const char col_gray4[]       = "#e0def4";
-static const char col_cyan[]        = "#191724";
+static const char col_cyan[]        = "#31748f";
 static const char *colors[][3]      = {
-	                       /* fg         bg         border */
-	[SchemeNorm]        = { col_gray3, col_gray1,  col_gray2 },
-	[SchemeSel]         = { col_gray4, col_cyan,   col_gray3 },
-	[SchemeTabActive]   = { col_gray3, col_gray1,  col_gray3 },
-	[SchemeTabInactive] = { col_gray3, col_gray1,  col_gray3 }
+	/*               fg         bg         border   */
+	[SchemeNorm] = { col_gray3, col_gray2,  col_gray2 },
+	[SchemeSel]  = { col_gray3, col_gray1,  col_gray2 },
+	[SchemeHid]  = { col_cyan,  col_gray2,  col_cyan  },
 };
 
 typedef struct {
@@ -75,37 +65,28 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class          instance  title           tags mask  isfloating  isterminal  noswallow monitor */
-	{ "St",           NULL,     NULL,           0,            0,           1,         0,       -1 },
-	{ TERMCLASS,      "bg",     NULL,           1 << 7,       0,           1,         0,       -1 },
-	{ TERMCLASS,      "spterm", NULL,           SPTAG(0),     1,           1,         0,       -1 },
-	{ TERMCLASS,      "spcalc", NULL,           SPTAG(1),     1,           1,         0,       -1 },
-	/* { TERMCLASS,      "", NULL,           SPTAG(2),     1,           1,         0,       -1 }, */
-	{ NULL,           NULL,     "Event Tester", 0,            0,           0,         1,       -1 }, /* xev */
+	/* class          instance  title           tags mask     isfloating   monitor */
+	{ "St",           NULL,     NULL,           0,            0,           -1 },
+	{ TERMCLASS,      "bg",     NULL,           1 << 7,       0,           -1 },
+	{ TERMCLASS,      "spterm", NULL,           SPTAG(0),     1,           -1 },
+	{ TERMCLASS,      "spcalc", NULL,           SPTAG(1),     1,           -1 },
+	/* { TERMCLASS,      "", NULL,           SPTAG(2),     1,           -1 }, */
+	{ NULL,           NULL,     "Event Tester", 0,            0,           -1 }, /* xev */
 };
 
 /* layout(s) */
-static const float mfact        = 0.60; /* factor of master area size [0.05..0.95] */
-static const int nmaster        = 1;    /* number of clients in master area */
-static const int resizehints    = 0;    /* 1 means respect size hints in tiled resizals */
+static const float mfact     = 0.6; /* factor of master area size [0.05..0.95] */
+static const int nmaster     = 1;    /* number of clients in master area */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
 
-/* Bartabgroups properties */
-#define BARTAB_BORDERS 0       // 0 = off, 1 = on
-#define BARTAB_BOTTOMBORDER 0  // 0 = off, 1 = on
-#define BARTAB_TAGSINDICATOR 0 // 0 = off, 1 = on if >1 client/view tag, 2 = always on
-#define BARTAB_TAGSPX 5        // # pixels for tag grid boxes
-#define BARTAB_TAGSROWS 3      // # rows in tag grid (9 tags, e.g. 3x3)
-static void (*bartabmonfns[])(Monitor *) = { monocle /* , customlayoutfn */ };
-static void (*bartabfloatfns[])(Monitor *) = { NULL /* , customlayoutfn */ };
-
- static const Layout layouts[] = {
+static const Layout layouts[] = {
  	/* symbol     arrange function */
  	{ "[]=",      tile },    /* first entry is default */
-	{ "D[]",      deck },
+	{ "[D]",      deck },
  	{ "[M]",      monocle },
 	{ "[@]",      spiral },
 	{ "[\\]",     dwindle },
@@ -137,6 +118,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#eb6f92", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#eb6f92", "-shf", "#31748f", NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *tabtermcmd[] = { "tabbed", "-r 2", TERMINAL, "-w", "''", NULL };
+static const char *ninetermcmd[]  = { "9", "9term", "rc", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key            function        argument */
@@ -190,12 +172,11 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                            7)
 	TAGKEYS(                        XK_9,                            8)
 	TAGKEYS(                        XK_0,                            9)
-	{ ControlMask|Mod1Mask,         XK_9,            spawn,          {.v = (const char*[]){ "9", "9term", "rc", NULL } } },
+	{ ControlMask|Mod1Mask,         XK_9,            spawn,          {.v = ninetermcmd } },
 
 	{ MODKEY,                       XK_Tab,          view,           {0} },
 	{ MODKEY|ShiftMask,             XK_Tab,          view,           {.ui = ~0 } },
 	{ MODKEY|ControlMask,           XK_Tab,          tag,            {.ui = ~0 } },
-	/* { MODKEY|ShiftMask,             XK_Tab,          spawn,          {.v = } }, */
 	{ MODKEY,                       XK_q,            killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,            quitprompt,     {0} },
 	{ MODKEY,						XK_w,            spawn,          {.v = (const char*[]){ BROWSER, NULL } } },
@@ -213,13 +194,16 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_backslash,    spawn,          SHCMD("") }, */
 
 
-	{ MODKEY,                       XK_a,            spawn,          {.v = (const char*[]){ "9", "acme", NULL } } },
+	{ MODKEY,                       XK_a,            spawn,          {.v = (const char*[]){ "acme9", "-n", "0", NULL } } },
 	{ MODKEY,                       XK_s,            spawn,          {.v = (const char*[]){ "9", "sam", NULL } } },
+	/* { MODKEY|ShiftMask,             XK_s,            spawn,          {.v =  } }, */
 	{ MODKEY,                       XK_f,            togglefullscr,  {0} },
 	{ MODKEY,                       XK_h,            setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,            setcfact,       {.f = +0.25} },
-	{ MODKEY,                       XK_j,            focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,            focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_j,            focusstackvis,  {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_j,            focusstackhid,  {.i = +1 } },
+	{ MODKEY,                       XK_k,            focusstackvis,  {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_k,            focusstackhid,  {.i = -1 } },
 	{ MODKEY,                       XK_l,            setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_l,            setcfact,       {.f = -0.25} },
 	{ MODKEY,                       XK_semicolon,    spawn,          {.v = dmenucmd } },
@@ -229,6 +213,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return,       togglescratch,  {.ui = 0 } },
 	{ ControlMask|Mod1Mask,         XK_Return,       spawn,          {.v = tabtermcmd } },
 
+	{ MODKEY,                       XK_z,            show,           {0} },
+	{ MODKEY|ShiftMask,             XK_z,            showall,        {0} },
+	{ MODKEY,                       XK_x,            hide,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,            killclient,     {0} },
 	{ MODKEY,                       XK_b,            togglebar,      {0} },
 	{ MODKEY,			            XK_m,            spawn,          {.v = (const char*[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
@@ -238,8 +225,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,        tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,       tagmon,         {.i = +1 } },
 
-	{ MODKEY,                       XK_space,        zoom,           {0} },
-	{ MODKEY|ShiftMask,             XK_space,        focusmaster,    {0} },
+	{ MODKEY|ShiftMask,             XK_space,        zoom,           {0} },
+	{ MODKEY,                       XK_space,        focusmaster,    {0} },
 
     { MODKEY,                       XK_Up,           switchtag,      { .ui = SWITCHTAG_UP     | SWITCHTAG_VIEW } },
     { MODKEY,                       XK_Down,         switchtag,      { .ui = SWITCHTAG_DOWN   | SWITCHTAG_VIEW } },
@@ -273,13 +260,14 @@ static const Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkWinTitle,          0,              Button1,        togglewin,      {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },

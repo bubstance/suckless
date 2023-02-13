@@ -1,0 +1,69 @@
+From 9ec1210a82b137014de4644ba65be5e53398e281 Mon Sep 17 00:00:00 2001
+From: Jack Bird <jack.bird@durham.ac.uk>
+Date: Wed, 21 Jul 2021 16:43:06 +0100
+Subject: [PATCH] Updated leftlayout for 138b405
+
+---
+ dwm.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+
+diff --git a/dwm.c b/dwm.c
+index 5e4d494..a5a3980 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -432,18 +432,21 @@ buttonpress(XEvent *e)
+ 	}
+ 	if (ev->window == selmon->barwin) {
+ 		i = x = 0;
+-		do
+-			x += TEXTW(tags[i]);
+-		while (ev->x >= x && ++i < LENGTH(tags));
+-		if (i < LENGTH(tags)) {
+-			click = ClkTagBar;
+-			arg.ui = 1 << i;
+-		} else if (ev->x < x + blw)
++		x += blw;
++		if (ev->x < x) {
+ 			click = ClkLtSymbol;
+-		else if (ev->x > selmon->ww - (int)TEXTW(stext))
+-			click = ClkStatusText;
+-		else
+-			click = ClkWinTitle;
++		} else {
++			do
++				x += TEXTW(tags[i]);
++			while (ev->x >= x && ++i < LENGTH(tags));
++			if (i < LENGTH(tags)) {
++				click = ClkTagBar;
++				arg.ui = 1 << i;
++			} else if (ev->x > selmon->ww - (int)TEXTW(stext))
++				click = ClkStatusText;
++			else
++				click = ClkWinTitle;
++		}
+ 	} else if ((c = wintoclient(ev->window))) {
+ 		focus(c);
+ 		restack(selmon);
+@@ -715,6 +718,9 @@ drawbar(Monitor *m)
+ 			urg |= c->tags;
+ 	}
+ 	x = 0;
++	w = blw = TEXTW(m->ltsymbol);
++	drw_setscheme(drw, scheme[SchemeNorm]);
++	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+ 	for (i = 0; i < LENGTH(tags); i++) {
+ 		w = TEXTW(tags[i]);
+ 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+@@ -725,9 +731,6 @@ drawbar(Monitor *m)
+ 				urg & 1 << i);
+ 		x += w;
+ 	}
+-	w = blw = TEXTW(m->ltsymbol);
+-	drw_setscheme(drw, scheme[SchemeNorm]);
+-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+ 
+ 	if ((w = m->ww - tw - x) > bh) {
+ 		if (m->sel) {
+-- 
+2.32.0
+
