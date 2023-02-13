@@ -1,0 +1,38 @@
+ config.def.h | 1 +
+ dmenu.c      | 4 ++--
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 1edb647..b41a8f0 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -12,6 +12,7 @@ static const char *colors[SchemeLast][2] = {
+ 	[SchemeNorm] = { "#bbbbbb", "#222222" },
+ 	[SchemeSel] = { "#eeeeee", "#005577" },
+ 	[SchemeOut] = { "#000000", "#00ffff" },
++	[SchemeCaret] = { "#eeeeee", "#222222" },
+ };
+ /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
+ static unsigned int lines      = 0;
+
+diff --git a/dmenu.c b/dmenu.c
+index 98507d9..fd916d7 100644
+--- a/dmenu.c
++++ b/dmenu.c
+@@ -26,7 +26,7 @@
+ #define TEXTW(X)              (drw_fontset_getwidth(drw, (X)) + lrpad)
+
+ /* enums */
+-enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; /* color schemes */
++enum { SchemeNorm, SchemeSel, SchemeOut, SchemeCaret, SchemeLast }; /* color schemes */
+
+ struct item {
+ 	char *text;
+@@ -147,7 +147,7 @@ drawmenu(void)
+
+ 	curpos = TEXTW(text) - TEXTW(&text[cursor]);
+ 	if ((curpos += lrpad / 2 - 1) < w) {
+-		drw_setscheme(drw, scheme[SchemeNorm]);
++		drw_setscheme(drw, scheme[SchemeCaret]);
+ 		drw_rect(drw, x + curpos, 2, 2, bh - 4, 1, 0);
+ 	}
