@@ -208,7 +208,7 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_bracketleft,  spawn,          {.v = (const char*[]){ "mpc", "seek", "-60", NULL } } }, */
 	/* { MODKEY,                       XK_bracketright, spawn,          {.v = (const char*[]){ "mpc", "seek", "+10", NULL } } }, */
 	/* { MODKEY|ShiftMask,             XK_bracketright, spawn,          {.v = (const char*[]){ "mpc", "seek", "+60", NULL } } }, */
-	/* { MODKEY,                       XK_backslash,    spawn,          SHCMD("") }, */
+	{ MODKEY,                       XK_backslash,    spawn,          SHCMD("killall highlight-pointer || highlight-pointer -t 5 -c '#ea9d34' -p '#56949f' -o 5 -r 25 --show-cursor --auto-hide-highlight &") },
 	/* { MODKEY|ShiftMask,             XK_backslash,    spawn,          SHCMD("") }, */
 
 
