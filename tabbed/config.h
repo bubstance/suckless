@@ -2,9 +2,9 @@
 
 /* appearance */
 static const char font[]        = "Terminus:pixelsize=14:antialias=true:autohint=true";
-static const char* normbgcolor   = "#26233a";
+static const char* normbgcolor  = "#191724";
 static const char* normfgcolor  = "#e0def4";
-static const char* selbgcolor  = "#191724";
+static const char* selbgcolor   = "#26233a";
 static const char* selfgcolor   = "#e0def4";
 static const char* urgbgcolor   = "#eb6f92";
 static const char* urgfgcolor   = "#e0def4";
