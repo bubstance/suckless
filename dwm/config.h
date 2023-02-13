@@ -52,7 +52,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
 
 /* grid of tags */
 #define DRAWCLASSICTAGS             1 << 0
@@ -189,11 +189,12 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                            6)
 	TAGKEYS(                        XK_8,                            7)
 	TAGKEYS(                        XK_9,                            8)
+	TAGKEYS(                        XK_0,                            9)
 	{ ControlMask|Mod1Mask,         XK_9,            spawn,          {.v = (const char*[]){ "9", "9term", "rc", NULL } } },
-	{ MODKEY,                       XK_0,            view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,            tag,            {.ui = ~0 } },
 
 	{ MODKEY,                       XK_Tab,          view,           {0} },
+	{ MODKEY|ShiftMask,             XK_Tab,          view,           {.ui = ~0 } },
+	{ MODKEY|ControlMask,           XK_Tab,          tag,            {.ui = ~0 } },
 	/* { MODKEY|ShiftMask,             XK_Tab,          spawn,          {.v = } }, */
 	{ MODKEY,                       XK_q,            killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,            quitprompt,     {0} },
