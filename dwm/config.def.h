@@ -17,6 +17,8 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int focusonwheel       = 0;
+#define ICONSIZE (bh - 4) /* adaptively preserve 2 pixels each side */
+#define ICONSPACING 5 /* space (pixels) between icon and title */
 static const char *fonts[]          = { "Terminus:pixelsize=14:antialias=true:autohint=true", "Font Awesome 6:pixelsize=14:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=14:antialias=true:autohint=true";
 static const char col_gray1[]       = "#26233a";
