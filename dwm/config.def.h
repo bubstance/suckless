@@ -27,9 +27,9 @@ static const char col_gray3[]       = "#e0def4";
 static const char col_cyan[]        = "#31748f";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray2,  col_gray2 },
-	[SchemeSel]  = { col_gray3, col_gray1,  col_gray2 },
-	[SchemeHid]  = { col_cyan,  col_gray2,  col_cyan  },
+	[SchemeNorm] = { col_gray3, col_gray1,  col_gray2 },
+	[SchemeSel]  = { col_gray3, col_gray2,  col_gray2 },
+	[SchemeHid]  = { col_cyan,  col_gray1,  col_cyan  },
 };
 
 typedef struct {
@@ -123,7 +123,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2]         = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run", "-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#eb6f92", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#eb6f92", "-shf", "#31748f", NULL };
+static const char *dmenucmd[]   = { "dmenu_run", "-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
 static const char *termcmd[]    = { TERMINAL, NULL };
 static const char *alttermcmd[] = { "9", "9term", "rc", NULL };
 static const char *tabtermcmd[] = { "tabbed", "-r 2", TERMINAL, "-w", "''", NULL };
@@ -207,9 +207,9 @@ static const Key keys[] = {
 
 
 	/* { MODKEY,                       XK_a,                       spawn,          {.v = } }, */
-	{ MODKEY|ShiftMask,             XK_a,                       spawn,          {.v = (const char*[]){ "acme9", "-n", "0", NULL } } },
+	/* { MODKEY|ShiftMask,             XK_a,                       spawn,          {.v = } }, */
 	/* { MODKEY,                       XK_s,                       spawn,          {.v = } }, */
-	{ MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = (const char*[]){ "9", "sam", NULL } } },
+	/* { MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,                       setcfact,       {.f = +0.25} },
