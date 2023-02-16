@@ -824,7 +824,7 @@ dragcfact(const Arg *arg)
 	restack(selmon);
 
 	if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
-		None, cursor[CurResizeTL]->cursor, CurrentTime) != GrabSuccess)
+		None, cursor[CurResizeVertArrow]->cursor, CurrentTime) != GrabSuccess)
 		return;
 	XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
 
