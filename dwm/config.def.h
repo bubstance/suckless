@@ -40,12 +40,14 @@ const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = { TERMINAL, "-n", "spcalc", "-f", "Terminus:pixelsize=24:antialias=true:autohint=true", "-g", "50x20", "-e", "bc", "-lq", NULL };
 const char *spcmd3[] = { TERMINAL, "-n", "sptune", "-g", "120x34", "-e", "ncmpcpp", NULL };
 const char *spcmd4[] = { TERMINAL, "-n", "sppmix", "-g", "120x34", "-e", "pulsemixer", NULL };
+const char *spcmd5[] = { TERMINAL, "-n", "spstat", "-g", "120x34", "-e", "htop", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spcalc",      spcmd2},
 	{"sptune",      spcmd3},
 	{"sppmix",      spcmd4},
+	{"spstat",      spcmd5},
 };
 
 /* tagging */
@@ -79,6 +81,7 @@ static const Rule rules[] = {
 	{ TERMCLASS,      "spcalc", NULL,           SPTAG(1),     1,           -1 },
 	{ TERMCLASS,      "sptune", NULL,           SPTAG(2),     1,           -1 },
 	{ TERMCLASS,      "sppmix", NULL,           SPTAG(3),     1,           -1 },
+	{ TERMCLASS,      "spstat", NULL,           SPTAG(4),     1,           -1 },
 	{ NULL,           NULL,     "Event Tester", 0,            0,           -1 }, /* xev */
 };
 
@@ -123,7 +126,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2]         = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run", "-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
+static const char *dmenucmd[]   = { "dmenu_run", "-bw", "3","-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
 static const char *termcmd[]    = { TERMINAL, NULL };
 static const char *alttermcmd[] = { "9", "9term", "rc", NULL };
 static const char *tabtermcmd[] = { "tabbed", "-r 2", TERMINAL, "-w", "''", NULL };
@@ -192,7 +195,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
 	{ MODKEY,                       XK_w,                       spawn,          {.v = (const char*[]){ BROWSER, NULL } } },
 	{ MODKEY,                       XK_r,                       spawn,          {.v = (const char*[]){ TERMINAL, "-e", "lfub", "-command", "set hidden", NULL } } },
-	{ MODKEY|ShiftMask,             XK_r,                       setcfact,       {.f =  0.00} },
+	{ MODKEY|ShiftMask,             XK_r,                       togglescratch,  {.ui = 4 } },
 	{ ControlMask|Mod1Mask,         XK_t,                       spawn,          {.v = termcmd } },
 	/* { MODKEY,                       XK_i,                       spawn,          {.v = } }, */
 	{ MODKEY|ShiftMask,             XK_i,                       incnmaster,     {.i = +1 } },
@@ -291,11 +294,7 @@ static const Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask        button          function        argument */
-	{ ClkLtSymbol,          0,                Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,                Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,                Button1,        togglewin,      {0} },
-	{ ClkWinTitle,          0,                Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,                Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,           Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,           Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,           Button3,        resizemouse,    {0} },

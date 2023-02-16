@@ -1743,6 +1743,9 @@ maprequest(XEvent *e)
 		manage(ev->window, &wa);
 }
 
+/* add support for vanity gaps to monocle layout */
+/* source: https://gist.github.com/Solamil/7a744374fc24db9e7e07aca313f0fed6 */
+
 void
 monocle(Monitor *m)
 {
@@ -1754,7 +1757,7 @@ monocle(Monitor *m)
 		return;
 
 	if (smartgaps == n) {
-		oe = 0; // outer gaps disabled
+		oe = 0; /* outer gaps disabled */
 	}
 
 	n = 0;
