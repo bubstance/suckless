@@ -1,13 +1,13 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const char font[]        = "monospace:size=9";
-static const char* normbgcolor  = "#222222";
-static const char* normfgcolor  = "#cccccc";
-static const char* selbgcolor   = "#555555";
-static const char* selfgcolor   = "#ffffff";
-static const char* urgbgcolor   = "#111111";
-static const char* urgfgcolor   = "#cc0000";
+static const char font[]        = "Terminus:pixelsize=14:antialias=true:autohint=true";
+static const char* normbgcolor  = "#26233a";
+static const char* normfgcolor  = "#e0def4";
+static const char* selbgcolor   = "#191724";
+static const char* selfgcolor   = "#e0def4";
+static const char* urgbgcolor   = "#eb6f92";
+static const char* urgfgcolor   = "#e0def4";
 static const char before[]      = "<";
 static const char after[]       = ">";
 static const char titletrim[]   = "...";
@@ -59,8 +59,9 @@ static const Key keys[] = {
 
 	{ MODKEY,               XK_q,      killclient,  { 0 } },
 
-	{ MODKEY,               XK_u,      focusurgent, { 0 } },
-	{ MODKEY|ShiftMask,     XK_u,      toggle,      { .v = (void*) &urgentswitch } },
+	{ MODKEY,               XK_minus,  focusurgent, { 0 } },
+	{ MODKEY|ShiftMask,     XK_minus,  toggle,      { .v = (void*) &urgentswitch } },
 
 	{ 0,                    XK_F11,    fullscreen,  { 0 } },
 };
+
