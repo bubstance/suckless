@@ -67,6 +67,39 @@ static const char unknown_str[] = "n/a";
  * wifi_perc           WiFi signal in percent          interface name (wlan0)
  */
 static const struct arg args[] = {
-	/* function format          argument */
-	{ datetime, "%s",           "%F %T" },
+	/* function format                argument */
+
+	/* { disk_used,         "| /: %s",  "/" }, */
+	/* { disk_total,        "/%s ",         "/" }, */
+	/* { disk_perc,         "(%s%%) ",       "/" }, */
+	/* { disk_free,         "%s",         "/" }, */
+
+	/* { netspeed_rx,       "| ▼ %sB/s ", "wlp3s0" }, */
+	/* { netspeed_tx,       "▲ %sB/s ", "wlp3s0" }, */
+	{ wifi_essid,        "| %s ",    "wlp3s0" },
+	{ wifi_perc,         "(%s%%) ",  "wlp3s0" },
+
+	/* { cpu_perc,          "| CPU: %s%% ", NULL }, */
+	/* { cpu_freq,          "(%s) ",   NULL }, */
+
+	/* { ram_used,          "| RAM: %s",   NULL }, */
+	/* { ram_total,         "/%s ",         NULL }, */
+	/* { ram_perc,          "(%s%%) ",       NULL }, */
+	/* { ram_free,          "%s",         NULL }, */
+
+	/* { swap_used,         "| SWAP: %s ",  NULL }, */
+	/* { swap_free,         "%s",         NULL }, */
+	/* { swap_perc,         "%s%%",       NULL }, */
+	/* { swap_total,        "%s",         NULL }, */
+
+	/* { uptime,   "| UP: %s ",    NULL }, */
+
+	/* { backlight_perc,      "| %s%% |",        "intel_backlight" }, */
+
+	{ battery_state,     "| %s",    "BAT0" },
+	{ battery_perc,      "%s%% ",        "BAT0" },
+	{ battery_remaining, "(%s) ",       "BAT0" },
+
+	{ datetime,          "| %s ",       "%F @ %T %Z" },
 };
+
