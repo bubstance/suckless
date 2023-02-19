@@ -1,0 +1,19 @@
+diff --git a/tabbed.c b/tabbed.c
+index eafe28a..e2ca5f9 100644
+--- a/tabbed.c
++++ b/tabbed.c
+@@ -787,8 +787,12 @@ maprequest(const XEvent *e)
+ void
+ move(const Arg *arg)
+ {
+-	if (arg->i >= 0 && arg->i < nclients)
+-		focus(arg->i);
++	int i;
++
++	i = arg->i < nclients ? arg->i : nclients - 1;
++
++	if (i >= 0)
++		focus(i);
+ }
+ 
+ void

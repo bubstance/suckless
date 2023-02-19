@@ -1,0 +1,67 @@
+diff --git a/config.def.h b/config.def.h
+index 4c56466..11ee7b5 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -90,6 +90,8 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
++	{ MODKEY|ShiftMask,             XK_h,      layoutscroll,   {.i = -1 } },
++	{ MODKEY|ShiftMask,             XK_l,      layoutscroll,   {.i = +1 } },
+ 	TAGKEYS(                        XK_1,                      0)
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
+diff --git a/dwm.c b/dwm.c
+index 1e37fcf..24effbc 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -148,6 +148,7 @@ struct Monitor {
+ 	Monitor *next;
+ 	Window barwin;
+ 	const Layout *lt[2];
++	int ltcur; /* current layout */
+ };
+ 
+ typedef struct {
+@@ -227,6 +228,7 @@ static void sendmon(Client *c, Monitor *m);
+ static void setclientstate(Client *c, long state);
+ static void setfocus(Client *c);
+ static void setfullscreen(Client *c, int fullscreen);
++static void layoutscroll(const Arg *arg);
+ static void setlayout(const Arg *arg);
+ static void setmfact(const Arg *arg);
+ static void setup(void);
+@@ -725,6 +727,7 @@ createmon(void)
+ 	m->nmaster = nmaster;
+ 	m->showbar = showbar;
+ 	m->topbar = topbar;
++	m->ltcur = 0;
+ 	m->lt[0] = &layouts[0];
+ 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
+ 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
+@@ -1667,6 +1670,25 @@ setfullscreen(Client *c, int fullscreen)
+ 	}
+ }
+ 
++void
++layoutscroll(const Arg *arg)
++{
++	if (!arg || !arg->i)
++		return;
++	int switchto = selmon->ltcur + arg->i;
++	int l = LENGTH(layouts);
++
++	if (switchto == l)
++		switchto = 0;
++	else if(switchto < 0)
++		switchto = l - 1;
++
++	selmon->ltcur = switchto;
++	Arg arg2 = {.v= &layouts[switchto] };
++	setlayout(&arg2);
++
++}
++
+ void
+ setlayout(const Arg *arg)
+ {

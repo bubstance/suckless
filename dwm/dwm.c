@@ -220,12 +220,15 @@ static void hidewin(Client *c);
 static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
 static void killclient(const Arg *arg);
+static void layoutmenu(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
 static void mappingnotify(XEvent *e);
 static void maprequest(XEvent *e);
 static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
+static void movekeyboard_x(const Arg *arg);
+static void movekeyboard_y(const Arg *arg);
 static Client *nexttiled(Client *c);
 static void pop(Client *c);
 static void propertynotify(XEvent *e);
@@ -554,7 +557,8 @@ buttonpress(XEvent *e)
 
 	click = ClkRootWin;
 	/* focus monitor if necessary */
-	if ((m = wintomon(ev->window)) && m != selmon) {
+	if ((m = wintomon(ev->window)) && m != selmon
+	    && (focusonwheel || (ev->button != Button4 && ev->button != Button5 && ev->button != Button6 && ev->button != Button7))) {
 		unfocus(selmon->sel, 1);
 		selmon = m;
 		focus(NULL);
@@ -600,8 +604,8 @@ buttonpress(XEvent *e)
 			}
 		}
 	} else if ((c = wintoclient(ev->window))) {
-		focus(c);
-		restack(selmon);
+		if (focusonwheel || (ev->button != Button4 && ev->button != Button5 && ev->button != Button6 && ev->button != Button7))
+			focus(c);
 		XAllowEvents(dpy, ReplayPointer, CurrentTime);
 		click = ClkClientWin;
 	}
@@ -1341,7 +1345,6 @@ drawbar(Monitor *m)
 		if (n > 0) {
 			int remainder = w % n;
 			int tabw = (1.0 / (double)n) * w + 1;
-			int mid = lrpad / 2;
 			for (c = m->clients; c; c = c->next) {
 				if (!ISVISIBLE(c))
 					continue;
@@ -1359,10 +1362,8 @@ drawbar(Monitor *m)
 					}
 					remainder--;
 				}
-                if (TEXTW(c->name) < tabw)
-                        mid = (tabw - TEXTW(c->name) + lrpad) / 2;
-				drw_text(drw, x, 0, tabw, bh, mid + (c->icon ? c->icw + ICONSPACING : 0), c->name, 0);
-				if (c->icon) drw_pic(drw, x + mid, (bh - c->ich) / 2, c->icw, c->ich, c->icon);
+				drw_text(drw, x, 0, tabw, bh, lrpad / 2 + (c->icon ? c->icw + ICONSPACING : 0), c->name, 0);
+				if (c->icon) drw_pic(drw, x + lrpad / 2, (bh - c->ich) / 2, c->icw, c->ich, c->icon);
  				if (c->isfloating)
  					drw_rect(drw, x + boxs, boxs, boxw, boxw, c->isfixed, 0);
 				if (c->issticky)
@@ -1792,6 +1793,24 @@ killclient(const Arg *arg)
 }
 
 void
+layoutmenu(const Arg *arg) {
+	FILE *p;
+	char c[3], *s;
+	int i;
+
+	if (!(p = popen(layoutmenu_cmd, "r")))
+		 return;
+	s = fgets(c, sizeof(c), p);
+	pclose(p);
+
+	if (!s || *s == '\0' || c[0] == '\0')
+		 return;
+
+	i = atoi(c);
+	setlayout(&((Arg) { .v = &layouts[i] }));
+}
+
+void
 manage(Window w, XWindowAttributes *wa)
 {
 	Client *c, *t = NULL, *term = NULL;
@@ -2001,6 +2020,93 @@ motionnotify(XEvent *e)
 	}
 	mon = m;
 }
+
+void
+movekeyboard_x(const Arg *arg){
+	int ocx, ocy, nx, ny;
+	Client *c;
+	Monitor *m;
+
+	if (!(c = selmon->sel))
+		return;
+
+	if (c->isfullscreen) /* no support moving fullscreen windows by mouse */
+		return;
+
+	restack(selmon);
+
+	ocx = c->x;
+	ocy = c->y;
+
+	nx = ocx + arg->i;
+	ny = ocy;
+
+	if (abs(selmon->wx - nx) < snap)
+		nx = selmon->wx;
+	else if (abs((selmon->wx + selmon->ww) - (nx + WIDTH(c))) < snap)
+		nx = selmon->wx + selmon->ww - WIDTH(c);
+
+	if (abs(selmon->wy - ny) < snap)
+		ny = selmon->wy;
+	else if (abs((selmon->wy + selmon->wh) - (ny + HEIGHT(c))) < snap)
+		ny = selmon->wy + selmon->wh - HEIGHT(c);
+
+	if (!c->isfloating)
+		togglefloating(NULL);
+
+	if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
+		resize(c, nx, ny, c->w, c->h, 1);
+
+	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
+		sendmon(c, m);
+		selmon = m;
+		focus(NULL);
+	}
+}
+
+void
+movekeyboard_y(const Arg *arg){
+	int ocx, ocy, nx, ny;
+	Client *c;
+	Monitor *m;
+
+	if (!(c = selmon->sel))
+		return;
+
+	if (c->isfullscreen) /* no support moving fullscreen windows by mouse */
+		return;
+
+	restack(selmon);
+
+	ocx = c->x;
+	ocy = c->y;
+
+	nx = ocx;
+	ny = ocy + arg->i;
+
+	if (abs(selmon->wx - nx) < snap)
+		nx = selmon->wx;
+	else if (abs((selmon->wx + selmon->ww) - (nx + WIDTH(c))) < snap)
+		nx = selmon->wx + selmon->ww - WIDTH(c);
+
+	if (abs(selmon->wy - ny) < snap)
+		ny = selmon->wy;
+	else if (abs((selmon->wy + selmon->wh) - (ny + HEIGHT(c))) < snap)
+		ny = selmon->wy + selmon->wh - HEIGHT(c);
+
+	if (!c->isfloating)
+		togglefloating(NULL);
+
+	if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
+		resize(c, nx, ny, c->w, c->h, 1);
+
+	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
+		sendmon(c, m);
+		selmon = m;
+		focus(NULL);
+	}
+}
+
 
 void
 movemouse(const Arg *arg)

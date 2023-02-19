@@ -9,8 +9,8 @@ MANPREFIX = ${PREFIX}/share/man
 DOCPREFIX = ${PREFIX}/share/doc/${NAME}
 
 # use system flags.
-TABBED_CFLAGS = -I/usr/X11R6/include -I/usr/include/freetype2 ${CFLAGS}
-TABBED_LDFLAGS = -L/usr/X11R6/lib -lX11 -lfontconfig -lXft ${LDFLAGS}
+TABBED_CFLAGS = -I/usr/X11R6/include -I/usr/include/freetype2 -I/usr/include/freetype2 ${CFLAGS}
+TABBED_LDFLAGS = -L/usr/X11R6/lib -lc -lX11 -lfontconfig -lXft ${LDFLAGS}
 TABBED_CPPFLAGS = -DVERSION=\"${VERSION}\" -D_DEFAULT_SOURCE
 
 # OpenBSD (uncomment)
@@ -20,7 +20,7 @@ SRC = tabbed.c xembed.c
 OBJ = ${SRC:.c=.o}
 BIN = ${OBJ:.o=}
 MAN1 = ${BIN:=.1}
-HDR = arg.h config.def.h
+HDR = arg.h icon.h config.def.h
 DOC = LICENSE README
 
 all: ${BIN}

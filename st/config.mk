@@ -6,6 +6,9 @@ VERSION = 0.8.4
 # paths
 PREFIX = /usr/local
 MANPREFIX = $(PREFIX)/share/man
+APPPREFIX = $(PREFIX)/share/applications
+ICONPREFIX = $(PREFIX)/share/icons/hicolor/256x256/apps/
+ICONNAME = st.png
 
 X11INC = /usr/X11R6/include
 X11LIB = /usr/X11R6/lib
@@ -17,13 +20,13 @@ INCS = -I$(X11INC) \
        `$(PKG_CONFIG) --cflags fontconfig` \
        `$(PKG_CONFIG) --cflags freetype2` \
        `$(PKG_CONFIG) --cflags harfbuzz`
-LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender\
+LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender -lgd \
        `$(PKG_CONFIG) --libs fontconfig` \
        `$(PKG_CONFIG) --libs freetype2` \
        `$(PKG_CONFIG) --libs harfbuzz`
 
 # flags
-STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
+STCPPFLAGS = -DVERSION=\"$(VERSION)\" -DICON=\"$(ICONPREFIX)/$(ICONNAME)\" -D_XOPEN_SOURCE=600
 STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS)
 STLDFLAGS = $(LIBS) $(LDFLAGS)
 

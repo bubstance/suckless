@@ -10,7 +10,7 @@ static const char* urgbgcolor   = "#eb6f92";
 static const char* urgfgcolor   = "#e0def4";
 static const char before[]      = "<";
 static const char after[]       = ">";
-static const char titletrim[]   = "...";
+static const char titletrim[]   = "…";
 static const int  tabwidth      = 200;
 static const Bool foreground    = True;
 static       Bool urgentswitch  = False;
@@ -36,8 +36,8 @@ static Bool npisrelative  = False;
 #define MODKEY ControlMask
 static const Key keys[] = {
 	/* modifier             key        function     argument */
-	{ MODKEY|ShiftMask,     XK_Return, focusonce,   { 0 } },
-	{ MODKEY|ShiftMask,     XK_Return, spawn,       { 0 } },
+	{ MODKEY|Mod1Mask,      XK_Return, focusonce,   { 0 } },
+	{ MODKEY|Mod1Mask,      XK_Return, spawn,       { 0 } },
 
 	{ MODKEY|ShiftMask,     XK_l,      rotate,      { .i = +1 } },
 	{ MODKEY|ShiftMask,     XK_h,      rotate,      { .i = -1 } },
