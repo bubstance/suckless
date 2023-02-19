@@ -1,0 +1,2 @@
+#!/bin/sh
+killall highlight-pointer || highlight-pointer -t 5 -c '#ea9d34' -p '#56949f' -o 5 -r 25 --show-cursor --auto-hide-highlight &

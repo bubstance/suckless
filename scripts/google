@@ -1,0 +1,7 @@
+#!/bin/sh
+url="https://google.com/search?q=$(urlencode "$*")"
+
+exec lynx "$url"
+# w3m "$url"
+# exec lynx "google.com/search?q=$*"
+# w3m "google.com/search?q=$*"

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+[ "$1" = -n ] && { export NAMESPACE=/tmp/ns.$USER.$2; mkdir -p "$NAMESPACE"; shift; shift;
+}
+9p ls plumb/ >/dev/null 2>/dev/null || (cd /; 9 plumber)
+
+
+exec acme "$@"

@@ -1,0 +1,2 @@
+#!/bin/sh
+notify-send "This Month" "$(cal)" && notify-send "Appointments" "$(calcurse -d3)"
