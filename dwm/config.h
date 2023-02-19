@@ -68,6 +68,7 @@ static const Rule rules[] = {
 	 */
 	/* class          instance     title           tags mask     isfloating   isterminal  noswallow  monitor */
 	{ "St",           NULL,        NULL,           0,            0,           1,          0,        -1 },
+	{ "librewolf",    "Navigator", NULL,           0,            1,           0,          0         -1 },
 	{ "Magnus",       "magnus",    NULL,           0,            1,           0,          0         -1 },
 	{ "Xmag",         "xmag",      NULL,           0,            1,           0,          0,        -1 },
 	{ TERMCLASS,      "floatterm", NULL,           0,            1,           1,          0,        -1 },
@@ -237,9 +238,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,              XK_Return,                  togglescratch,  {.ui = 0 } },
 	{ ControlMask|Mod1Mask,         XK_Return,                  spawn,          {.v = tabtermcmd } },
 
-	{ MODKEY,                       XK_z,                       show,           {0} },
-	{ MODKEY|ShiftMask,             XK_z,                       showall,        {0} },
+	{ MODKEY,                       XK_z,                       showall,        {0} },
 	{ MODKEY,                       XK_x,                       hide,           {0} },
+	{ MODKEY|ShiftMask,             XK_x,                       show,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,                       killclient,     {0} },
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
 	{ MODKEY,                       XK_m,                       togglescratch,  {.ui = 2 } },

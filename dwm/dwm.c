@@ -1341,6 +1341,7 @@ drawbar(Monitor *m)
 		if (n > 0) {
 			int remainder = w % n;
 			int tabw = (1.0 / (double)n) * w + 1;
+			int mid = lrpad / 2;
 			for (c = m->clients; c; c = c->next) {
 				if (!ISVISIBLE(c))
 					continue;
@@ -1358,8 +1359,12 @@ drawbar(Monitor *m)
 					}
 					remainder--;
 				}
-				drw_text(drw, x, 0, tabw, bh, lrpad / 2 + (c->icon ? c->icw + ICONSPACING : 0), c->name, 0);
-				if (c->icon) drw_pic(drw, x + lrpad / 2, (bh - c->ich) / 2, c->icw, c->ich, c->icon);
+                if (TEXTW(c->name) < tabw)
+                        mid = (tabw - TEXTW(c->name) + lrpad) / 2;
+				drw_text(drw, x, 0, tabw, bh, mid + (c->icon ? c->icw + ICONSPACING : 0), c->name, 0);
+				if (c->icon) drw_pic(drw, x + mid, (bh - c->ich) / 2, c->icw, c->ich, c->icon);
+ 				if (c->isfloating)
+ 					drw_rect(drw, x + boxs, boxs, boxw, boxw, c->isfixed, 0);
 				if (c->issticky)
 					drw_polygon(drw, x + boxs, c->isfloating ? boxs * 2 + boxw : boxs, stickyiconbb.x, stickyiconbb.y, boxw, boxw * stickyiconbb.y / stickyiconbb.x, stickyicon, LENGTH(stickyicon), Nonconvex, c->tags & c->mon->tagset[c->mon->seltags]);
 				x += tabw;
