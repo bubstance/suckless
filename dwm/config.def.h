@@ -155,20 +155,18 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_F11,                     spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[12]}  },
 	/* { MODKEY|ShiftMask,             XK_F12,                     spawn,          {.v = }  }, */
+
 	{ MODKEY,                       XK_Home,                    setlayout,      {.v = &layouts[0]}  },
 	/* { MODKEY|ShiftMask,             XK_Home,                    spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_End,                     setlayout,      {0} },
 	/* { MODKEY|ShiftMask,             XK_End,                     spawn,          {.v = }  }, */
+
 	{ 0,                            XK_Print,                   spawn,          SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ShiftMask,                    XK_Print,                   spawn,          {.v = (const char*[]){ "maimpick", NULL } } },
-	/* { MODKEY,                       XK_equal,                   spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_equal,                   spawn,          {.v = } }, */
-	/* { MODKEY,                       XK_minus,                   spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_minus,                   spawn,          {.v = } }, */
-	{ MODKEY,                       XK_BackSpace,               spawn,          {.v = (const char*[]){ "sysact", NULL } } },
-	/* { MODKEY|ShiftMask,             XK_BackSpace,               spawn,          SHCMD("") }, */
+
 	{ MODKEY,                       XK_grave,                   togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_grave,                   setlayout,      {.v = &layouts[13]}  },
+
 	TAGKEYS(                        XK_1,                                       0)
 	TAGKEYS(                        XK_2,                                       1)
 	TAGKEYS(                        XK_3,                                       2)
@@ -178,12 +176,20 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                                       6)
 	TAGKEYS(                        XK_8,                                       7)
 	TAGKEYS(                        XK_9,                                       8)
-	TAGKEYS(                        XK_0,                                       9)
 	{ ControlMask|Mod1Mask,         XK_9,                       spawn,          {.v = alttermcmd } },
+	TAGKEYS(                        XK_0,                                       9)
+
+	{ MODKEY,                       XK_minus,                   incrgaps,       {.i = +1 } },
+	{ MODKEY,                       XK_equal,                   incrgaps,       {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_equal,                   defaultgaps,    {0} },
+
+	{ MODKEY,                       XK_BackSpace,               spawn,          {.v = (const char*[]){ "sysact", NULL } } },
+	/* { MODKEY|ShiftMask,             XK_BackSpace,               spawn,          SHCMD("") }, */
 
 	{ MODKEY,                       XK_Tab,                     view,           {0} },
 	{ MODKEY|ShiftMask,             XK_Tab,                     view,           {.ui = ~0 } },
 	{ MODKEY|ControlMask,           XK_Tab,                     tag,            {.ui = ~0 } },
+
 	{ MODKEY,                       XK_q,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
 	{ MODKEY,                       XK_w,                       spawn,          {.v = (const char*[]){ BROWSER, NULL } } },
@@ -194,10 +200,12 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_i,                       incnmaster,     {.i = +1 } },
 	/* { MODKEY,                       XK_o,                       spawn,          {.v = } }, */
 	{ MODKEY|ShiftMask,             XK_o,                       incnmaster,     {.i = -1 } },
+
 	/* { MODKEY,                       XK_bracketleft,             spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_bracketleft,             spawn,          {.v = } }, */
 	/* { MODKEY,                       XK_bracketright,            spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_bracketright,            spawn,          {.v = } }, */
+
 	{ MODKEY,                       XK_backslash,               spawn,          SHCMD("highlighter") },
 	/* { MODKEY|ShiftMask,             XK_backslash,               spawn,          SHCMD("") }, */
 
@@ -207,6 +215,7 @@ static const Key keys[] = {
 	/* { MODKEY,                       XK_s,                       spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
+	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,                       setcfact,       {.f = +0.25} },
 	{ MODKEY,                       XK_j,                       focusstackvis,  {.i = +1 } },
@@ -215,10 +224,12 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_k,                       focusstackhid,  {.i = -1 } },
 	{ MODKEY,                       XK_l,                       setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_l,                       setcfact,       {.f = -0.25} },
+
 	{ MODKEY,                       XK_semicolon,               spawn,          {.v = dmenucmd } },
 	/* { MODKEY|ShiftMask,             XK_semicolon,               spawn,          {.v = } }, */
 	/* { MODKEY,                       XK_apostrophe,              spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_apostrophe,              spawn,          {.v = } }, */
+
 	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,              XK_Return,                  togglescratch,  {.ui = 0 } },
 	{ ControlMask|Mod1Mask,         XK_Return,                  spawn,          {.v = tabtermcmd } },
@@ -230,9 +241,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
 	{ MODKEY,                       XK_m,                       togglescratch,  {.ui = 2 } },
 	{ MODKEY|ShiftMask,             XK_m,                       togglescratch,  {.ui = 3 } },
+
 	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
+	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
 
 	{ MODKEY|ShiftMask,             XK_space,                   zoom,           {0} },
@@ -255,22 +267,18 @@ static const Key keys[] = {
 	{ ShiftMask,                    XF86XK_Calculator,          spawn,          {.v = (const char*[]){ ALTTERM, "ivy", "-prompt", "%> ", NULL } } },
 
 
-	{ MODKEY|ControlMask,           XK_u,            incrgaps,       {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_u,            incrgaps,       {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_i,            incrigaps,      {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_i,            incrigaps,      {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_o,            incrogaps,      {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_o,            incrogaps,      {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_6,            incrihgaps,     {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_6,            incrihgaps,     {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_7,            incrivgaps,     {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_7,            incrivgaps,     {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_8,            incrohgaps,     {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_8,            incrohgaps,     {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_9,            incrovgaps,     {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_9,            incrovgaps,     {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_0,            togglegaps,     {0} },
-	{ MODKEY|ControlMask|ShiftMask, XK_0,            defaultgaps,    {0} },
+	{ MODKEY|ShiftMask,             XK_Left,                    incrigaps,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_Right,                   incrigaps,      {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_Down,                    incrogaps,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_Up,                      incrogaps,      {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_Down,                    incrihgaps,     {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_Up,                      incrihgaps,     {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_Right,                   incrivgaps,     {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_Left,                    incrivgaps,     {.i = -1 } },
+	{ MODKEY,                       XK_Down,                    incrohgaps,     {.i = +1 } },
+	{ MODKEY,                       XK_Up,                      incrohgaps,     {.i = -1 } },
+	{ MODKEY,                       XK_Right,                   incrovgaps,     {.i = +1 } },
+	{ MODKEY,                       XK_Left,                    incrovgaps,     {.i = -1 } },
 };
 
 /* button definitions */
