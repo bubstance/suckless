@@ -18,21 +18,23 @@ static const unsigned int gappoh    = 10;       /* horiz outer gap between windo
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 0;        /* 0 means bottom bar */
+static       int tag_preview        = 0;        /* 1 means enable, 0 is off */
+static const int topbar             = 1;        /* 0 means bottom bar */
 static const int focusonwheel       = 0;
+
 #define ICONSIZE (bh - 4) /* adaptively preserve 2 pixels each side */
 #define ICONSPACING 5 /* space (pixels) between icon and title */
 static const char *fonts[]          = { "Terminus:pixelsize=14:antialias=true:autohint=true", "Font Awesome 6:pixelsize=14:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=14:antialias=true:autohint=true";
-static const char col_gray1[]       = "#26233a";
-static const char col_gray2[]       = "#191724";
-static const char col_gray3[]       = "#e0def4";
-static const char col_cyan[]        = "#31748f";
+
+// theme
+#include "themes/rosepine.h"
+
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1,  col_gray2 },
-	[SchemeSel]  = { col_gray3, col_gray2,  col_gray2 },
-	[SchemeHid]  = { col_cyan,  col_gray1,  col_cyan  },
+    /*                     fg       bg      border */
+    [SchemeNorm]       = { white,   gray1,  black },
+    [SchemeSel]        = { white,   black,  black  },
+    [SchemeHid]        = { blue,    black,  blue  },
 };
 
 static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */

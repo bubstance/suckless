@@ -2601,7 +2601,7 @@ setmfact(const Arg *arg)
 void
 showtagpreview(unsigned int i)
 {
-	if (!selmon->previewshow || !selmon->tagmap[i]) {
+	if (!selmon->previewshow || !tag_preview || !selmon->tagmap[i]) {
 		XUnmapWindow(dpy, selmon->tagwin);
 		return;
 	}
@@ -2627,7 +2627,7 @@ takepreview(void)
 
 	for (i = 0; i < LENGTH(tags); i++) {
 		/* searching for tags that are occupied && selected */
-		if (!(occ & 1 << i) || !(selmon->tagset[selmon->seltags] & 1 << i))
+		if (!(occ & 1 << i && tag_preview) || !(selmon->tagset[selmon->seltags] & 1 << i))
 			continue;
 
 		if (selmon->tagmap[i]) { /* tagmap exist, clean it */
