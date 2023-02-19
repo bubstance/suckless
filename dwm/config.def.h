@@ -9,6 +9,9 @@
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const int scalepreview       = 4;        /* preview scaling (display w and h / scalepreview) */
+static const int previewbar         = 1;        /* show the bar in the preview window */
+static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
@@ -36,11 +39,12 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "120x36", NULL };
 const char *spcmd2[] = { TERMINAL, "-n", "spcalc", "-f", "Terminus:pixelsize=24:antialias=true:autohint=true", "-g", "50x20", "-e", "bc", "-lq", NULL };
-const char *spcmd3[] = { TERMINAL, "-n", "sptune", "-g", "120x34", "-e", "ncmpcpp", NULL };
-const char *spcmd4[] = { TERMINAL, "-n", "sppmix", "-g", "120x34", "-e", "pulsemixer", NULL };
-const char *spcmd5[] = { TERMINAL, "-n", "spstat", "-g", "120x34", "-e", "htop", NULL };
+const char *spcmd3[] = { TERMINAL, "-n", "sptune", "-g", "120x36", "-e", "ncmpcpp", NULL };
+const char *spcmd4[] = { TERMINAL, "-n", "sppmix", "-g", "120x36", "-e", "alsamixer", NULL };
+const char *spcmd5[] = { TERMINAL, "-n", "spstat", "-g", "120x36", "-e", "htop", NULL };
+const char *spcmd6[] = { TERMINAL, "-n", "spfile", "-g", "120x36", "-e", "lfub", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
@@ -48,41 +52,30 @@ static Sp scratchpads[] = {
 	{"sptune",      spcmd3},
 	{"sppmix",      spcmd4},
 	{"spstat",      spcmd5},
+	{"spfile",      spcmd6},
 };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
-
-/* grid of tags */
-#define DRAWCLASSICTAGS             1 << 0
-#define DRAWTAGGRID                 1 << 1
-
-#define SWITCHTAG_UP                1 << 0
-#define SWITCHTAG_DOWN              1 << 1
-#define SWITCHTAG_LEFT              1 << 2
-#define SWITCHTAG_RIGHT             1 << 3
-#define SWITCHTAG_TOGGLETAG         1 << 4
-#define SWITCHTAG_TAG               1 << 5
-#define SWITCHTAG_VIEW              1 << 6
-#define SWITCHTAG_TOGGLEVIEW        1 << 7
-
-static const unsigned int drawtagmask = DRAWTAGGRID; /* | DRAWCLASSICTAGS to show classic row of tags */
-static const int tagrows = 2;
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class          instance  title           tags mask     isfloating   monitor */
-	{ "St",           NULL,     NULL,           0,            0,           -1 },
-	{ TERMCLASS,      "bg",     NULL,           1 << 7,       0,           -1 },
-	{ TERMCLASS,      "spterm", NULL,           SPTAG(0),     1,           -1 },
-	{ TERMCLASS,      "spcalc", NULL,           SPTAG(1),     1,           -1 },
-	{ TERMCLASS,      "sptune", NULL,           SPTAG(2),     1,           -1 },
-	{ TERMCLASS,      "sppmix", NULL,           SPTAG(3),     1,           -1 },
-	{ TERMCLASS,      "spstat", NULL,           SPTAG(4),     1,           -1 },
-	{ NULL,           NULL,     "Event Tester", 0,            0,           -1 }, /* xev */
+	/* class          instance     title           tags mask     isfloating   isterminal  noswallow  monitor */
+	{ "St",           NULL,        NULL,           0,            0,           1,          0,        -1 },
+	{ "Magnus",       "magnus",    NULL,           0,            1,           0,          0         -1 },
+	{ "Xmag",         "xmag",      NULL,           0,            1,           0,          0,        -1 },
+	{ TERMCLASS,      "floatterm", NULL,           0,            1,           1,          0,        -1 },
+	{ TERMCLASS,      "bg",        NULL,           1 << 7,       0,           1,          0,        -1 },
+	{ TERMCLASS,      "spterm",    NULL,           SPTAG(0),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "spcalc",    NULL,           SPTAG(1),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "sptune",    NULL,           SPTAG(2),     1,           1,          0         -1 },
+	{ TERMCLASS,      "sppmix",    NULL,           SPTAG(3),     1,           1,          0         -1 },
+	{ TERMCLASS,      "spstat",    NULL,           SPTAG(4),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "spfile",    NULL,           SPTAG(5),     1,           1,          0,        -1 },
+	{ NULL,           NULL,        "Event Tester", 0,            0,           0,          1,        -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -96,9 +89,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
  	/* symbol     arrange function */
- 	{ "[]=",      tile },    /* first entry is default */
+ 	{ "[M]",      monocle }, /* first entry is default */
+ 	{ "[]=",      tile },
 	{ "[D]",      deck },
- 	{ "[M]",      monocle },
 	{ "[@]",      spiral },
 	{ "[\\]",     dwindle },
 	{ "TTT",      bstack },
@@ -119,14 +112,14 @@ static const Layout layouts[] = {
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ MODKEY|ControlMask|ShiftMask, KEY,      previewtag,     {.ui = TAG } },     \
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2]         = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run", "-bw", "3","-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#e0def4", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
+static const char *dmenucmd[]   = { "dmenu_run","-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#31748f", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
 static const char *termcmd[]    = { TERMINAL, NULL };
 static const char *alttermcmd[] = { "9", "9term", "rc", NULL };
 static const char *tabtermcmd[] = { "tabbed", "-r 2", TERMINAL, "-w", "''", NULL };
@@ -138,31 +131,31 @@ static const Key keys[] = {
 	/* modifier                     key                         function        argument */
 
 	/* { MODKEY|ShiftMask,             XK_ ,                       spawn,          {.v = } }, */
-	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[0]}  },
+	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[1]}  },
 	/* { MODKEY|ShiftMask,             XK_F1,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[1]}  },
+	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[2]}  },
 	/* { MODKEY|ShiftMask,             XK_F2,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F3,                      setlayout,      {.v = &layouts[2]}  },
+	{ MODKEY,                       XK_F3,                      setlayout,      {.v = &layouts[3]}  },
 	/* { MODKEY|ShiftMask,             XK_F3,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F4,                      setlayout,      {.v = &layouts[3]}  },
+	{ MODKEY,                       XK_F4,                      setlayout,      {.v = &layouts[4]}  },
 	/* { MODKEY|ShiftMask,             XK_F4,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F5,                      setlayout,      {.v = &layouts[4]}  },
+	{ MODKEY,                       XK_F5,                      setlayout,      {.v = &layouts[5]}  },
 	/* { MODKEY|ShiftMask,             XK_F5,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F6,                      setlayout,      {.v = &layouts[5]}  },
+	{ MODKEY,                       XK_F6,                      setlayout,      {.v = &layouts[6]}  },
 	/* { MODKEY|ShiftMask,             XK_F6,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F7,                      setlayout,      {.v = &layouts[6]}  },
+	{ MODKEY,                       XK_F7,                      setlayout,      {.v = &layouts[7]}  },
 	/* { MODKEY|ShiftMask,             XK_F7,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F8,                      setlayout,      {.v = &layouts[7]}  },
+	{ MODKEY,                       XK_F8,                      setlayout,      {.v = &layouts[8]}  },
 	/* { MODKEY|ShiftMask,             XK_F8,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F9,                      setlayout,      {.v = &layouts[8]}  },
+	{ MODKEY,                       XK_F9,                      setlayout,      {.v = &layouts[9]}  },
 	/* { MODKEY|ShiftMask,             XK_F9,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F10,                     setlayout,      {.v = &layouts[9]}  },
+	{ MODKEY,                       XK_F10,                     setlayout,      {.v = &layouts[10]}  },
 	/* { MODKEY|ShiftMask,             XK_F10,                     spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F11,                     setlayout,      {.v = &layouts[10]} },
+	{ MODKEY,                       XK_F11,                     setlayout,      {.v = &layouts[11]} },
 	/* { MODKEY|ShiftMask,             XK_F11,                     spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[11]}  },
+	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[12]}  },
 	/* { MODKEY|ShiftMask,             XK_F12,                     spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_Home,                    setlayout,      {.v = &layouts[12]}  },
+	{ MODKEY,                       XK_Home,                    setlayout,      {.v = &layouts[0]}  },
 	/* { MODKEY|ShiftMask,             XK_Home,                    spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_End,                     setlayout,      {0} },
 	/* { MODKEY|ShiftMask,             XK_End,                     spawn,          {.v = }  }, */
@@ -194,7 +187,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_q,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
 	{ MODKEY,                       XK_w,                       spawn,          {.v = (const char*[]){ BROWSER, NULL } } },
-	{ MODKEY,                       XK_r,                       spawn,          {.v = (const char*[]){ TERMINAL, "-e", "lfub", "-command", "set hidden", NULL } } },
+	{ MODKEY,                       XK_r,                       togglescratch,  {.ui = 5 } },
 	{ MODKEY|ShiftMask,             XK_r,                       togglescratch,  {.ui = 4 } },
 	{ ControlMask|Mod1Mask,         XK_t,                       spawn,          {.v = termcmd } },
 	/* { MODKEY,                       XK_i,                       spawn,          {.v = } }, */
@@ -205,7 +198,7 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_bracketleft,             spawn,          {.v = } }, */
 	/* { MODKEY,                       XK_bracketright,            spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_bracketright,            spawn,          {.v = } }, */
-	{ MODKEY,                       XK_backslash,               spawn,          SHCMD("killall highlight-pointer || highlight-pointer -t 5 -c '#ea9d34' -p '#56949f' -o 5 -r 25 --show-cursor --auto-hide-highlight &") },
+	{ MODKEY,                       XK_backslash,               spawn,          SHCMD("highlighter") },
 	/* { MODKEY|ShiftMask,             XK_backslash,               spawn,          SHCMD("") }, */
 
 
@@ -227,7 +220,7 @@ static const Key keys[] = {
 	/* { MODKEY,                       XK_apostrophe,              spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_apostrophe,              spawn,          {.v = } }, */
 	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,              XK_Return,                  togglescratch,  {.ui = 0 } },
 	{ ControlMask|Mod1Mask,         XK_Return,                  spawn,          {.v = tabtermcmd } },
 
 	{ MODKEY,                       XK_z,                       show,           {0} },
@@ -243,21 +236,11 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
 
 	{ MODKEY|ShiftMask,             XK_space,                   zoom,           {0} },
-	{ MODKEY,                       XK_space,                   focusmaster,    {0} },
+	{ MODKEY,                       XK_space,                   focusmaster,           {0} },
 
-    { MODKEY,                       XK_Up,                      switchtag,      { .ui = SWITCHTAG_UP     | SWITCHTAG_VIEW } },
-    { MODKEY,                       XK_Down,                    switchtag,      { .ui = SWITCHTAG_DOWN   | SWITCHTAG_VIEW } },
-    { MODKEY,                       XK_Right,                   switchtag,      { .ui = SWITCHTAG_RIGHT  | SWITCHTAG_VIEW } },
-    { MODKEY,                       XK_Left,                    switchtag,      { .ui = SWITCHTAG_LEFT   | SWITCHTAG_VIEW } },
-
-    { MODKEY|ShiftMask,             XK_Up,                      switchtag,      { .ui = SWITCHTAG_UP     | SWITCHTAG_TAG | SWITCHTAG_VIEW } },
-    { MODKEY|ShiftMask,             XK_Down,                    switchtag,      { .ui = SWITCHTAG_DOWN   | SWITCHTAG_TAG | SWITCHTAG_VIEW } },
-    { MODKEY|ShiftMask,             XK_Right,                   switchtag,      { .ui = SWITCHTAG_RIGHT  | SWITCHTAG_TAG | SWITCHTAG_VIEW } },
-    { MODKEY|ShiftMask,             XK_Left,                    switchtag,      { .ui = SWITCHTAG_LEFT   | SWITCHTAG_TAG | SWITCHTAG_VIEW } },
-
-	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("pulsemixer --toggle-mute") },
-	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("pulsemixer --change-volume -5") },
-	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          SHCMD("pulsemixer --change-volume +5") },
+	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("amixer -q sset Master toggle") },
+	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer -q sset Master 5%-") },
+	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          SHCMD("amixer -q sset Master 5%+") },
 	{ 0,                            XF86XK_AudioPrev,           spawn,          {.v = (const char*[]){ "mpc", "prev", NULL } } },
 	{ ShiftMask,                    XF86XK_AudioPrev,           spawn,          {.v = (const char*[]){ "mpc", "seek", "-10", NULL } } },
 	{ 0,                            XF86XK_AudioPlay,           spawn,          {.v = (const char*[]){ "mpc", "toggle", NULL } } },
@@ -294,9 +277,12 @@ static const Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask        button          function        argument */
+	/* zoom */
+	{ ClkClientWin,         MODKEY,           Button2,        spawn,          SHCMD("highlighter") },
+	{ ClkClientWin,         MODKEY|ShiftMask, Button2,        spawn,          SHCMD("killall magnus || magnus") },
+
 	{ ClkWinTitle,          0,                Button1,        togglewin,      {0} },
 	{ ClkClientWin,         MODKEY,           Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,           Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,           Button3,        resizemouse,    {0} },
 	{ ClkClientWin,         MODKEY|ShiftMask, Button1,        dragmfact,      {0} },
 	{ ClkClientWin,         MODKEY|ShiftMask, Button3,        dragcfact,      {0} },
