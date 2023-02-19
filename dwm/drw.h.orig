@@ -55,7 +55,6 @@ Picture drw_picture_create_resized(Drw *drw, char *src, unsigned int src_w, unsi
 
 /* Drawing functions */
 void drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int invert);
-void drw_polygon(Drw *drw, int x, int y, int ow, int oh, int sw, int sh, const XPoint *points, int npoints, int shape, int filled);
 int drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lpad, const char *text, int invert);
 void drw_pic(Drw *drw, int x, int y, unsigned int w, unsigned int h, Picture pic);
 

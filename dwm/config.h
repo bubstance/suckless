@@ -35,6 +35,9 @@ static const char *colors[][3]      = {
 	[SchemeHid]  = { col_cyan,  col_gray1,  col_cyan  },
 };
 
+static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
+static const XPoint stickyiconbb    = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
+
 typedef struct {
 	const char *name;
 	const void *cmd;
@@ -212,7 +215,7 @@ static const Key keys[] = {
 
 	/* { MODKEY,                       XK_a,                       spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_a,                       spawn,          {.v = } }, */
-	/* { MODKEY,                       XK_s,                       spawn,          {.v = } }, */
+	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
 	/* { MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
