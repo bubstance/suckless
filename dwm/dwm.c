@@ -1917,9 +1917,6 @@ monocle(Monitor *m)
 		if (ISVISIBLE(c))
 			n++;
 
-	if (n > 0) /* override layout symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
-
 	int newx, newy, neww, newh;
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next)) {
 		if (m->gappoh == 0) {
