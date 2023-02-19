@@ -76,7 +76,7 @@ static const struct arg args[] = {
 
 	/* { netspeed_rx,       "| ▼ %sB/s ", "wlp3s0" }, */
 	/* { netspeed_tx,       "▲ %sB/s ", "wlp3s0" }, */
-	{ wifi_essid,        "| %s ",    "wlp3s0" },
+	{ wifi_essid,        " %s ",    "wlp3s0" },
 	{ wifi_perc,         "(%s%%) ",  "wlp3s0" },
 
 	/* { cpu_perc,          "| CPU: %s%% ", NULL }, */
@@ -96,7 +96,7 @@ static const struct arg args[] = {
 
 	/* { backlight_perc,      "| %s%% |",        "intel_backlight" }, */
 
-	{ run_command, "| VOL: %s%% ", "pulsemixer --get-volume | tail -1 | awk '{print $1}'" },
+	{ run_command, "| VOL: %s ", "getvol" },
 
 	{ battery_state,     "| BAT: %s",    "BAT0" },
 	{ battery_perc,      "%s%% ",        "BAT0" },

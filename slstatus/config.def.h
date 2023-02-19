@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* interval between updates (in ms) */
-const unsigned int interval = 1000;
+const unsigned int interval = 100;
 
 /* text to show if no value can be retrieved */
 static const char unknown_str[] = "n/a";
@@ -76,7 +76,7 @@ static const struct arg args[] = {
 
 	/* { netspeed_rx,       "| ▼ %sB/s ", "wlp3s0" }, */
 	/* { netspeed_tx,       "▲ %sB/s ", "wlp3s0" }, */
-	{ wifi_essid,        "| %s ",    "wlp3s0" },
+	{ wifi_essid,        " %s ",    "wlp3s0" },
 	{ wifi_perc,         "(%s%%) ",  "wlp3s0" },
 
 	/* { cpu_perc,          "| CPU: %s%% ", NULL }, */
@@ -96,9 +96,11 @@ static const struct arg args[] = {
 
 	/* { backlight_perc,      "| %s%% |",        "intel_backlight" }, */
 
-	{ battery_state,     "| %s",    "BAT0" },
+	{ run_command, "| VOL: %s ", "getvol" },
+
+	{ battery_state,     "| BAT: %s",    "BAT0" },
 	{ battery_perc,      "%s%% ",        "BAT0" },
-	{ battery_remaining, "(%s) ",       "BAT0" },
+	/* { battery_remaining, "(%s) ",       "BAT0" }, */
 
 	{ datetime,          "| %s ",       "%F @ %T %Z" },
 };

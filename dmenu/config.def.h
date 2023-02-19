@@ -9,8 +9,8 @@ static int min_width = 1000;                    /* minimum width when centered *
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
 	"Terminus:pixelsize=14:antialias=true:autohint=true"
-	"NotoColorEmoji:pixelsize=14:antialias=true:autohint=true"
 	"Font Awesome 6:pixelsize=14:antialias=true:autohint=true"
+	"NotoColorEmoji:pixelsize=14:antialias=true:autohint=true"
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
 static const char *colors[SchemeLast][2] = {
@@ -18,7 +18,7 @@ static const char *colors[SchemeLast][2] = {
 	[SchemeNorm] = { "#e0def4", "#26233a" },
 	[SchemeSel] = { "#e0def4", "#31748f" },
 	[SchemeSelHighlight] = { "#eb6f92", "#31748f" },
-	[SchemeNormHighlight] = { "#e0def4", "#26233a" },
+	[SchemeNormHighlight] = { "#31748f", "#26233a" },
 	[SchemeOut] = { "#e0def4", "#eb6f92" },
 	[SchemeCaret] = { "#e0def4", "#26233a" },
 };
