@@ -20,11 +20,20 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int showbar            = 1;        /* 0 means no bar */
 static       int tag_preview        = 0;        /* 1 means enable, 0 is off */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const char buttonbar[]       = "";
+/* static const char buttonbar[]       = ""; */
 static const int focusonwheel       = 0;
+
+static const char slopspawnstyle[]  = "-t 0 -c 0.92,0.85,0.69,0.3 -o"; /* do NOT define -f (format) here */
+static const char slopresizestyle[] = "-t 0 -c 0.92,0.85,0.69,0.3"; /* do NOT define -f (format) here */
+static const int riodraw_borders    = 0;        /* 0 or 1, indicates whether the area drawn using slop includes the window borders */
+static const int riodraw_matchpid   = 1;        /* 0 or 1, indicates whether to match the PID of the client that was spawned with riospawn */
+static const int riodraw_spawnasync = 0;        /* 0 means that the application is only spawned after a successful selection while
+                                                 * 1 means that the application is being initialised in the background while the selection is made */
 
 #define ICONSIZE (bh - 4) /* adaptively preserve 2 pixels each side */
 #define ICONSPACING 5 /* space (pixels) between icon and title */
-static const char *fonts[]          = { "Terminus:pixelsize=14:antialias=true:autohint=true", "Font Awesome 6:pixelsize=14:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true" };
+static const char *fonts[]          = { "Terminus:pixelsize=14:antialias=true:autohint=true", "Font Awesome 6:pixelsize=10:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=14:antialias=true:autohint=true";
 
 // theme
@@ -33,8 +42,8 @@ static const char dmenufont[]       = "Terminus:pixelsize=14:antialias=true:auto
 static const char *colors[][3]      = {
     /*                     fg       bg      border */
     [SchemeNorm]       = { white,   gray1,  black },
-    [SchemeSel]        = { white,   black,  black  },
-    [SchemeHid]        = { blue,    black,  blue  },
+    [SchemeSel]        = { white,   black,  black },
+    [SchemeHid]        = { blue,    gray1,  black },
 };
 
 static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
@@ -134,6 +143,7 @@ static const char *dmenucmd[]   = { "dmenu_run","-F", "-c", "-l", "20", "-g", "5
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *tabtermcmd[]   = { "tabbed", "-c", "-r 2", TERMINAL, "-w", "''", NULL };
+static const char *lclickcmd[]    = { "lclick.sh", NULL }; /* status bar application menu */
 static const char *rclickcmd[]    = { "rclick.sh", NULL }; /* desktop right-click menu */
 
 /* enable media keys */
@@ -144,13 +154,11 @@ static const Key keys[] = {
 
 	/* { MODKEY|ShiftMask,             XK_ ,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[1]}  },
-	{ Mod1Mask,                     XK_F1,                      spawn,          {.v = rclickcmd }   },
+	{ Mod1Mask,                     XK_F1,                      spawn,          {.v = dmenucmd }    },
 	/* { MODKEY|ShiftMask,             XK_F1,                      spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[2]}  },
-	{ Mod1Mask,                     XK_F2,                      spawn,          {.v = dmenucmd }    },
 	/* { MODKEY|ShiftMask,             XK_F2,                      spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_F3,                      setlayout,      {.v = &layouts[3]}  },
-	{ Mod1Mask,                     XK_F3,                      layoutmenu,     {0} },
 	/* { MODKEY|ShiftMask,             XK_F3,                      spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_F4,                      setlayout,      {.v = &layouts[4]}  },
 	{ Mod1Mask,                     XK_F4,                      killclient,     {0} },
@@ -179,6 +187,11 @@ static const Key keys[] = {
 
 	{ 0,                            XK_Print,                   spawn,          SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ShiftMask,                    XK_Print,                   spawn,          {.v = (const char*[]){ "maimpick", NULL } } },
+
+	/* { MODKEY,                       XK_Insert,                  spawn,          SHCMD("") }, */
+
+	/* { MODKEY,                       XK_Delete,                  spawn,          SHCMD("") }, */
+	{ ControlMask|Mod1Mask,         XK_Delete,                  spawn,          {.v = (const char*[]) { "sysact", NULL } } },
 
 	{ MODKEY,                       XK_grave,                   togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_grave,                   setlayout,      {.v = &layouts[13]} },
@@ -234,7 +247,7 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_a,                       incrivgaps,     {.i = -1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_a,                       incrigaps,      {.i = +1 } },
 	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
-	/* { MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = } }, */
+	{ MODKEY|ShiftMask,             XK_s,                       rioresize,      {0} },
 	{ MODKEY|ControlMask,           XK_s,                       incrohgaps,     {.i = +1 } },
 	{ MODKEY|Mod1Mask,              XK_s,                       incrihgaps,     {.i = +1 } },
 	{ MODKEY|ControlMask|ShiftMask, XK_s,                       incrogaps,      {.i = +1 } },
@@ -259,12 +272,19 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_apostrophe,              spawn,          {.v = } }, */
 
 	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,              XK_Return,                  togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
+	{ MODKEY|ControlMask,           XK_Return,                  riospawn,       {.v = termcmd } },
 
 	{ MODKEY,                       XK_z,                       showall,        {0} },
 	{ MODKEY,                       XK_x,                       hide,           {0} },
 	{ MODKEY|ShiftMask,             XK_x,                       show,           {0} },
+	/* { MODKEY,                       XK_c,                       spawn,          {.v = } }, */
+	/* { MODKEY|ShiftMask,             XK_c,                       spawn,          {.v = } }, */
+	/* { MODKEY,                       XK_v,                       spawn,          {.v = } }, */
+	/* { MODKEY|ShiftMask,             XK_v,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
+	/* { MODKEY,                       XK_n,                       spawn,          {.v = } }, */
+	/* { MODKEY|ShiftMask,             XK_n,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_m,                       togglescratch,  {.ui = 2 } },
 	{ MODKEY|ShiftMask,             XK_m,                       togglescratch,  {.ui = 3 } },
 
@@ -273,8 +293,18 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
 
+	{ MODKEY,                       XK_space,                   focusmaster,    {0} },
 	{ MODKEY|ShiftMask,             XK_space,                   zoom,           {0} },
-	{ MODKEY,                       XK_space,                   focusmaster,           {0} },
+
+	/* { MODKEY,                       XK_Page_Up,                 shiftview,      { .i = -1 } }, */
+	/* { MODKEY|ShiftMask,             XK_Page_Up,                 shifttag,       { .i = -1 } }, */
+	/* { MODKEY,                       XK_Page_Down,               shiftview,      { .i = +1 } }, */
+	/* { MODKEY|ShiftMask,             XK_Page_Down,               shifttag,       { .i = +1 } }, */
+
+	{ MODKEY|ControlMask,           XK_Up,                      movekeyboard_y, {.i = -20}},
+	{ MODKEY|ControlMask,           XK_Left,                    movekeyboard_x, {.i = -20}},
+	{ MODKEY|ControlMask,           XK_Down,                    movekeyboard_y, {.i = 20}},
+	{ MODKEY|ControlMask,           XK_Right,                   movekeyboard_x, {.i = 20}},
 
 	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("amixer -q sset Master toggle") },
 	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer -q sset Master 5%-") },
@@ -289,13 +319,8 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_MonBrightnessDown,   spawn,          {.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
 	{ 0,                            XF86XK_MonBrightnessUp,     spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
 
-	{ 0,                            XF86XK_Calculator,          spawn,          {.v = (const char*[]){ "xcalc", NULL } } },
+	{ 0,                            XF86XK_Calculator,          togglescratch,  {.ui = 1 } },
 	{ ShiftMask,                    XF86XK_Calculator,          spawn,          {.v = (const char*[]){ ALTTERM, "ivy", "-prompt", "%> ", NULL } } },
-
-	{ MODKEY|ControlMask,           XK_Up,                      movekeyboard_y, {.i = -20}},
-	{ MODKEY|ControlMask,           XK_Left,                    movekeyboard_x, {.i = -20}},
-	{ MODKEY|ControlMask,           XK_Down,                    movekeyboard_y, {.i = 20}},
-	{ MODKEY|ControlMask,           XK_Right,                   movekeyboard_x, {.i = 20}},
 };
 
 /* button definitions */
@@ -306,23 +331,27 @@ static const Key keys[] = {
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask        button          function        argument */
-	{ ClkRootWin,           0,                Button3,        spawn,          {.v = rclickcmd } },
+	/* click                event mask            button          function        argument */
+	{ ClkButton,            0,                    Button1,        spawn,          {.v = lclickcmd } },
+	{ ClkRootWin,           0,                    Button3,        spawn,          {.v = rclickcmd } },
+
+	{ ClkRootWin,           ControlMask|Mod1Mask, Button1,        riospawn,       {.v = termcmd } },
+	{ ClkClientWin,         ControlMask|Mod1Mask, Button1,        riospawn,       {.v = termcmd } },
 
 	/* zoom */
-	{ ClkClientWin,         MODKEY,           Button2,        spawn,          SHCMD("highlighter") },
-	{ ClkClientWin,         MODKEY|ShiftMask, Button2,        spawn,          SHCMD("killall magnus || magnus") },
+	{ ClkClientWin,         MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
+	{ ClkClientWin,         MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus || magnus") },
 
-	{ ClkLtSymbol,          0,                Button1,        layoutmenu,     {0} },
+	{ ClkLtSymbol,          0,                    Button1,        layoutmenu,     {0} },
 
-	{ ClkWinTitle,          0,                Button1,        togglewin,      {0} },
-	{ ClkClientWin,         MODKEY,           Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,           Button3,        resizemouse,    {0} },
-	{ ClkClientWin,         MODKEY|ShiftMask, Button1,        dragmfact,      {0} },
-	{ ClkClientWin,         MODKEY|ShiftMask, Button3,        dragcfact,      {0} },
-	{ ClkTagBar,            0,                Button1,        view,           {0} },
-	{ ClkTagBar,            0,                Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,           Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,           Button3,        toggletag,      {0} },
+	{ ClkWinTitle,          0,                    Button1,        togglewin,      {0} },
+	{ ClkClientWin,         MODKEY,               Button1,        movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,               Button3,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY|ShiftMask,     Button1,        dragmfact,      {0} },
+	{ ClkClientWin,         MODKEY|ShiftMask,     Button3,        dragcfact,      {0} },
+	{ ClkTagBar,            0,                    Button1,        view,           {0} },
+	{ ClkTagBar,            0,                    Button3,        toggleview,     {0} },
+	{ ClkTagBar,            MODKEY,               Button1,        tag,            {0} },
+	{ ClkTagBar,            MODKEY,               Button3,        toggletag,      {0} },
 };
 

@@ -22,13 +22,16 @@ FREETYPEINC = /usr/include/freetype2
 #MANPREFIX = ${PREFIX}/man
 #KVMLIB = -lkvm
 
+# This is needed for the swallow patch
+XCBLIBS = -lX11-xcb -lxcb -lxcb-res
+
 # Imlib2 (tag previews)
 IMLIB2LIBS = -lImlib2
 
 
 # includes and libs
 INCS = -I${X11INC} -I${FREETYPEINC}
-LIBS = -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS} ${KVMLIB} ${IMLIB2LIBS} -lX11-xcb -lxcb -lxcb-res -lXrender -lImlib2
+LIBS = -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS} ${KVMLIB} ${IMLIB2LIBS} ${XCBLIBS} -lXrender
 
 # flags
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
