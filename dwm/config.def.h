@@ -9,8 +9,6 @@
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const int scalepreview       = 4;        /* preview scaling (display w and h / scalepreview) */
-static const int previewbar         = 1;        /* show the bar in the preview window */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -18,8 +16,9 @@ static const unsigned int gappoh    = 10;       /* horiz outer gap between windo
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
-static       int tag_preview        = 0;        /* 1 means enable, 0 is off */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
+static const int vertpadbar         = 10;        /* vertical padding for statusbar */
 static const char buttonbar[]       = "";
 /* static const char buttonbar[]       = ""; */
 static const int focusonwheel       = 0;
@@ -31,10 +30,10 @@ static const int riodraw_matchpid   = 1;        /* 0 or 1, indicates whether to 
 static const int riodraw_spawnasync = 0;        /* 0 means that the application is only spawned after a successful selection while
                                                  * 1 means that the application is being initialised in the background while the selection is made */
 
-#define ICONSIZE (bh - 4) /* adaptively preserve 2 pixels each side */
+#define ICONSIZE (bh - 8) /* adaptively preserve 2 pixels each side */
 #define ICONSPACING 5 /* space (pixels) between icon and title */
-static const char *fonts[]          = { "Terminus:pixelsize=14:antialias=true:autohint=true", "Font Awesome 6:pixelsize=10:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Terminus:pixelsize=14:antialias=true:autohint=true";
+static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=12:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Terminus:pixelsize=16:antialias=true:autohint=true";
 
 // theme
 #include "themes/rosepine.h"
@@ -132,14 +131,14 @@ static const Layout layouts[] = {
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      previewtag,     {.ui = TAG } },     \
+	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2]         = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run","-F", "-c", "-l", "20", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#31748f", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
+static const char *dmenucmd[]   = { "dmenu_run","-F", "-c", "-l", "10", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#31748f", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *tabtermcmd[]   = { "tabbed", "-c", "-r 2", TERMINAL, "-w", "''", NULL };
