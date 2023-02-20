@@ -105,7 +105,7 @@ main(void)
       int ret = snprintf(
                status,
                MSIZE,
-               "  ^c%s^VOL ^c%s^%d%%   ^c%s^CPU ^f1^%s^f4^%s^f4^%s^f4^%s^f3^^c%s^   ^c%s^MEM ^f1^%s^f20^   ^c%s^WiFi ^c%s^%d%%   ^c%s^TEMP ^c%s^%d°C   ^c%s^%s  %s  ",
+               "  ^c%s^VOL ^c%s^%d%%   ^c%s^CPU ^f1^%s^f4^%s^f4^%s^f4^%s^f3^   ^c%s^MEM ^f1^%s^f20^   ^c%s^WiFi ^c%s^%d%%   ^c%s^TEMP ^c%s^%d°C   ^c%s^%s   %s  ",
 
 			   fg_dark,
 			   fg_light,
@@ -118,7 +118,6 @@ main(void)
                cpu_bar[3],
 
 			   fg_dark,
-			   fg_light,
                mem_bar,
 
 			   fg_dark,
