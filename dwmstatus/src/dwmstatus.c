@@ -22,13 +22,12 @@
 #include <linux/soundcard.h>
 */
 
-#define CPU_NBR 4
+#define CPU_NBR 8
 #define BAR_HEIGHT 24
 #define BAT_NOW_FILE "/sys/class/power_supply/BAT0/charge_now"
 #define BAT_FULL_FILE "/sys/class/power_supply/BAT0/charge_full"
 #define BAT_STATUS_FILE "/sys/class/power_supply/BAT0/status"
 
-#define TEMP_SENSOR_FILE "/sys/class/hwmon/hwmon1/temp1_input"
 #define MEMINFO_FILE "/proc/meminfo"
 
 int   getBattery();
@@ -37,7 +36,6 @@ int   getMemPercent();
 void  getCpuUsage(int *cpu_percent);
 char* getDateTime();
 float getFreq(char *file);
-int   getTemperature();
 int   getVolume();
 void  setStatus(Display *dpy, char *str);
 int   getWifiPercent();
@@ -63,7 +61,7 @@ main(void)
 
   int cpu_percent[CPU_NBR];
   char *datetime;
-  int temp, vol, wifi;
+  int vol, wifi;
   char *cpu_bar[CPU_NBR];
 
   int mem_percent;
@@ -90,7 +88,6 @@ main(void)
 
 	  mem_percent = getMemPercent();
 	  mem_bar = hBar(mem_percent, 20, 9,  "#FF0000", "#444444");
-      temp = getTemperature();
       datetime = getDateTime();
       getBatteryBar(bat0, 256, 30, 11);
       vol = getVolume();
@@ -105,28 +102,28 @@ main(void)
       int ret = snprintf(
                status,
                MSIZE,
-               "  ^c%s^VOL ^c%s^%d%%   ^c%s^CPU ^f1^%s^f4^%s^f4^%s^f4^%s^f3^   ^c%s^MEM ^f1^%s^f20^   ^c%s^WiFi ^c%s^%d%%   ^c%s^TEMP ^c%s^%d°C   ^c%s^%s   %s  ",
+               "  ^c%s^VOL ^c%s^%d%%   ^c%s^WiFi ^c%s^%d%%   ^c%s^MEM ^f1^%s^f20^   ^c%s^CPU ^f1^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f3^   ^c%s^%s   %s  ",
 
 			   fg_dark,
 			   fg_light,
                vol,
 
 			   fg_dark,
-               cpu_bar[0],
-               cpu_bar[1],
-               cpu_bar[2],
-               cpu_bar[3],
+			   fg_light,
+               wifi,
 
 			   fg_dark,
                mem_bar,
 
 			   fg_dark,
-			   fg_light,
-               wifi,
-
-			   fg_dark,
-			   fg_light,
-			   temp,
+               cpu_bar[0],
+               cpu_bar[1],
+               cpu_bar[2],
+               cpu_bar[3],
+               cpu_bar[4],
+               cpu_bar[5],
+               cpu_bar[6],
+               cpu_bar[7],
 
 			   fg_color,
 			   datetime,
@@ -430,22 +427,6 @@ getDateTime()
 }
 
 int
-getTemperature()
-{
-  int temp;
-  FILE *fd = fopen(TEMP_SENSOR_FILE, "r");
-  if(fd == NULL)
-	  {
-		  fprintf(stderr, "Error opening temp1_input.\n");
-		  return -1;
-	  }
-  fscanf(fd, "%d", &temp);
-  fclose(fd);
-
-  return temp / 1000;
-}
-
-int
 getWifiPercent()
 {
 	//size_t len = 0;
@@ -461,7 +442,6 @@ getWifiPercent()
 	fclose(fd);
 	return percent;
 }
-
 
 int
 getVolume()
