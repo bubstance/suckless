@@ -1,5 +1,4 @@
 ![](pic-full.png)
-![](pic-menu.png)
 
 Overview
 ========

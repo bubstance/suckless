@@ -19,8 +19,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 10;        /* vertical padding for statusbar */
-static const char buttonbar[]       = "";
-/* static const char buttonbar[]       = ""; */
+/* static const char buttonbar[]       = ""; */
+static const char buttonbar[]       = "";
 static const int focusonwheel       = 0;
 
 static const char slopspawnstyle[]  = "-t 0 -c 0.92,0.85,0.69,0.3 -o"; /* do NOT define -f (format) here */
@@ -32,7 +32,7 @@ static const int riodraw_spawnasync = 0;        /* 0 means that the application 
 
 #define ICONSIZE (bh - 8) /* adaptively preserve 2 pixels each side */
 #define ICONSPACING 5 /* space (pixels) between icon and title */
-static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=12:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=12:antialias=true:autohint=true" };
+static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=16:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=16:antialias=true:autohint=true";
 
 // theme
@@ -333,8 +333,9 @@ static const Button buttons[] = {
 	{ ClkButton,            0,                    Button1,        spawn,          {.v = lclickcmd } },
 	{ ClkRootWin,           0,                    Button3,        spawn,          {.v = rclickcmd } },
 
-	{ ClkRootWin,           ControlMask|Mod1Mask, Button1,        riospawn,       {.v = termcmd } },
-	{ ClkClientWin,         ControlMask|Mod1Mask, Button1,        riospawn,       {.v = termcmd } },
+	{ ClkRootWin,           MODKEY|ControlMask,   Button1,        riospawn,       {.v = termcmd } },
+	{ ClkClientWin,         MODKEY|ControlMask,   Button1,        riospawn,       {.v = termcmd } },
+	{ ClkClientWin,         MODKEY|ControlMask,   Button3,        killclient,     {0} },
 
 	/* zoom */
 	{ ClkClientWin,         MODKEY,               Button2,        spawn,          SHCMD("highlighter") },

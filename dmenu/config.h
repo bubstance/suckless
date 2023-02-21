@@ -11,8 +11,8 @@ static const int user_bh = 10;               /* add an defined amount of pixels 
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
 	"Terminus:pixelsize=16:antialias=true:autohint=true"
-	"Font Awesome 6:pixelsize=12:antialias=true:autohint=true"
-	"NotoColorEmoji:pixelsize=12:antialias=true:autohint=true"
+	"Font Awesome 6:pixelsize=16:antialias=true:autohint=true"
+	"NotoColorEmoji:pixelsize=10:antialias=true:autohint=true"
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
 static const char *colors[SchemeLast][2] = {
