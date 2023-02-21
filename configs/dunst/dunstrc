@@ -1,0 +1,26 @@
+[global]
+    frame_width = 0
+    monitor = 0
+    follow = keyboard
+    transparency = 15
+    font = "Font Awesome 6, Terminus"
+    format = "<b>%s</b>\n%b"
+    alignment = center
+
+[base16_low]
+    msg_urgency = low
+    background = "#191724"
+    foreground = "#e0def4"
+    timeout = 3
+
+[base16_normal]
+    msg_urgency = normal
+    background = "#26233a"
+    foreground = "#e0def4"
+    timeout = 5
+
+[base16_high]
+    msg_urgency = critical
+    background = "#eb6f92"
+    foreground = "#e0def4"
+    timeout = 10

@@ -45,9 +45,4 @@ open terminal...
 	IMG:$HOME/.config/xmenu/icons/st.png		st (tabbed) 	tabterm
 	IMG:$HOME/.config/xmenu/icons/xterm-color.png		xterm 	xterm
 kill window...		xkill
-run...			dmenu_run -F -c -l 20 -g 5 -p "Run:" -nb "#191724" -nf "#e0def4" -sb "#31748f" -sf "#e0def4" -nhb "#191724" -nhf "#31748f" -shb "#31748f" -shf "#eb6f92"
-
-lock			slock
-reboot			sudo reboot
-shutdown		sudo poweroff
 EOF
