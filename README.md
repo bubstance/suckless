@@ -1,5 +1,9 @@
 ![](pic-full.png)
 
+![](dmenu.png)
+
+![](app-menu.png)
+
 Overview
 ========
 
