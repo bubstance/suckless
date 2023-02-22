@@ -1,0 +1,6 @@
+#!/bin/sh
+
+## use sxiv to select a wallpaper
+## usage: m to mark image, then q to apply
+
+sxiv -oqrt $HOME/Pictures | xargs setbg

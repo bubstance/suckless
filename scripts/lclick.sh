@@ -37,15 +37,17 @@ applications
 		IMG:$HOME/.config/xmenu/icons/9.png		acme	acme
 		IMG:$HOME/.config/xmenu/icons/9.png		ivy 	9 9term ivy -prompt "%> "
 		IMG:$HOME/.config/xmenu/icons/9.png		sam 	sam
-	settings
-		volume mixer		st -e alsamixer
-		compositor settings	st -e nvim $HOME/.config/picom/picom.conf
 open terminal...
+	IMG:$HOME/.config/xmenu/icons/9.png		9term 	9 9term rc
 	IMG:$HOME/.config/xmenu/icons/st.png		st 	st
 	IMG:$HOME/.config/xmenu/icons/st.png		st (tabbed) 	tabterm
 	IMG:$HOME/.config/xmenu/icons/xterm-color.png		xterm 	xterm
+settings
+	set wallpaper		wallpick
+	volume mixer		st -e alsamixer
+	compositor settings	st -e nvim $HOME/.config/picom/picom.conf
 kill window...		xkill
-run...			dmenu_run -F -c -l 20 -g 5 -p "Run:" -nb "#191724" -nf "#e0def4" -sb "#31748f" -sf "#e0def4" -nhb "#191724" -nhf "#31748f" -shb "#31748f" -shf "#eb6f92"
+run...			dmenu_run -F -c -l 10 -g 5 -p "Run:" -nb "#191724" -nf "#e0def4" -sb "#31748f" -sf "#e0def4" -nhb "#191724" -nhf "#31748f" -shb "#31748f" -shf "#eb6f92"
 
 lock			slock
 reboot			sudo reboot
