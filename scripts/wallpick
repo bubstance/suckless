@@ -2,5 +2,6 @@
 
 ## use sxiv to select a wallpaper
 ## usage: m to mark image, then q to apply
+## the *last* selection will used if multiple files are chosen
 
-sxiv -oqrt $HOME/Pictures | xargs setbg
+sxiv -oqrt $HOME/Pictures | sed -n '$p' | xargs setbg

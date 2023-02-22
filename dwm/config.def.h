@@ -245,7 +245,7 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_a,                       incrivgaps,     {.i = -1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_a,                       incrigaps,      {.i = +1 } },
 	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
-	{ MODKEY|ShiftMask,             XK_s,                       rioresize,      {0} },
+	{ MODKEY|ShiftMask,             XK_s,                       showall,        {0} },
 	{ MODKEY|ControlMask,           XK_s,                       incrohgaps,     {.i = +1 } },
 	{ MODKEY|Mod1Mask,              XK_s,                       incrihgaps,     {.i = +1 } },
 	{ MODKEY|ControlMask|ShiftMask, XK_s,                       incrogaps,      {.i = +1 } },
@@ -271,9 +271,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
 	{ MODKEY|ControlMask,           XK_Return,                  spawn,          {.v = tabtermcmd } },
 
-	{ MODKEY,                       XK_z,                       showall,        {0} },
 	{ MODKEY,                       XK_x,                       hide,           {0} },
-	{ MODKEY|ShiftMask,             XK_x,                       show,           {0} },
+	/* { MODKEY|ShiftMask,             XK_x,                       show,           {0} }, */
 	/* { MODKEY,                       XK_c,                       spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_c,                       spawn,          {.v = } }, */
 	/* { MODKEY,                       XK_v,                       spawn,          {.v = } }, */
@@ -327,13 +326,15 @@ static const Key keys[] = {
 
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask            button          function        argument */
-	{ ClkButton,            0,                    Button1,        spawn,          {.v = lclickcmd } },
-	{ ClkRootWin,           0,                    Button3,        spawn,          {.v = rclickcmd } },
+	/* click                event mask                          button          function        argument */
+	{ ClkButton,            0,                                  Button1,        spawn,          {.v = lclickcmd } },
+	{ ClkRootWin,           0,                                  Button3,        spawn,          {.v = rclickcmd } },
 
-	{ ClkRootWin,           MODKEY|ControlMask,   Button1,        riospawn,       {.v = termcmd } },
-	{ ClkClientWin,         MODKEY|ControlMask,   Button1,        riospawn,       {.v = termcmd } },
-	{ ClkClientWin,         MODKEY|ControlMask,   Button3,        killclient,     {0} },
+	{ ClkRootWin,           MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
+	{ ClkRootWin,           MODKEY|ControlMask,                 Button3,        rioresize,      {0} },
+	{ ClkClientWin,         MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
+	{ ClkClientWin,         MODKEY|ControlMask,                 Button3,        rioresize,      {0} },
+	{ ClkClientWin,         MODKEY|ControlMask|ShiftMask,       Button1,        killclient,     {0} },
 
 	/* zoom */
 	{ ClkClientWin,         MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
