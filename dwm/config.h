@@ -284,7 +284,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_x,                       hide,           {0} },
 	/* { MODKEY|ShiftMask,             XK_x,                       show,           {0} }, */
 	/* { MODKEY,                       XK_c,                       spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_c,                       spawn,          {.v = } }, */
+	{ MODKEY|ShiftMask,             XK_c,                       killunsel,      {0} },
 	/* { MODKEY,                       XK_v,                       spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_v,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },

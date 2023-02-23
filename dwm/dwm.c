@@ -225,6 +225,7 @@ static void incnmaster(const Arg *arg);
 static int isdescprocess(pid_t p, pid_t c);
 static void keypress(XEvent *e);
 static void killclient(const Arg *arg);
+static void killunsel(const Arg *arg);
 static void layoutmenu(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
 static void mappingnotify(XEvent *e);
@@ -1367,8 +1368,9 @@ drawbar(Monitor *m)
 					}
 					remainder--;
 				}
-				drw_text(drw, x, 0, tabw, bh, lrpad / 2 + (c->icon ? c->icw + ICONSPACING : 0), c->name, 0);
-				if (c->icon) drw_pic(drw, x + lrpad / 2, (bh - c->ich) / 2, c->icw, c->ich, c->icon);
+				drw_text(drw, x, 0, tabw, bh, (TEXTW(c->name) < tabw ? (tabw - c->icw - TEXTW(c->name) + lrpad) / 2 : lrpad / 2) + (c->icon ? c->icw + ICONSPACING : 0), c->name, 0);
+				if (c->icon)
+					drw_pic(drw, x + (TEXTW(c->name) < tabw ? (tabw - c->icw - TEXTW(c->name) + lrpad) / 2 : lrpad / 2), (bh - c->ich) / 2, c->icw, c->ich, c->icon);
  				if (c->isfloating)
  					drw_rect(drw, x + boxs, boxs, boxw, boxw, c->isfixed, 0);
 				if (c->issticky)
@@ -1769,6 +1771,29 @@ keypress(XEvent *e)
 		&& CLEANMASK(keys[i].mod) == CLEANMASK(ev->state)
 		&& keys[i].func)
 			keys[i].func(&(keys[i].arg));
+}
+
+void
+killunsel(const Arg *arg)
+{
+	Client *i = NULL;
+
+	if (!selmon->sel)
+		return;
+
+	for (i = selmon->clients; i; i = i->next) {
+		if (ISVISIBLE(i) && i != selmon->sel) {
+			if (!sendevent(i, wmatom[WMDelete])) {
+				XGrabServer(dpy);
+				XSetErrorHandler(xerrordummy);
+				XSetCloseDownMode(dpy, DestroyAll);
+				XKillClient(dpy, i->win);
+				XSync(dpy, False);
+				XSetErrorHandler(xerror);
+				XUngrabServer(dpy);
+			}
+		}
+	}
 }
 
 void
