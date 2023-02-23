@@ -1,10 +1,10 @@
 ![](pic-full.png)
 
-![](app-menu.png)
+![](pic-menu.png)
 
-![](dmenu.png)
+![](pic-run.png)
 
-![](pic-working.png)
+![](pic-work.png)
 
 
 Overview
