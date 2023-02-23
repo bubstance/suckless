@@ -2975,7 +2975,7 @@ drawTab(int nwins, int first, Monitor *m)
 
 		n++;
 		drw_setscheme(drw, scheme[(c == m->sel) ? SchemeNorm : SchemeHid]);
-		drw_text(drw, 0, y, selmon->maxWTab, h, (maxWTab - TEXTW(c->name)) / 2, c->name, 0);
+		drw_text(drw, 0, y, selmon->maxWTab, h, (TEXTW(c->name) < maxWTab ? (maxWTab - TEXTW(c->name) + lrpad) / 2 : lrpad / 2), c->name, 0);
 		y += h;
 	}
 

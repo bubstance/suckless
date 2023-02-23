@@ -93,7 +93,7 @@ static const Rule rules[] = {
 	{ "Magnus",       "magnus",    NULL,           0,            1,           0,          0,        -1 },
 	{ "mpv",          "gl",        NULL,           0,            1,           0,          0,        -1 },
 	{ TERMCLASS,      "floatterm", NULL,           0,            1,           1,          0,        -1 },
-	{ TERMCLASS,      "bg",        NULL,           1 << 7,       0,           1,          0,        -1 },
+	/* { TERMCLASS,      "bg",        NULL,           1 << 7,       0,           1,          0,        -1 }, */
 	{ TERMCLASS,      "spterm",    NULL,           SPTAG(0),     1,           1,          0,        -1 },
 	{ TERMCLASS,      "spcalc",    NULL,           SPTAG(1),     1,           1,          0,        -1 },
 	{ TERMCLASS,      "sptune",    NULL,           SPTAG(2),     1,           1,          0,        -1 },
@@ -117,8 +117,8 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
  	/* symbol     arrange function */
- 	{ "[M]",      monocle }, /* first entry is default */
- 	{ "[]=",      tile },
+ 	{ "[]=",      tile }, /* first entry is default */
+ 	{ "[M]",      monocle },
 	{ "[D]",      deck },
 	{ "[@]",      spiral },
 	{ "[\\]",     dwindle },
@@ -161,7 +161,7 @@ static const Key keys[] = {
 	/* modifier                     key                         function        argument */
 
 	/* { MODKEY|ShiftMask,             XK_ ,                       spawn,          {.v = } }, */
-	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[1]}  },
+	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[0]}  },
 	{ Mod1Mask,                     XK_F1,                      spawn,          {.v = dmenucmd }    },
 	/* { MODKEY|ShiftMask,             XK_F1,                      spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[2]}  },
@@ -188,7 +188,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[12]} },
 	/* { MODKEY|ShiftMask,             XK_F12,                     spawn,          {.v = }  }, */
 
-	{ MODKEY,                       XK_Home,                    setlayout,      {.v = &layouts[0]}  },
+	/* { MODKEY,                       XK_Home,                    spawn,          SHCMD("") }, */
 	/* { MODKEY|ShiftMask,             XK_Home,                    spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_End,                     setlayout,      {0} },
 	/* { MODKEY|ShiftMask,             XK_End,                     spawn,          {.v = }  }, */
@@ -263,6 +263,7 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_d,                       incrivgaps,     {.i = +1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_d,                       incrigaps,      {.i = -1 } },
 	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
+	{ MODKEY|ShiftMask,             XK_f,                       setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,                       setcfact,       {.f = +0.25} },
