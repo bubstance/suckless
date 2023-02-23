@@ -35,6 +35,15 @@ static const int riodraw_spawnasync = 0;        /* 0 means that the application 
 static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=16:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=16:antialias=true:autohint=true";
 
+/* alt-tab configuration */
+static const unsigned int tabModKey 		= 0x40;	/* if this key is hold the alt-tab functionality stays acitve. This key must be the same as key that is used to active functin altTabStart `*/
+static const unsigned int tabCycleKey 		= 0x17;	/* if this key is hit the alt-tab program moves one position forward in clients stack. This key must be the same as key that is used to active functin altTabStart */
+static const unsigned int tabPosY 			= 1;	/* tab position on Y axis, 0 = bottom, 1 = center, 2 = top */
+static const unsigned int tabPosX 			= 1;	/* tab position on X axis, 0 = left, 1 = center, 2 = right */
+static const unsigned int maxWTab 			= 600;	/* tab menu width */
+static const unsigned int maxHTab 			= 200;	/* tab menu height */
+
+
 // theme
 #include "themes/rosepine.h"
 
@@ -215,6 +224,7 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_BackSpace,               spawn,          SHCMD("") }, */
 
 	{ MODKEY,                       XK_Tab,                     view,           {0} },
+	{ Mod1Mask,                     XK_Tab,                     altTabStart,    {0} },
 
 	{ MODKEY,                       XK_q,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
