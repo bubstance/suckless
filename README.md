@@ -1,4 +1,4 @@
-![](pic-full.png)
+![](pic-main.png)
 
 ![](pic-menu.png)
 
