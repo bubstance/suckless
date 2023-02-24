@@ -52,6 +52,8 @@ Patches
 
   * statusbutton
 
+  * statuspadding
+
   * sticky + stickyindicator
 
   * swallow
