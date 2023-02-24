@@ -267,10 +267,15 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,                       setcfact,       {.f = +0.25} },
+	{ MODKEY|ControlMask,           XK_h,                       movekeyboard_x, {.i = -20} },
 	{ MODKEY,                       XK_j,                       focusstack,     {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_j,                       movekeyboard_y, {.i = 20}  },
 	{ MODKEY,                       XK_k,                       focusstack,     {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_k,                       movekeyboard_y, {.i = -20} },
 	{ MODKEY,                       XK_l,                       setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_l,                       setcfact,       {.f = -0.25} },
+	{ MODKEY|ControlMask,           XK_l,                       movekeyboard_x, {.i = 20}  },
+
 
 
 	{ MODKEY,                       XK_semicolon,               spawn,          {.v = dmenucmd } },
@@ -280,7 +285,7 @@ static const Key keys[] = {
 
 	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
-	{ MODKEY|ControlMask,           XK_Return,                  spawn,          {.v = tabtermcmd } },
+	{ Mod1Mask,                     XK_Return,                  spawn,          {.v = tabtermcmd } },
 
 	{ MODKEY,                       XK_x,                       hide,           {0} },
 	/* { MODKEY|ShiftMask,             XK_x,                       show,           {0} }, */
@@ -307,10 +312,10 @@ static const Key keys[] = {
 	/* { MODKEY,                       XK_Page_Down,               shiftview,      { .i = +1 } }, */
 	/* { MODKEY|ShiftMask,             XK_Page_Down,               shifttag,       { .i = +1 } }, */
 
-	{ MODKEY|ControlMask,           XK_Up,                      movekeyboard_y, {.i = -20}},
-	{ MODKEY|ControlMask,           XK_Left,                    movekeyboard_x, {.i = -20}},
-	{ MODKEY|ControlMask,           XK_Down,                    movekeyboard_y, {.i = 20}},
-	{ MODKEY|ControlMask,           XK_Right,                   movekeyboard_x, {.i = 20}},
+	{ MODKEY|ControlMask,           XK_Up,                      movekeyboard_y, {.i = -20} },
+	{ MODKEY|ControlMask,           XK_Left,                    movekeyboard_x, {.i = -20} },
+	{ MODKEY|ControlMask,           XK_Down,                    movekeyboard_y, {.i = 20}  },
+	{ MODKEY|ControlMask,           XK_Right,                   movekeyboard_x, {.i = 20}  },
 
 	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("amixer -q sset Master toggle") },
 	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer -q sset Master 5%-") },

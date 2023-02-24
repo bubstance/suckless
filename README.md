@@ -94,6 +94,8 @@ Patches
 
   * ligatures
 
+  * netwmicon
+
 
 * tools
 

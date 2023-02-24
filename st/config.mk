@@ -7,7 +7,7 @@ VERSION = 0.8.4
 PREFIX = /usr/local
 MANPREFIX = $(PREFIX)/share/man
 APPPREFIX = $(PREFIX)/share/applications
-ICONPREFIX = $(PREFIX)/share/icons/hicolor/256x256/apps/
+ICONPREFIX = $(PREFIX)/share/pixmaps
 ICONNAME = st.png
 
 X11INC = /usr/X11R6/include
