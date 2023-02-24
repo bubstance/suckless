@@ -12,6 +12,8 @@ Overview
 
 Personal builds of the suckless suite of tools.
 
+Functionality is not guaranteed.
+
 
 Patches
 =======
