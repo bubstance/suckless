@@ -1,0 +1,136 @@
+From daf4eab44e319d78cffecf4133f8309c826fe6b9 Mon Sep 17 00:00:00 2001
+From: mrmine <mrmine1@proton.me>
+Date: Sun, 11 Dec 2022 23:31:46 +0100
+Subject: [PATCH] This Patch adds the ability to move floating windows on the x
+ and y axis with the keyboard, instead of only the mouse. This is achieved by
+ adding the two functions "movekeyboard-x" and "movekeyboard-y".
+
+---
+ config.def.h |  4 +++
+ dwm.c        | 88 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 92 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index 9efa774..a1ca89c 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -85,6 +85,10 @@ static const Key keys[] = {
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
++	{ MODKEY|ControlMask,		  XK_l,	movekeyboard_x, 	{.i = 20}},
++	{ MODKEY|ControlMask,		  XK_h,	movekeyboard_x, 	{.i = -20}},
++	{ MODKEY|ControlMask,		  XK_j,	movekeyboard_y, 	{.i = 20}},
++	{ MODKEY|ControlMask,		  XK_k,	movekeyboard_y, 	{.i = -20}},
+ 	TAGKEYS(                        XK_1,                      0)
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
+diff --git a/dwm.c b/dwm.c
+index 03baf42..e8a9f28 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -184,6 +184,8 @@ static void maprequest(XEvent *e);
+ static void monocle(Monitor *m);
+ static void motionnotify(XEvent *e);
+ static void movemouse(const Arg *arg);
++static void movekeyboard_x(const Arg *arg);
++static void movekeyboard_y(const Arg *arg);
+ static Client *nexttiled(Client *c);
+ static void pop(Client *c);
+ static void propertynotify(XEvent *e);
+@@ -1203,6 +1205,92 @@ movemouse(const Arg *arg)
+ 	}
+ }
+ 
++void
++movekeyboard_x(const Arg *arg){
++	int ocx, ocy, nx, ny;
++	Client *c;
++	Monitor *m;
++
++	if (!(c = selmon->sel))
++		return;
++
++	if (c->isfullscreen) /* no support moving fullscreen windows by mouse */
++		return;
++
++	restack(selmon);
++
++	ocx = c->x;
++	ocy = c->y;
++
++	nx = ocx + arg->i;
++	ny = ocy;
++
++	if (abs(selmon->wx - nx) < snap)
++		nx = selmon->wx;
++	else if (abs((selmon->wx + selmon->ww) - (nx + WIDTH(c))) < snap)
++		nx = selmon->wx + selmon->ww - WIDTH(c);
++
++	if (abs(selmon->wy - ny) < snap)
++		ny = selmon->wy;
++	else if (abs((selmon->wy + selmon->wh) - (ny + HEIGHT(c))) < snap)
++		ny = selmon->wy + selmon->wh - HEIGHT(c);
++
++	if (!c->isfloating)
++		togglefloating(NULL);
++
++	if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
++		resize(c, nx, ny, c->w, c->h, 1);
++
++	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
++		sendmon(c, m);
++		selmon = m;
++		focus(NULL);
++	}
++}
++
++void
++movekeyboard_y(const Arg *arg){
++	int ocx, ocy, nx, ny;
++	Client *c;
++	Monitor *m;
++
++	if (!(c = selmon->sel))
++		return;
++
++	if (c->isfullscreen) /* no support moving fullscreen windows by mouse */
++		return;
++
++	restack(selmon);
++
++	ocx = c->x;
++	ocy = c->y;
++
++	nx = ocx;
++	ny = ocy + arg->i;
++
++	if (abs(selmon->wx - nx) < snap)
++		nx = selmon->wx;
++	else if (abs((selmon->wx + selmon->ww) - (nx + WIDTH(c))) < snap)
++		nx = selmon->wx + selmon->ww - WIDTH(c);
++
++	if (abs(selmon->wy - ny) < snap)
++		ny = selmon->wy;
++	else if (abs((selmon->wy + selmon->wh) - (ny + HEIGHT(c))) < snap)
++		ny = selmon->wy + selmon->wh - HEIGHT(c);
++
++	if (!c->isfloating)
++		togglefloating(NULL);
++
++	if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
++		resize(c, nx, ny, c->w, c->h, 1);
++
++	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
++		sendmon(c, m);
++		selmon = m;
++		focus(NULL);
++	}
++}
++
+ Client *
+ nexttiled(Client *c)
+ {
+-- 
+2.38.1
+

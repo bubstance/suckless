@@ -36,6 +36,8 @@ Patches
 
   * killunsel
 
+  * movekeyboard
+
   * pertag
 
   * preserveonrestart
