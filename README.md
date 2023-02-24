@@ -24,6 +24,8 @@ Patches
 
   * awesomebar
 
+  * barpadding
+
   * centeredwindowname
 
   * dragcfact (smooth) + dragmfact (smooth)
@@ -70,6 +72,8 @@ Patches
 
   * barheight
 
+  * barpadding
+
   * borderoption
 
   * center
@@ -83,6 +87,8 @@ Patches
   * password
 
   * promptcolor
+
+  * unicodeellipsis
 
 * st
 
