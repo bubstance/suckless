@@ -82,6 +82,23 @@ static Sp scratchpads[] = {
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
+static const char *tagsel[][2] = {
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+	{ "#e0def4", "#26233a" },
+};
+
+static const unsigned int ulinepad	    = 5;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 2;	/* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
+static const int ulineall 		        = 0;	/* 1 to show underline on all tags, 0 for just the active ones */
+
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -194,6 +211,8 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_Home,                    spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_End,                     setlayout,      {0} },
 	/* { MODKEY|ShiftMask,             XK_End,                     spawn,          {.v = }  }, */
+	{ MODKEY,                       XK_Insert,                  spawn,          SHCMD("dmenumount") },
+	{ MODKEY|ShiftMask,             XK_Insert,                  spawn,          SHCMD("dmenuumount") },
 
 	{ 0,                            XK_Print,                   spawn,          SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ShiftMask,                    XK_Print,                   spawn,          {.v = (const char*[]){ "maimpick", NULL } } },
@@ -248,7 +267,7 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_bracketright,            spawn,          {.v = } }, */
 
 	/* { MODKEY,                       XK_backslash,               spawn,          SHCMD("") }, */
-	/* { MODKEY|ShiftMask,             XK_backslash,               spawn,          SHCMD("") }, */
+	{ MODKEY|ControlMask,           XK_backslash,               spawn,          SHCMD("killall screenkey || screenkey &") },
 
 
 	/* { MODKEY,                       XK_a,                       spawn,          {.v = } }, */

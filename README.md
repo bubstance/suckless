@@ -48,6 +48,8 @@ Patches
 
   * quitprompt
 
+  * rainbowtags
+
   * resizepoint
 
   * riodraw
@@ -63,6 +65,8 @@ Patches
   * sticky + stickyindicator
 
   * swallow
+
+  * underlinetags
 
   * unicodeellipsis
 
