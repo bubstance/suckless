@@ -73,7 +73,7 @@
 
 /* enums */
 enum { CurResizeBR, CurResizeBL, CurResizeTR, CurResizeTL, CurNormal, CurMove, CurResizeHorzArrow, CurResizeVertArrow, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel, SchemeHid }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeHid, SchemeBright }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMIcon, NetWMState, NetWMCheck,
        NetWMFullscreen, NetWMSticky, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetClientInfo, NetLast }; /* EWMH atoms */
@@ -1330,7 +1330,7 @@ drawbar(Monitor *m)
 	}
 	x = 0;
 	w = TEXTW(buttonbar);
-	drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_setscheme(drw, scheme[SchemeBright]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, buttonbar, 0);
 	for (i = 0; i < LENGTH(tags); i++) {
 		/* Do not draw vacant tags */
@@ -1362,7 +1362,7 @@ drawbar(Monitor *m)
 				else if (HIDDEN(c))
 					scm = SchemeHid;
 				else
-					scm = SchemeNorm;
+					scm = SchemeBright;
 				drw_setscheme(drw, scheme[scm]);
 
 				if (remainder >= 0) {

@@ -51,9 +51,10 @@ static const unsigned int maxHTab 			= 200;	/* tab menu height */
 
 static const char *colors[][3]      = {
     /*                     fg       bg      border */
-    [SchemeNorm]       = { white,   gray1,  black },
+    [SchemeNorm]       = { gray4,   gray1,  black },
     [SchemeSel]        = { white,   black,  black },
     [SchemeHid]        = { gray3,   gray1,  black },
+    [SchemeBright]     = { white,   gray1,  black },
 };
 
 static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
