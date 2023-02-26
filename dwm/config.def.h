@@ -21,8 +21,11 @@ static const int vertpad            = 5;        /* vertical padding of bar itsel
 static const int sidepad            = 5;       /* horizontal padding of bar itself*/
 static const int vertpadbar         = 10;       /* vertical padding for statusbar elements */
 static const int horizpadbar        = 2;        /* horizontal padding for statusbar elements */
+/* static const char buttonbar[]       = ""; */
+/* static const char buttonbar[]       = ""; */
+/* static const char buttonbar[]       = ""; */
+static const char buttonbar[]       = "";
 /* static const char buttonbar[]       = ""; */
-static const char buttonbar[]       = "";
 static const int focusonwheel       = 0;
 
 static const char slopspawnstyle[]  = "-t 0 -c 0.92,0.85,0.69,0.3 -o"; /* do NOT define -f (format) here */
