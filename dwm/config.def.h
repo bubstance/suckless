@@ -18,7 +18,7 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 5;        /* vertical padding of bar itself */
-static const int sidepad            = 5;       /* horizontal padding of bar itself*/
+static const int sidepad            = 5;        /* horizontal padding of bar itself*/
 static const int vertpadbar         = 10;       /* vertical padding for statusbar elements */
 static const int horizpadbar        = 2;        /* horizontal padding for statusbar elements */
 /* static const char buttonbar[]       = ""; */
@@ -35,8 +35,8 @@ static const int riodraw_matchpid   = 1;        /* 0 or 1, indicates whether to 
 static const int riodraw_spawnasync = 0;        /* 0 means that the application is only spawned after a successful selection while
                                                  * 1 means that the application is being initialised in the background while the selection is made */
 
-#define ICONSIZE (bh - 8) /* adaptively preserve 2 pixels each side */
-#define ICONSPACING 5 /* space (pixels) between icon and title */
+#define ICONSIZE (bh - 8) /* adaptively preserve 4 pixels each side */
+#define ICONSPACING 5     /* space (pixels) between icon and title */
 static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=16:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=16:antialias=true:autohint=true";
 
@@ -54,9 +54,9 @@ static const unsigned int maxHTab 			= 200;	/* tab menu height */
 
 static const char *colors[][3]      = {
     /*                     fg       bg      border */
-    [SchemeNorm]       = { gray4,   gray1,  black },
+    [SchemeNorm]       = { gray3,   gray1,  black },
     [SchemeSel]        = { white,   black,  black },
-    [SchemeHid]        = { gray3,   gray1,  black },
+    [SchemeHid]        = { gray2,   gray1,  black },
     [SchemeBright]     = { white,   gray1,  black },
 };
 
@@ -87,15 +87,16 @@ static Sp scratchpads[] = {
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const char *tagsel[][2] = {
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
-	{ "#e0def4", "#26233a" },
+	/* fg     bg   */
+	{ white, gray1 }, /* tag 1 */
+	{ white, gray1 }, /* tag 2 */
+	{ white, gray1 }, /* tag 3 */
+	{ white, gray1 }, /* tag 4 */
+	{ white, gray1 }, /* tag 5 */
+	{ white, gray1 }, /* tag 6 */
+	{ white, gray1 }, /* tag 7 */
+	{ white, gray1 }, /* tag 8 */
+	{ white, gray1 }, /* tag 9 */
 };
 
 static const unsigned int ulinepad	    = 5;	/* horizontal padding between the underline and tag */
