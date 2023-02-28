@@ -3,3 +3,12 @@
 *.orig
 *.rej
 config.h
+
+dmenu/dmenu
+dwm/dwm
+dwmstatus/dwmstatus
+pinentry-dmenu/pinentry-dmenu
+sent/sent
+slock/slock
+st/st
+tabbed/tabbed
