@@ -139,7 +139,7 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-session'
   " for looks
-    Plug 'iandwelker/rose-pine-vim'
+	Plug 'rose-pine/neovim'
 call plug#end()
 
 " --{ colors and themes}--
@@ -150,7 +150,7 @@ call plug#end()
 
 " colorscheme and theme
     set background=dark
-    colorscheme rose-pine-dark
+    colorscheme rose-pine
 
 " fixes sign column colors if using gitgutter
     highlight! link SignColumn LineNr
