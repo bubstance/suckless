@@ -4,11 +4,11 @@ xmenu <<EOF | sh &
 applications
 	accessories
 		IMG:$HOME/.config/xmenu/icons/calc.png		calculator	xcalc
-		IMG:$HOME/.config/xmenu/icons/emacs.png		emacs		emacs
 		IMG:$HOME/.config/xmenu/icons/helix.png		helix		st -e hx
 		IMG:$HOME/.config/xmenu/icons/htop.png		htop		st -e htop
 		IMG:$HOME/.config/xmenu/icons/ranger.png	lf		st -e lfub
 		IMG:$HOME/.config/xmenu/icons/nvim.png		neovim		st -e nvim
+		IMG:$HOME/.config/xmenu/icons/system-file-manager.png	pcmanfm		pcmanfm
 	audio + video
 		IMG:$HOME/.config/xmenu/icons/ncmpcpp.png	ncmpcpp		st -e ncmpcpp
 		IMG:$HOME/.config/xmenu/icons/mediainfo.xpm	mediainfo		mediainfo-gui
