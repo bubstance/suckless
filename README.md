@@ -24,6 +24,8 @@ Patches
 
   * alttab
 
+  * alwayscenter
+
   * awesomebar
 
   * barpadding
@@ -40,6 +42,8 @@ Patches
 
   * killunsel
 
+  * layoutmenu
+
   * movekeyboard
 
   * pertag
@@ -53,6 +57,8 @@ Patches
   * resizepoint
 
   * riodraw
+
+  * savefloats
 
   * scratchpads
 
@@ -73,6 +79,8 @@ Patches
   * vanitygaps
 
   * winicon
+
+  * zerodepthsafeguard
 
 * dmenu
 
@@ -133,8 +141,3 @@ Patches
     * moveclamped
 
     * xft
-
-Possible additions
-==================
-
-* keychords?
