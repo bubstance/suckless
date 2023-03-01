@@ -238,6 +238,7 @@ call plug#end()
     command! MakeTags !ctags -R .
 
 " ---{ custom status line (if not using lightline.vim) }---
+" -----{ note: git branch works while *in* directory }-----
     " git branch in statusline
     function! GitBranch()
         return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
@@ -250,6 +251,8 @@ call plug#end()
 
     set laststatus=2
     set statusline=
+    set statusline+=\ %*
+    set statusline+=%{StatuslineGit()}
     set statusline+=%#LineNr#
     " set statusline+=\ %f
     set statusline+=%m
@@ -259,8 +262,6 @@ call plug#end()
     " set statusline+=\ \[%{strlen(&fenc)?&fenc:'none'}
     " set statusline+=\|%{&ff}\]
     set statusline+=\ \[\ %l:%c\ \|\ %P\ \]
-    set statusline+=\ %*
-    set statusline+=%{StatuslineGit()}
 
 " ---{ mappings }---
 " buffers
