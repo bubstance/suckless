@@ -141,7 +141,7 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
     Plug 'xolox/vim-session'
   " for looks
 	Plug 'itchyny/lightline.vim'
-    Plug 'rose-pine/neovim'
+    Plug 'rose-pine/neovim', { 'as': 'rose-pine' }
 call plug#end()
 
 " --{ colors and themes}--
@@ -208,8 +208,6 @@ call plug#end()
     "     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
     " let NERDTreeMinimalUI=1
     " let NERDTreeShowHidden=1
-    " let g:NERDTreeDirArrowExpandable = '+'
-    " let g:NERDTreeDirArrowCollapsable = '~'
 
 " vim-session settings
     let g:session_autosave='no'
@@ -222,9 +220,9 @@ call plug#end()
     " set sessionoptions-=buffers
 
 " vim-floaterm bindings
-    let g:floaterm_keymap_new    = '<F7>'
-    let g:floaterm_keymap_prev   = '<F8>'
-    let g:floaterm_keymap_next   = '<F9>'
+    let g:floaterm_keymap_new    = '<F9>'
+    let g:floaterm_keymap_prev   = '<F10>'
+    let g:floaterm_keymap_next   = '<F11>'
     let g:floaterm_keymap_toggle = '<F12>'
 
 " remap default lf.vim binding

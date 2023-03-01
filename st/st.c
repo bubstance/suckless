@@ -1421,7 +1421,7 @@ tdefcolor(const int *attr, int *npar, int l)
 	case 4: /* direct color in CMYK space */
 	default:
 		fprintf(stderr,
-		        "erresc(38): gfx attr %d unknown\n", attr[*npar]);
+		    "erresc(38): gfx attr %d unknown\n", attr[*npar]);
 		break;
 	}
 
@@ -1520,10 +1520,11 @@ tsetattr(const int *attr, int l)
 			} else if (BETWEEN(attr[i], 100, 107)) {
 				term.c.attr.bg = attr[i] - 100 + 8;
 			} else {
-				fprintf(stderr,
-					"erresc(default): gfx attr %d unknown\n",
-					attr[i]);
-				csidump();
+				/* fprintf(stderr, */
+					/* "erresc(default): gfx attr %d unknown\n", */
+					/* attr[i]); */
+				/* csidump(); */
+					break;
 			}
 			break;
 		}
