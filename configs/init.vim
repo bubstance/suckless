@@ -21,7 +21,7 @@ syntax on
 set backspace=indent,eol,start
 set cindent
 set clipboard^=unnamed,unnamedplus
-set colorcolumn=80
+" set colorcolumn=80
 set cursorline
 set cursorcolumn
 set encoding=utf-8
@@ -140,6 +140,7 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-session'
   " for looks
+	Plug 'itchyny/lightline.vim'
     Plug 'rose-pine/neovim'
 call plug#end()
 
@@ -152,6 +153,23 @@ call plug#end()
 " colorscheme and theme
     set background=dark
     colorscheme rose-pine
+
+" lightline.vim
+    set noshowmode
+    let g:lightline = {
+      \ 'colorscheme': 'rosepine',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ 'tabline': {
+      \   'left': [ [ 'tabs' ] ],
+      \   'right': [ ]
+      \ },
+      \ }
 
 " fixes sign column colors if using gitgutter
     highlight! link SignColumn LineNr
@@ -219,7 +237,7 @@ call plug#end()
 " ctags integration
     command! MakeTags !ctags -R .
 
-" custom statusline
+" ---{ custom status line (if not using lightline.vim) }---
     " git branch in statusline
     function! GitBranch()
         return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
@@ -230,7 +248,6 @@ call plug#end()
         return strlen(l:branchname) > 0?' '.l:branchname.' ':''
     endfunction
 
-" ---{ custom status line }---
     set laststatus=2
     set statusline=
     set statusline+=%#LineNr#
@@ -272,6 +289,8 @@ call plug#end()
     noremap <Leader>8 8gt
     noremap <Leader>9 9gt
     noremap <Leader>0 :tablast<CR>
+    noremap <Leader>[ :tabprevious<CR>
+    noremap <Leader>] :tabnext<CR>
 
 " insert mode navigation
     inoremap <C-j> <Esc>A
