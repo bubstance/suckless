@@ -8,5 +8,5 @@ Categories=System;TerminalEmulator;
 
 Name=st
 GenericName=Terminal
-Comment=the simple terminal
+Comment=a simple terminal
 StartupWMClass=st-256color

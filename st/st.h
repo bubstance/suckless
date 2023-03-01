@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <sys/types.h>
+
 #include <gd.h>
 
 /* macros */
@@ -38,12 +39,6 @@ enum glyph_attribute {
 	ATTR_BOXDRAW    = 1 << 11,
 	ATTR_LIGA       = 1 << 12,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
-};
-
-enum drawing_mode {
-	DRAW_NONE = 0,
-	DRAW_BG = 1 << 0,
-	DRAW_FG = 1 << 1,
 };
 
 enum selection_mode {

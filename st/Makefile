@@ -56,15 +56,15 @@ install: st
 	tic -sx st.info
 	@echo Please see the README file regarding the terminfo entry of st.
 	mkdir -p $(DESTDIR)$(APPPREFIX)
-	mkdir -p $(DESTDIR)$(ICONPREFIX)
 	cp -f st.desktop $(DESTDIR)$(APPPREFIX)
+	mkdir -p $(DESTDIR)$(ICONPREFIX)
 	[ -f $(ICONNAME) ] && cp -f $(ICONNAME) $(DESTDIR)$(ICONPREFIX) || :
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/st
-	rm -f $(DESTDIR)$(APPPREFIX)/st.desktop
 	rm -f $(DESTDIR)$(PREFIX)/bin/st-copyout
 	rm -f $(DESTDIR)$(PREFIX)/bin/st-urlhandler
+	rm -f $(DESTDIR)$(APPPREFIX)/st.desktop
 	rm -f $(DESTDIR)$(MANPREFIX)/man1/st.1
 	rm -f $(DESTDIR)$(ICONPREFIX)/$(ICONNAME)
 

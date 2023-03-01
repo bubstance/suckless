@@ -1866,33 +1866,6 @@ csihandle(void)
 			goto unknown;
 		}
 		break;
-	case 't': /* title stack operations */
-		switch (csiescseq.arg[0]) {
-		case 22: /* pust current title on stack */
-			switch (csiescseq.arg[1]) {
-			case 0:
-			case 1:
-			case 2:
-				xpushtitle();
-				break;
-			default:
-				goto unknown;
-			}
-			break;
-		case 23: /* pop last title from stack */
-			switch (csiescseq.arg[1]) {
-			case 0:
-			case 1:
-			case 2:
-				xsettitle(NULL, 1);
-				break;
-			default:
-				goto unknown;
-			}
-			break;
-		default:
-			goto unknown;
-		}
 	case 'r': /* DECSTBM -- Set Scrolling Region */
 		if (csiescseq.priv) {
 			goto unknown;
@@ -1997,7 +1970,7 @@ strhandle(void)
 		switch (par) {
 		case 0:
 			if (narg > 1) {
-				xsettitle(strescseq.args[1], 0);
+				xsettitle(strescseq.args[1]);
 				xseticontitle(strescseq.args[1]);
 			}
 			return;
@@ -2007,7 +1980,7 @@ strhandle(void)
 			return;
 		case 2:
 			if (narg > 1)
-				xsettitle(strescseq.args[1], 0);
+				xsettitle(strescseq.args[1]);
 			return;
 		case 52:
 			if (narg > 2 && allowwindowops) {
@@ -2066,7 +2039,7 @@ strhandle(void)
 		}
 		break;
 	case 'k': /* old title set compatibility */
-		xsettitle(strescseq.args[0], 0);
+		xsettitle(strescseq.args[0]);
 		return;
 	case 'P': /* DCS -- Device Control String */
 	case '_': /* APC -- Application Program Command */
@@ -2493,7 +2466,6 @@ eschandle(uchar ascii)
 		break;
 	case 'c': /* RIS -- Reset to initial state */
 		treset();
-		xfreetitlestack();
 		resettitle();
 		xloadcols();
 		break;
@@ -2652,8 +2624,8 @@ check_control_code:
 		gp->mode |= ATTR_WIDE;
 		if (term.c.x+1 < term.col) {
 			if (gp[1].mode == ATTR_WIDE && term.c.x+2 < term.col) {
-					gp[2].u = ' ';
-					gp[2].mode &= ~ATTR_WDUMMY;
+				gp[2].u = ' ';
+				gp[2].mode &= ~ATTR_WDUMMY;
 			}
 			gp[1].u = '\0';
 			gp[1].mode = ATTR_WDUMMY;
@@ -2799,7 +2771,7 @@ tresize(int col, int row)
 void
 resettitle(void)
 {
-	xsettitle(NULL, 0);
+	xsettitle(NULL);
 }
 
 void

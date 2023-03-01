@@ -5,8 +5,8 @@ VERSION = 0.9
 
 # paths
 PREFIX = /usr/local
-MANPREFIX = $(PREFIX)/share/man
 APPPREFIX = $(PREFIX)/share/applications
+MANPREFIX = $(PREFIX)/share/man
 ICONPREFIX = $(PREFIX)/share/pixmaps
 ICONNAME = st.png
 
@@ -20,7 +20,7 @@ INCS = -I$(X11INC) \
        `$(PKG_CONFIG) --cflags fontconfig` \
        `$(PKG_CONFIG) --cflags freetype2` \
        `$(PKG_CONFIG) --cflags harfbuzz`
-LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender -lgd \
+LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender -lgd\
        `$(PKG_CONFIG) --libs fontconfig` \
        `$(PKG_CONFIG) --libs freetype2` \
        `$(PKG_CONFIG) --libs harfbuzz`
