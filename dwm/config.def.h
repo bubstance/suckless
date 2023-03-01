@@ -255,7 +255,8 @@ static const Key keys[] = {
 
 	{ MODKEY,                       XK_q,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
-	{ MODKEY,                       XK_w,                       spawn,          {.v = (const char*[]){ BROWSER, NULL } } },
+	/* { MODKEY,                       XK_w,                       spawn,          {.v = (const char*[]){ BROWSER, NULL } } }, */
+	{ MODKEY,                       XK_w,                       spawn,          SHCMD("librewolf > /dev/null 2>&1") },
 	{ MODKEY|ControlMask,           XK_w,                       incrohgaps,     {.i = -1 } },
 	{ MODKEY|Mod1Mask,              XK_w,                       incrihgaps,     {.i = -1 } },
 	{ MODKEY|ControlMask|ShiftMask, XK_w,                       incrogaps,      {.i = -1 } },
@@ -347,12 +348,12 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("amixer -q sset Master toggle") },
 	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer -q sset Master 5%-") },
 	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          SHCMD("amixer -q sset Master 5%+") },
-	{ 0,                            XF86XK_AudioPrev,           spawn,          {.v = (const char*[]){ "mpc", "prev", NULL } } },
-	{ ShiftMask,                    XF86XK_AudioPrev,           spawn,          {.v = (const char*[]){ "mpc", "seek", "-10", NULL } } },
-	{ 0,                            XF86XK_AudioPlay,           spawn,          {.v = (const char*[]){ "mpc", "toggle", NULL } } },
-	{ ShiftMask,                    XF86XK_AudioPlay,           spawn,          {.v = (const char*[]){ "mpc", "stop", NULL } } },
-	{ 0,                            XF86XK_AudioNext,           spawn,          {.v = (const char*[]){ "mpc",  "next", NULL } } },
-	{ ShiftMask,                    XF86XK_AudioNext,           spawn,          {.v = (const char*[]){ "mpc", "seek", "+10", NULL } } },
+	{ 0,                            XF86XK_AudioPrev,           spawn,          SHCMD("mpc prev > /dev/null 2>&1") },
+	{ ShiftMask,                    XF86XK_AudioPrev,           spawn,          SHCMD("mpc seek -10 > /dev/null 2>&1") },
+	{ 0,                            XF86XK_AudioPlay,           spawn,          SHCMD("mpc toggle > /dev/null 2>&1") },
+	{ ShiftMask,                    XF86XK_AudioPlay,           spawn,          SHCMD("mpc stop > /dev/null 2>&1") },
+	{ 0,                            XF86XK_AudioNext,           spawn,          SHCMD("mpc next > /dev/null 2>&1") },
+	{ ShiftMask,                    XF86XK_AudioNext,           spawn,          SHCMD("mpc seek +10 > /dev/null 2>&1") },
 
 	{ 0,                            XF86XK_MonBrightnessDown,   spawn,          {.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
 	{ 0,                            XF86XK_MonBrightnessUp,     spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
