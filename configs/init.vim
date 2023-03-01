@@ -23,6 +23,7 @@ set backspace=indent,eol,start
 set cindent
 set clipboard^=unnamed,unnamedplus
 set cursorline
+set cursorcolumn
 set encoding=utf-8
 " set expandtab
 set go=a
