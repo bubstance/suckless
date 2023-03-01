@@ -17,7 +17,7 @@ applications
 		IMG:$HOME/.config/xmenu/icons/gimp.png		gimp		gimp
 		IMG:$HOME/.config/xmenu/icons/scrot.png		screenshooter		maimpick
 	internet
-		IMG:$HOME/.config/xmenu/icons/librewolf.png	librewolf	librewolf
+		IMG:$HOME/.config/xmenu/icons/librewolf.png	librewolf	librewolf > /dev/null 2>&1
 		IMG:$HOME/.config/xmenu/icons/links.png		links		st -e links
 		IMG:$HOME/.config/xmenu/icons/web.png		lynx		st -e lynx
 		IMG:$HOME/.config/xmenu/icons/netsurf.xpm		netsurf		netsurf-gtk3
