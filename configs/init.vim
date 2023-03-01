@@ -19,9 +19,9 @@ nnoremap c "_c
 syntax on
 
 set backspace=indent,eol,start
-" set cc=60,80,100
 set cindent
 set clipboard^=unnamed,unnamedplus
+set colorcolumn=80
 set cursorline
 set cursorcolumn
 set encoding=utf-8
@@ -124,7 +124,7 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
     " Plug 'junegunn/limelight.vim'
     Plug 'kshenoy/vim-signature'
     " Plug 'preservim/nerdtree'
-	Plug 'ptzz/lf.vim'
+    Plug 'ptzz/lf.vim'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-sensible'
@@ -136,11 +136,11 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
     Plug 'vim-pandoc/vim-pandoc-syntax'
     Plug 'vim-scripts/restore_view.vim'
     Plug 'vimwiki/vimwiki'
-	Plug 'voldikss/vim-floaterm'
+    Plug 'voldikss/vim-floaterm'
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-session'
   " for looks
-	Plug 'rose-pine/neovim'
+    Plug 'rose-pine/neovim'
 call plug#end()
 
 " --{ colors and themes}--
@@ -204,14 +204,14 @@ call plug#end()
     " set sessionoptions-=buffers
 
 " vim-floaterm bindings
-	let g:floaterm_keymap_new    = '<F7>'
-	let g:floaterm_keymap_prev   = '<F8>'
-	let g:floaterm_keymap_next   = '<F9>'
-	let g:floaterm_keymap_toggle = '<F12>'
+    let g:floaterm_keymap_new    = '<F7>'
+    let g:floaterm_keymap_prev   = '<F8>'
+    let g:floaterm_keymap_next   = '<F9>'
+    let g:floaterm_keymap_toggle = '<F12>'
 
 " remap default lf.vim binding
-	let g:lf_map_keys = 0
-	map <Leader>r :Lf<CR>
+    let g:lf_map_keys = 0
+    map <Leader>r :Lf<CR>
 
 
 
