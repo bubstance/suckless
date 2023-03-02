@@ -163,13 +163,21 @@ call plug#end()
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype' ] ]
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
+      \   'gitbranch': 'FugitiveHead',
+      \   'readonly': 'LightlineReadonly',
+      \ },
+	  \ 'tab_component_function': {
+      \   'tabnum': ''
       \ },
       \ 'tabline': {
       \   'left': [ [ 'tabs' ] ],
       \   'right': [ ]
       \ },
       \ }
+
+    function! LightlineReadonly()
+      return &readonly && &filetype !=# 'help' ? 'RO' : ''
+    endfunction
 
 " fixes sign column colors if using gitgutter
     highlight! link SignColumn LineNr
