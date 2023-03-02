@@ -4,7 +4,6 @@ xmenu <<EOF | sh &
 applications
 	accessories
 		IMG:$HOME/.config/xmenu/icons/calc.png		calculator	xcalc
-		IMG:$HOME/.config/xmenu/icons/helix.png		helix		st -e hx
 		IMG:$HOME/.config/xmenu/icons/htop.png		htop		st -e htop
 		IMG:$HOME/.config/xmenu/icons/ranger.png	lf		st -e lfub
 		IMG:$HOME/.config/xmenu/icons/nvim.png		neovim		st -e nvim
