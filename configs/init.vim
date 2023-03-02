@@ -44,7 +44,6 @@ set sidescrolloff=4
 set signcolumn=yes
 set smartcase
 set smartindent
-set spelllang=en_us
 set splitbelow splitright
 set tabstop=4
 set title
@@ -116,6 +115,7 @@ set wildmode=list,full
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
   " for function
     Plug 'airblade/vim-gitgutter'
+    Plug 'folke/which-key.nvim'
     Plug 'gentoo/gentoo-syntax'
     Plug 'jiangmiao/auto-pairs'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -140,7 +140,7 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-session'
   " for looks
-	Plug 'itchyny/lightline.vim'
+    Plug 'itchyny/lightline.vim'
     Plug 'rose-pine/neovim', { 'as': 'rose-pine' }
 call plug#end()
 
@@ -311,6 +311,10 @@ call plug#end()
     nnoremap <C-d> <C-d>zz
     nnoremap <C-u> <C-u>zz
 
+" spell checking
+    map <Leader>o :setlocal spell! spelllang=en_us<CR>
+    map <Leader>O ]sz=
+
 " window movements
     map <Leader>= <C-w>=
     map <Leader>- <C-w>s
@@ -324,3 +328,12 @@ call plug#end()
     map <C-Down> <C-w>j
     map <C-Up> <C-w>k
     map <C-Right> <C-w>l
+
+" which-key
+lua << EOF
+  require("which-key").setup {
+    icons = {
+      separator = "➜ ", -- symbol used between a key and it's label
+    }
+}
+EOF
