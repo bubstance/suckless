@@ -7,7 +7,7 @@ applications
 		IMG:$HOME/.config/xmenu/icons/htop.png		htop		st -e htop
 		IMG:$HOME/.config/xmenu/icons/ranger.png	lf		st -e lfub
 		IMG:$HOME/.config/xmenu/icons/nvim.png		neovim		st -e nvim
-		IMG:$HOME/.config/xmenu/icons/system-file-manager.png	pcmanfm		pcmanfm
+		IMG:$HOME/.config/xmenu/icons/system-file-manager.png	pcmanfm		pcmanfm > /dev/null 2>&1
 	audio + video
 		IMG:$HOME/.config/xmenu/icons/ncmpcpp.png	ncmpcpp		st -e ncmpcpp
 		IMG:$HOME/.config/xmenu/icons/mediainfo.xpm	mediainfo		mediainfo-gui
@@ -16,9 +16,8 @@ applications
 		IMG:$HOME/.config/xmenu/icons/gimp.png		gimp		gimp
 		IMG:$HOME/.config/xmenu/icons/scrot.png		screenshooter		maimpick
 	internet
-		IMG:$HOME/.config/xmenu/icons/discord.png		discord		surf discord.com >/dev/null 2>&1
-		IMG:$HOME/.config/xmenu/icons/firefox.png	firefox	firefox > /dev/null 2>&1
-		IMG:$HOME/.config/xmenu/icons/thunderbird.png	thunderbird	thunderbird > /dev/null 2>&1
+		IMG:$HOME/.config/xmenu/icons/librewolf.png	librewolf	librewolf > /dev/null 2>&1
+		IMG:$HOME/.config/xmenu/icons/thunderbird.png	thunderbird	thunderbird-bin > /dev/null 2>&1
 		IMG:$HOME/.config/xmenu/icons/web.png		w3m		st -e w3m duckduckgo.com
 	office
 		IMG:$HOME/.config/xmenu/icons/libreoffice.png	LibreOffice	libreoffice
@@ -30,8 +29,14 @@ applications
 		IMG:$HOME/.config/xmenu/icons/libreoffice-writer.png	LibreOffice Writer	libreoffice --writer
 		IMG:$HOME/.config/xmenu/icons/sc-im.png	sc-im	st -e sc-im
 		IMG:$HOME/.config/xmenu/icons/zathura.svg	zathura	zathura
+	plan9 tools
+		IMG:$HOME/.config/xmenu/icons/9.png		9term 	9 9term rc
+		IMG:$HOME/.config/xmenu/icons/9.png		acme	acme
+		IMG:$HOME/.config/xmenu/icons/9.png		ivy 	9 9term ivy -prompt "%> "
+		IMG:$HOME/.config/xmenu/icons/9.png		sam 	sam
 open terminal...
 	IMG:$HOME/.config/xmenu/icons/st.png		st 	st
+	IMG:$HOME/.config/xmenu/icons/st.png		st (multiplexed) 	st -e tmux
 	IMG:$HOME/.config/xmenu/icons/st.png		st (tabbed) 	tabterm
 settings
 	volume mixer		st -e alsamixer

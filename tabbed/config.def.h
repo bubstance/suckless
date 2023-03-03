@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const char font[]        = "Terminus:pixelsize=14:antialias=true:autohint=true";
+static const char font[]        = "Terminus:pixelsize=16:antialias=true:autohint=true";
 static const char* normbgcolor  = "#26233a";
 static const char* normfgcolor  = "#e0def4";
 static const char* selbgcolor   = "#191724";
@@ -57,10 +57,10 @@ static const Key keys[] = {
 	{ MODKEY,               XK_9,      move,        { .i = 8 } },
 	{ MODKEY,               XK_0,      move,        { .i = 9 } },
 
-	{ MODKEY,               XK_q,      killclient,  { 0 } },
+	{ MODKEY|Mod1Mask,      XK_q,      killclient,  { 0 } },
 
 	{ MODKEY,               XK_minus,  focusurgent, { 0 } },
-	{ MODKEY|Mod1Mask,     XK_minus,  toggle,      { .v = (void*) &urgentswitch } },
+	{ MODKEY|Mod1Mask,      XK_minus,  toggle,      { .v = (void*) &urgentswitch } },
 
 	{ 0,                    XK_F11,    fullscreen,  { 0 } },
 };
