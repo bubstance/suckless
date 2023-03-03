@@ -220,7 +220,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Insert,                  spawn,          SHCMD("dmenumount") },
 	{ MODKEY|ShiftMask,             XK_Insert,                  spawn,          SHCMD("dmenuumount") },
 
-	{ 0,                            XK_Print,                   spawn,          SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
+	{ 0,                            XK_Print,                   spawn,          {.v = (const char*[]){ "shootit", NULL } } },
 	{ ShiftMask,                    XK_Print,                   spawn,          {.v = (const char*[]){ "maimpick", NULL } } },
 
 	/* { MODKEY,                       XK_Insert,                  spawn,          SHCMD("") }, */

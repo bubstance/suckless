@@ -1,0 +1,2 @@
+#!/bin/sh
+sleep 0.1; scrot $HOME/Pictures/Screenshots/%d-%m-%Y-%H:%M:%S.png; notify-send "Screenshot Taken"

@@ -43,5 +43,6 @@ settings
 	compositor settings	st -e nvim $HOME/.config/picom/picom.conf
 kill window...		xkill
 
-set wallpaper		wallpick
+set wallpaper...		wallpick
+take screenshot...	shootit
 EOF
