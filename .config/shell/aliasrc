@@ -1,0 +1,212 @@
+#!/bin/sh
+
+## ANSI color escapes
+GRA=$'\e[1;30m' # gray
+RED=$'\e[1;31m' # red
+GRN=$'\e[1;32m' # green
+YEL=$'\e[1;33m' # yellow
+BLU=$'\e[1;34m' # blue
+MAG=$'\e[1;35m' # magenta
+CYA=$'\e[1;36m' # cyan
+WHI=$'\e[1;37m' # white
+
+## ANSI text decorations
+B=$'\e[1m' # bold
+U=$'\e[4m' # underline
+F=$'\e[5m' # flashing/blinking
+
+NL=$'\n' # new line
+
+## reset all text colors and decorations
+RC=$'\e[0m'
+
+## Use neovim for vim if present.
+[ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
+
+## Use $XINITRC variable if file exists.
+[ -f "$XINITRC" ] && alias startx="startx $XINITRC"
+
+## doas/sudo not required for some system commands
+for command in blkid emerge eselect genlop mandb mount poweroff rc-service rc-update reboot shutdown su umount updatedb; do
+    alias $command="doas $command"
+    # alias $command="sudo $command"
+done; unset command
+
+alias sudoedit="doas rnano"
+
+se() { cd ~/.local/scripts; $EDITOR $(fzf) ;}
+
+## quickly elevate last command (same as `doas !!` or `sudo !!`)
+bruh() { doas $(fc -ln -1); }
+cmon() { doas $(fc -ln -1); }
+doit() { doas $(fc -ln -1); }
+dude() { doas $(fc -ln -1); }
+ffs() { doas $(fc -ln -1); }
+pls() { doas $(fc -ln -1); }
+
+
+
+## some nice portage aliases and functions
+alias \
+    depclean="emerge -ac" \
+    discon="doas dispatch-conf" \
+    distclean="doas eclean-dist --deep; updatedb" \
+    genping="ping -c 5 gentoo.org" \
+    pkgclean="doas eclean-pkg --deep; updatedb"
+
+## list all installed packages w/ versions and which repo is used
+alias qlist="qlist -IRv"
+
+## list all programs known to portage that include the keyword
+# i.e. "how vim" to list everything that references "vim"
+how() { emerge --search "$@"; equery l -p *"$@"*; eix "$@"; e-file "$@"; }
+
+## list all packages in the @world set and all available versions (w/ color!)
+world() { eix --color -c --world | less -R; }
+
+## rebuild after installing new kernels (rebuild modules)
+rebuild-mod() { emerge @module-rebuild; }
+
+## rebuild Go after upgrading to a new version
+rebuild-go() { emerge @golang-rebuild; }
+
+## rebuild when using new libraries
+rebuild-lib() { emerge @preserved-rebuild; }
+
+einstall() { emerge -av "$@"; updatedb; }
+eremove() { emerge -avW "$@"; emerge -ac; updatedb; }
+
+1shot() { emerge -av1 "$@"; updatedb; }
+plsinstall() { emerge --ask --autounmask=y --autounmask-write "$@"; }
+
+alias \
+    gimme="einstall" \
+    yeet="eremove"
+
+## update *everything*
+# 1. sync portage (via git and run eix post-sync hook, if configured)
+# 2. update all packages in the @world set along with their build dependencies
+# 3. run `depclean` to remove orphans
+# 4. update mlocate database and cache
+update() { emerge --sync; emerge -quDN --complete-graph=y --with-bdeps=y @world; emerge -ac; updatedb; }
+
+## AVOID USING UNLESS YOU KNOW WHAT YOU'RE DOING
+unmerge() { emerge -aC "$@"; emerge -ac; updatedb; }
+
+## fuck yo shit the fuck up, dawg
+# forkit() {
+#   forkit | forkit &
+#   }
+
+## burn this motherfucker to the ground
+# **DO NOT USE THIS UNLESS YOU WANT TO COMPLETELY DESTROY YOUR INSTALLATION
+# **SERIOUSLY, THIS WILL PERMANENTLY DESTROY EVERYTHING ON YOUR PARTITIONS
+# burnitalldown() { clear; printf "${RED}${U}${B}${F}UH-OH\n\nYOU DONE FUCKIN' GOOFED NOW, BOY${RC}\n\n( ${MAG}*${RC}x_x)"; doas rm -rf /* --no-preserve-root > /dev/null 2>&1; }
+
+## watch the latest merging ebuild during upgrades
+alias ewatch="doas watch genlop -unc"
+
+
+
+## colors everywhere
+alias \
+    diff="diff --color=auto" \
+    grep="grep --color=auto" \
+    ip="ip -color=auto" \
+    ls="exa --group-directories-first" \
+    la="exa -a --group-directories-first" \
+    ll="exa -lah --group-directories-first" \
+    lt="exa -lahT --group-directories-first"
+
+## commands swaps
+alias \
+    cat="bat" \
+    lf="lfub" \
+    top="glances" \
+    where="locate"
+
+## git abbreviations
+alias \
+    g="git" \
+    ga="git add" \
+    gc="git commit" \
+    gcs="git commit -S" \
+    gp="git push"
+
+## git dotfiles alias
+# requires cloning remote dotfiles repo as a bare repository;
+# ex: git clone --bare git@github.com:<your_user_here>/<repo_name>.git ~/.dot
+# usage: use `dot` instead of `git` to keep home directory files under VC;
+#        git will automagically make paths and keep everything tidy
+#
+# ex: dot remote add origin git@github.com:<your_user_here>/<repo_name>.git ~/.dot
+#     dot add .local/scripts/example.sh
+#     dot commit -m "adding new script"
+#     dot push --set-upstream origin master
+alias dot="/usr/bin/git --git-dir=$HOME/.dot/ --work-tree=$HOME"
+
+## things you'll always want (brevity + general settings)
+## make the following interactive
+alias \
+    cp="cp -iv" \
+    mv="mv -iv" \
+    rm="rm -iv"
+
+alias \
+    bc="bc -ql" \
+    c="clear" \
+    chmor="chmod +r" \
+    chmow="chmod +w" \
+    chmox="chmod +x" \
+    chmost="chmod 755" \
+    chmall="chmod 777" \
+    e="$EDITOR" \
+    ed="clear; ed -vp '${NL}( ${RED}*${RC}._.) ${B}:${RC}'" \
+    ffmpeg="ffmpeg -hide_banner" \
+    iv="ivrifle" \
+    ivd="ivdir" \
+    ka="killall" \
+    mkd="mkdir -pv" \
+    nf="echo; neofetch" \
+    pf="echo; pfetch" \
+    po="popd" \
+    pu="pushd" \
+    rb="reboot" \
+    sdn="shutdown -h now" \
+    sx="ivrifle" \
+    sxd="ivdir" \
+    t10="du -ah . | sort -hr | \head -n 10" \
+    'tmux-ks'="tmux kill-server" \
+    trem="transmission-remote" \
+    v="vim" \
+    YT="youtube-viewer" \
+    yt="yt-dlp --embed-metadata -i" \
+    yta="yt -x -f bestaudio/best" \
+    z="zathura"
+
+## handy navigation shortcuts
+# go back specified number of directories
+# syntax is `.. <number>`
+# ex: `.. 3` goes back three directories
+.. () { cd $(printf "../%.s" {1..${1:-1}}) }
+
+alias \
+    '...'="cd ../.." \
+    'cd..'=".." \
+    'cd-'="cd -" \
+    '+'="pu" \
+    '_'="po" \
+    ':q'="exit"
+
+## terminal web search
+alias \
+    '?'="duck" \
+    '??'="google" \
+    '???'="bing"
+
+## optional commands (need to be installed)
+# alias emacs="emacsclient -ac 'emacs'"
+alias scim="sc-im"
+
+## have fun
+hey() { nf; la; echo; }

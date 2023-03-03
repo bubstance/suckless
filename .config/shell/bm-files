@@ -1,0 +1,16 @@
+# These files automatically update when edited/saved in vim:
+
+# keys	filename				                        description
+bf	${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-files	# This file, a list of bookmarked files
+bd	${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs		# A list of bookmarked directories similar to this file
+cfx	${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources	# Colors, themes and variables for X11
+
+
+# These do not update automatically, but on the next new instance of a program:
+
+cfv     ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/init.vim		    # vim/neovim config
+cfab	${XDG_CONFIG_HOME:-$HOME/.config}/shell/baliasrc        # aliases used by bash
+cfaz	${XDG_CONFIG_HOME:-$HOME/.config}/shell/zaliasrc        # aliases used by zsh
+cfmb	${XDG_CONFIG_HOME:-$HOME/.config}/ncmpcpp/bindings	    # ncmpcpp (music player) keybinds file
+cfmc	${XDG_CONFIG_HOME:-$HOME/.config}/ncmpcpp/config	    # ncmpcpp (music player) config
+cfX	${XDG_CONFIG_HOME:-$HOME/.config}/nsxiv/exec/key-handler    # nsxiv (image viewer) key/script handler
