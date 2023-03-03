@@ -257,9 +257,6 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
 	/* { MODKEY,                       XK_w,                       spawn,          {.v = (const char*[]){ BROWSER, NULL } } }, */
 	{ MODKEY,                       XK_w,                       spawn,          SHCMD("librewolf > /dev/null 2>&1") },
-	{ MODKEY|ControlMask,           XK_w,                       incrohgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_w,                       incrihgaps,     {.i = -1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_w,                       incrogaps,      {.i = -1 } },
 	{ MODKEY,                       XK_r,                       togglescratch,  {.ui = 5 } },
 	{ MODKEY|ShiftMask,             XK_r,                       togglescratch,  {.ui = 4 } },
 	/* { MODKEY,                       XK_t,                       spawn,          SHCMD("") }, */
@@ -279,17 +276,8 @@ static const Key keys[] = {
 
 	/* { MODKEY,                       XK_a,                       spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_a,                       spawn,          {.v = } }, */
-	{ MODKEY|ControlMask,           XK_a,                       incrovgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_a,                       incrivgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_a,                       incrigaps,      {.i = +1 } },
 	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
 	{ MODKEY|ShiftMask,             XK_s,                       showall,        {0} },
-	{ MODKEY|ControlMask,           XK_s,                       incrohgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask,              XK_s,                       incrihgaps,     {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_s,                       incrogaps,      {.i = +1 } },
-	{ MODKEY|ControlMask,           XK_d,                       incrovgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask,              XK_d,                       incrivgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_d,                       incrigaps,      {.i = -1 } },
 	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_f,                       setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
@@ -340,10 +328,26 @@ static const Key keys[] = {
 	/* { MODKEY,                       XK_Page_Down,               shiftview,      { .i = +1 } }, */
 	/* { MODKEY|ShiftMask,             XK_Page_Down,               shifttag,       { .i = +1 } }, */
 
-	{ MODKEY|ControlMask,           XK_Up,                      movekeyboard_y, {.i = -20} },
-	{ MODKEY|ControlMask,           XK_Left,                    movekeyboard_x, {.i = -20} },
-	{ MODKEY|ControlMask,           XK_Down,                    movekeyboard_y, {.i = 20}  },
-	{ MODKEY|ControlMask,           XK_Right,                   movekeyboard_x, {.i = 20}  },
+	{ MODKEY|ControlMask,             XK_Up,                    movekeyboard_y, {.i = -20} },
+	{ MODKEY|ControlMask,             XK_Left,                  movekeyboard_x, {.i = -20} },
+	{ MODKEY|ControlMask,             XK_Down,                  movekeyboard_y, {.i = 20}  },
+	{ MODKEY|ControlMask,             XK_Right,                 movekeyboard_x, {.i = 20}  },
+
+	{ MODKEY|ShiftMask,               XK_Up,                    incrohgaps,     {.i = -1 } },
+	{ MODKEY|ShiftMask,               XK_Down,                  incrohgaps,     {.i = +1 } },
+	{ MODKEY|ShiftMask,               XK_Right,                 incrovgaps,     {.i = +1 } },
+	{ MODKEY|ShiftMask,               XK_Left,                  incrovgaps,     {.i = -1 } },
+
+	{ MODKEY|ControlMask|ShiftMask,   XK_Up,                    incrihgaps,     {.i = -1 } },
+	{ MODKEY|ControlMask|ShiftMask,   XK_Down,                  incrihgaps,     {.i = +1 } },
+	{ MODKEY|ControlMask|ShiftMask,   XK_Left,                  incrivgaps,     {.i = -1 } },
+	{ MODKEY|ControlMask|ShiftMask,   XK_Right,                 incrivgaps,     {.i = +1 } },
+
+	{ Mod1Mask|ControlMask|ShiftMask, XK_Up,                    incrogaps,      {.i = -1 } },
+	{ Mod1Mask|ControlMask|ShiftMask, XK_Down,                  incrogaps,      {.i = +1 } },
+	{ Mod1Mask|ControlMask|ShiftMask, XK_Left,                  incrigaps,      {.i = +1 } },
+	{ Mod1Mask|ControlMask|ShiftMask, XK_Right,                 incrigaps,      {.i = -1 } },
+
 
 	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("amixer -q sset Master toggle") },
 	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer -q sset Master 5%-") },
