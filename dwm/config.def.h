@@ -109,26 +109,26 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class          instance     title           tags mask     isfloating   isterminal  noswallow  monitor */
-	{ "St",           NULL,        NULL,           0,            0,           1,          0,        -1 },
-	{ "tabbed",       "tabbed",    NULL,           0,            1,           0,          0,        -1 },
-	{ "9term",        "9term",     NULL,           0,            1,           1,          0,        -1 },
-	/* { "librewolf",    "Navigator", NULL,           0,            1,           0,          0,        -1 }, */
-	{ "librewolf",    "Places",    NULL,           0,            1,           0,          0,        -1 },
-	{ "Magnus",       "magnus",    NULL,           0,            1,           0,          0,        -1 },
-	{ "mpv",          "gl",        NULL,           0,            1,           0,          0,        -1 },
-	{ TERMCLASS,      "floatterm", NULL,           0,            1,           1,          0,        -1 },
-	/* { TERMCLASS,      "bg",        NULL,           1 << 7,       0,           1,          0,        -1 }, */
-	{ TERMCLASS,      "spterm",    NULL,           SPTAG(0),     1,           1,          0,        -1 },
-	{ TERMCLASS,      "spcalc",    NULL,           SPTAG(1),     1,           1,          0,        -1 },
-	{ TERMCLASS,      "sptune",    NULL,           SPTAG(2),     1,           1,          0,        -1 },
-	{ TERMCLASS,      "sppmix",    NULL,           SPTAG(3),     1,           1,          0,        -1 },
-	{ TERMCLASS,      "spstat",    NULL,           SPTAG(4),     1,           1,          0,        -1 },
-	{ TERMCLASS,      "spfile",    NULL,           SPTAG(5),     1,           1,          0,        -1 },
-	{ "Xmag",         "xmag",      NULL,           0,            1,           0,          0,        -1 },
-	{ "XCalc",        "xcalc",     NULL,           0,            1,           0,          0,        -1 },
-	{ "XTerm",        "xterm",     NULL,           0,            1,           1,          0,        -1 },
-	{ NULL,           NULL,        "Event Tester", 0,            0,           0,          1,        -1 }, /* xev */
+	/* class          instance      title           tags mask     isfloating   isterminal  noswallow  monitor */
+	{ "St",           NULL,         NULL,           0,            0,           1,          0,        -1 },
+	{ "tabbed",       "tabbed",     NULL,           0,            1,           0,          0,        -1 },
+	{ "9term",        "9term",      NULL,           0,            1,           1,          0,        -1 },
+	/* { "librewolf",    "Navigator",  NULL,           0,            1,           0,          0,        -1 }, */
+	{ "librewolf",    "Places",     NULL,           0,            1,           0,          0,        -1 },
+	{ "Magnus",       "magnus",     NULL,           0,            1,           0,          0,        -1 },
+	{ "mpv",          "gl",         NULL,           0,            1,           0,          0,        -1 },
+	{ "Galculator",   "galculator", NULL,           0,            1,           0,          0,        -1 },
+	{ TERMCLASS,      "floatterm",  NULL,           0,            1,           1,          0,        -1 },
+	/* { TERMCLASS,      "bg",         NULL,           1 << 7,       0,           1,          0,        -1 }, */
+	{ TERMCLASS,      "spterm",     NULL,           SPTAG(0),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "spcalc",     NULL,           SPTAG(1),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "sptune",     NULL,           SPTAG(2),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "sppmix",     NULL,           SPTAG(3),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "spstat",     NULL,           SPTAG(4),     1,           1,          0,        -1 },
+	{ TERMCLASS,      "spfile",     NULL,           SPTAG(5),     1,           1,          0,        -1 },
+	{ "Xmag",         "xmag",       NULL,           0,            1,           0,          0,        -1 },
+	{ "XTerm",        "xterm",      NULL,           0,            1,           1,          0,        -1 },
+	{ NULL,           NULL,         "Event Tester", 0,            0,           0,          1,        -1 }, /* xev */
 };
 
 /* layout(s) */
