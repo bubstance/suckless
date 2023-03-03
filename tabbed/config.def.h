@@ -39,10 +39,10 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,      XK_Return, focusonce,   { 0 } },
 	{ MODKEY|Mod1Mask,      XK_Return, spawn,       { 0 } },
 
-	{ MODKEY|ShiftMask,     XK_l,      rotate,      { .i = +1 } },
-	{ MODKEY|ShiftMask,     XK_h,      rotate,      { .i = -1 } },
-	{ MODKEY|ShiftMask,     XK_j,      movetab,     { .i = -1 } },
-	{ MODKEY|ShiftMask,     XK_k,      movetab,     { .i = +1 } },
+	{ MODKEY|Mod1Mask,      XK_l,      rotate,      { .i = +1 } },
+	{ MODKEY|Mod1Mask,      XK_h,      rotate,      { .i = -1 } },
+	{ MODKEY|Mod1Mask,      XK_j,      movetab,     { .i = -1 } },
+	{ MODKEY|Mod1Mask,      XK_k,      movetab,     { .i = +1 } },
 	{ MODKEY,               XK_Tab,    rotate,      { .i = 0 } },
 
 	{ MODKEY,               XK_grave,  spawn,       SETPROP("_TABBED_SELECT_TAB") },
@@ -60,7 +60,7 @@ static const Key keys[] = {
 	{ MODKEY,               XK_q,      killclient,  { 0 } },
 
 	{ MODKEY,               XK_minus,  focusurgent, { 0 } },
-	{ MODKEY|ShiftMask,     XK_minus,  toggle,      { .v = (void*) &urgentswitch } },
+	{ MODKEY|Mod1Mask,     XK_minus,  toggle,      { .v = (void*) &urgentswitch } },
 
 	{ 0,                    XK_F11,    fullscreen,  { 0 } },
 };
