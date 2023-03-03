@@ -111,7 +111,7 @@ static const Rule rules[] = {
 	 */
 	/* class          instance      title           tags mask     isfloating   isterminal  noswallow  monitor */
 	{ "St",           NULL,         NULL,           0,            0,           1,          0,        -1 },
-	{ "tabbed",       "tabbed",     NULL,           0,            1,           0,          0,        -1 },
+	/* { "tabbed",       "tabbed",     NULL,           0,            1,           0,          0,        -1 }, */
 	{ "9term",        "9term",      NULL,           0,            1,           1,          0,        -1 },
 	/* { "librewolf",    "Navigator",  NULL,           0,            1,           0,          0,        -1 }, */
 	{ "librewolf",    "Places",     NULL,           0,            1,           0,          0,        -1 },
