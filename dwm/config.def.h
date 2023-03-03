@@ -358,7 +358,7 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_MonBrightnessDown,   spawn,          {.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
 	{ 0,                            XF86XK_MonBrightnessUp,     spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
 
-	{ 0,                            XF86XK_Calculator,          togglescratch,  {.ui = 1 } },
+	{ 0,                            XF86XK_Calculator,          spawn,          SHCMD("galculator") },
 	{ ShiftMask,                    XF86XK_Calculator,          spawn,          {.v = (const char*[]){ ALTTERM, "ivy", "-prompt", "%> ", NULL } } },
 };
 
