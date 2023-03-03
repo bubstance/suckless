@@ -17,9 +17,7 @@ applications
 		IMG:$HOME/.config/xmenu/icons/scrot.png		screenshooter		maimpick
 	internet
 		IMG:$HOME/.config/xmenu/icons/librewolf.png	librewolf	librewolf > /dev/null 2>&1
-		IMG:$HOME/.config/xmenu/icons/links.png		links		st -e links
-		IMG:$HOME/.config/xmenu/icons/web.png		lynx		st -e lynx
-		IMG:$HOME/.config/xmenu/icons/netsurf.xpm		netsurf		netsurf-gtk3
+		IMG:$HOME/.config/xmenu/icons/thunderbird.png	thunderbird	thunderbird > /dev/null 2>&1
 		IMG:$HOME/.config/xmenu/icons/web.png		w3m		st -e w3m duckduckgo.com
 	office
 		IMG:$HOME/.config/xmenu/icons/libreoffice.png	LibreOffice	libreoffice
@@ -37,10 +35,8 @@ applications
 		IMG:$HOME/.config/xmenu/icons/9.png		ivy 	9 9term ivy -prompt "%> "
 		IMG:$HOME/.config/xmenu/icons/9.png		sam 	sam
 open terminal...
-	IMG:$HOME/.config/xmenu/icons/9.png		9term 	9 9term rc
 	IMG:$HOME/.config/xmenu/icons/st.png		st 	st
 	IMG:$HOME/.config/xmenu/icons/st.png		st (tabbed) 	tabterm
-	IMG:$HOME/.config/xmenu/icons/xterm-color.png		xterm 	xterm
 settings
 	volume mixer		st -e alsamixer
 	compositor settings	st -e nvim $HOME/.config/picom/picom.conf
