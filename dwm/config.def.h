@@ -240,6 +240,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                                       6)
 	TAGKEYS(                        XK_8,                                       7)
 	TAGKEYS(                        XK_9,                                       8)
+	{ Mod1Mask|ControlMask,         XK_9,                       spawn,          {.v = (const char*[]){ "9", "9term", "rc", NULL } } },
  	{ MODKEY,                       XK_0,                       view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,                       tag,            {.ui = ~0 } },
 
@@ -388,7 +389,8 @@ static const Button buttons[] = {
 	/* zoom */
 	{ ClkRootWin,           MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
 	{ ClkClientWin,         MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
-	{ ClkClientWin,         MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus || magnus") },
+	{ ClkRootWin,           MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus > /dev/null 2>&1 || magnus > /dev/null 2>&1") },
+	{ ClkClientWin,         MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus > /dev/null 2>&1 || magnus > /dev/null 2>&1") },
 
 	{ ClkLtSymbol,          0,                    Button1,        layoutmenu,     {0} },
 
