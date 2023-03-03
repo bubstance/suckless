@@ -248,7 +248,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_equal,                   defaultgaps,    {0} },
 
 	{ MODKEY,                       XK_BackSpace,               spawn,          {.v = (const char*[]){ "sysact", NULL } } },
-	/* { MODKEY|ShiftMask,             XK_BackSpace,               spawn,          SHCMD("") }, */
+	{ MODKEY|ShiftMask,             XK_BackSpace,               spawn,          SHCMD("slock") },
 
 	{ MODKEY,                       XK_Tab,                     view,           {0} },
 	{ Mod1Mask,                     XK_Tab,                     altTabStart,    {0} },
@@ -376,6 +376,7 @@ static const Key keys[] = {
 static const Button buttons[] = {
 	/* click                event mask                          button          function        argument */
 	{ ClkButton,            0,                                  Button1,        spawn,          {.v = lclickcmd } },
+	{ ClkRootWin,           0,                                  Button1,        togglebar,      {0} },
 	{ ClkRootWin,           0,                                  Button3,        spawn,          {.v = rclickcmd } },
 
 	{ ClkRootWin,           MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
@@ -385,6 +386,7 @@ static const Button buttons[] = {
 	{ ClkClientWin,         MODKEY|ControlMask|ShiftMask,       Button1,        killclient,     {0} },
 
 	/* zoom */
+	{ ClkRootWin,           MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
 	{ ClkClientWin,         MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
 	{ ClkClientWin,         MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus || magnus") },
 
