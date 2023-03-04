@@ -83,7 +83,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "󰇮", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "", "󰇮", "4", "5", "6", "7", "8", "9" };
 
 static const char *tagsel[][2] = {
 	/* fg     bg   */
@@ -141,19 +141,19 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
  	/* symbol     arrange function */
- 	{ "󰷐",      tile }, /* first entry is default */
+ 	{ "󰽙",      tile }, /* first entry is default */
  	{ "󰖯",      monocle },
-	{ "󱂬",      deck },
-	{ "[@]",      spiral },
-	{ "[\\]",     dwindle },
-	{ "TTT",      bstack },
-	{ "===",      bstackhoriz },
-	{ "HHH",      grid },
-	{ "###",      nrowgrid },
-	{ "---",      horizgrid },
-	{ ":::",      gaplessgrid },
-	{ "|M|",      centeredmaster },
-	{ ">M>",      centeredfloatingmaster },
+	{ "󰘸",      deck },
+	{ "",      spiral },
+	{ "",     dwindle },
+	{ "󱉿",      bstack },
+	{ "󰗈",      bstackhoriz },
+	{ "󰕰",      grid },
+	{ "󰾍",      nrowgrid },
+	{ "󰝘",      horizgrid },
+	{ "󱗼",      gaplessgrid },
+	{ "󱃺",      centeredmaster },
+	{ "󱕕",      centeredfloatingmaster },
 	{ "",      NULL },    /* no layout function means floating behavior */
 	{ NULL,       NULL },
 };
@@ -300,7 +300,7 @@ static const Key keys[] = {
 	/* { MODKEY,                       XK_apostrophe,              spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_apostrophe,              spawn,          {.v = } }, */
 
-	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_Return,                  spawn,          SHCMD("st 2>/dev/null") },
 	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
 	{ Mod1Mask,                     XK_Return,                  spawn,          {.v = tabtermcmd } },
 
