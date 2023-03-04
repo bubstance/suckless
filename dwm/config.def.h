@@ -90,12 +90,12 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "󰇮", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const char *tagsel[][2] = {
 	/* fg     bg   */
-	{ orange, gray1 }, /* tag 1 */
-	{ blue, gray1 }, /* tag 2 */
+	{ white, gray1 }, /* tag 1 */
+	{ white, gray1 }, /* tag 2 */
 	{ white, gray1 }, /* tag 3 */
 	{ white, gray1 }, /* tag 4 */
 	{ white, gray1 }, /* tag 5 */
