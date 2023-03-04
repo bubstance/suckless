@@ -22,8 +22,15 @@ static const int vertpad            = 5;        /* vertical padding of bar itsel
 static const int sidepad            = 5;        /* horizontal padding of bar itself*/
 static const int vertpadbar         = 10;       /* vertical padding for statusbar elements */
 static const int horizpadbar        = 2;        /* horizontal padding for statusbar elements */
-/* static const char buttonbar[]       = ""; */
+/* static const char buttonbar[]       = " "; */
+/* static const char buttonbar[]       = " "; */
+/* static const char buttonbar[]       = " "; */
+/* static const char buttonbar[]       = " "; */
+/* static const char buttonbar[]       = " "; */
 static const char buttonbar[]       = " 󰣨";
+/* static const char buttonbar[]       = " "; */
+/* static const char buttonbar[]       = " "; */
+/* static const char buttonbar[]       = " "; */
 /* static const char buttonbar[]       = " "; */
 static const int focusonwheel       = 0;
 
@@ -36,7 +43,7 @@ static const int riodraw_spawnasync = 0;        /* 0 means that the application 
 
 #define ICONSIZE (bh - 8) /* adaptively preserve 4 pixels each side */
 #define ICONSPACING 5     /* space (pixels) between icon and title */
-static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Symbols Nerd Font:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=16:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
+static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Symbols Nerd Font:pixelsize=20:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=16:antialias=true:autohint=true";
 
 /* alt-tab configuration */
@@ -66,7 +73,7 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "120x36", NULL };
+const char *spcmd1[] = { TERMINAL, "-n", "spterm", "-g", "80x24", NULL };
 const char *spcmd2[] = { TERMINAL, "-n", "spcalc", "-f", "Terminus:pixelsize=24:antialias=true:autohint=true", "-g", "50x20", "-e", "bc", "-lq", NULL };
 const char *spcmd3[] = { TERMINAL, "-n", "sptune", "-g", "120x36", "-e", "ncmpcpp", NULL };
 const char *spcmd4[] = { TERMINAL, "-n", "sppmix", "-g", "120x36", "-e", "alsamixer", NULL };
@@ -112,7 +119,7 @@ static const Rule rules[] = {
 	{ "St",           NULL,         NULL,           0,            0,           1,          0,        -1 },
 	/* { "tabbed",       "tabbed",     NULL,           0,            1,           0,          0,        -1 }, */
 	{ "9term",        "9term",      NULL,           0,            1,           1,          0,        -1 },
-	{ "librewolf",    NULL,         NULL,           1 << 1,       1,           0,          0,        -1 },
+	{ "librewolf",    NULL,         NULL,           1 << 1,       0,           0,          0,        -1 },
 	{ "thunderbird",  NULL,         NULL,           1 << 2,       0,           0,          0,        -1 },
 	{ "Magnus",       "magnus",     NULL,           0,            1,           0,          0,        -1 },
 	{ "mpv",          "gl",         NULL,           0,            1,           0,          0,        -1 },
@@ -142,20 +149,20 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
  	/* symbol     arrange function */
  	{ "󰽙",      tile }, /* first entry is default */
- 	{ "󰖯",      monocle },
+ 	{ "󰍉",      monocle },
 	{ "󰘸",      deck },
-	{ "",      spiral },
-	{ "",     dwindle },
-	{ "󱉿",      bstack },
-	{ "󰗈",      bstackhoriz },
+	{ "󱍸",      spiral },
+	{ "󰪏",      dwindle },
+	{ "󱕕",      bstack },
+	{ "",      bstackhoriz },
 	{ "󰕰",      grid },
 	{ "󰾍",      nrowgrid },
 	{ "󰝘",      horizgrid },
 	{ "󱗼",      gaplessgrid },
-	{ "󱃺",      centeredmaster },
-	{ "󱕕",      centeredfloatingmaster },
+	{ "󰼀",      centeredmaster },
+	{ "燐",      centeredfloatingmaster },
 	{ "",      NULL },    /* no layout function means floating behavior */
-	{ NULL,       NULL },
+	{ NULL,     NULL },
 };
 
 /* key definitions */
@@ -377,7 +384,6 @@ static const Key keys[] = {
 static const Button buttons[] = {
 	/* click                event mask                          button          function        argument */
 	{ ClkButton,            0,                                  Button1,        spawn,          {.v = lclickcmd } },
-	{ ClkRootWin,           0,                                  Button1,        togglebar,      {0} },
 	{ ClkRootWin,           0,                                  Button3,        spawn,          {.v = rclickcmd } },
 
 	{ ClkRootWin,           MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
