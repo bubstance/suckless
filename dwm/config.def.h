@@ -159,8 +159,8 @@ static const Layout layouts[] = {
 	{ "󰾍",      nrowgrid },
 	{ "󰝘",      horizgrid },
 	{ "󱗼",      gaplessgrid },
-	{ "󰼀",      centeredmaster },
-	{ "燐",      centeredfloatingmaster },
+	{ "󱒅",      centeredmaster },
+	{ "󱒆",      centeredfloatingmaster },
 	{ "",      NULL },    /* no layout function means floating behavior */
 	{ NULL,     NULL },
 };

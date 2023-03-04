@@ -12,7 +12,7 @@ cat <<EOF | xmenu
 󰾍 nrowgrid		8
 󰝘 horizgrid		9
 󱗼 gaplessgrid		10
-󰼀 centeredmaster	11
-燐 centeredfloatingmaster	12
+󱒅 centeredmaster	11
+󱒆 centeredfloatingmaster	12
  float			13
 EOF
