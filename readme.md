@@ -10,6 +10,8 @@
 
 ![](web.png)
 
+![](colors.png)
+
 Overview
 ========
 
