@@ -4,7 +4,9 @@
 
 ![](tunes.png)
 
-![](nvim.png)
+![](pic-lf.png)
+
+![](pic-rmd.png)
 
 ![](web.png)
 
