@@ -24,8 +24,9 @@ static const int horizpadbar        = 2;        /* horizontal padding for status
 /* static const char buttonbar[]       = ""; */
 /* static const char buttonbar[]       = ""; */
 /* static const char buttonbar[]       = ""; */
-static const char buttonbar[]       = "";
+/* static const char buttonbar[]       = ""; */
 /* static const char buttonbar[]       = ""; */
+static const char buttonbar[]       = " 󰣨";
 static const int focusonwheel       = 0;
 
 static const char slopspawnstyle[]  = "-t 0 -c 0.92,0.85,0.69,0.3 -o"; /* do NOT define -f (format) here */
@@ -37,7 +38,7 @@ static const int riodraw_spawnasync = 0;        /* 0 means that the application 
 
 #define ICONSIZE (bh - 8) /* adaptively preserve 4 pixels each side */
 #define ICONSPACING 5     /* space (pixels) between icon and title */
-static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=16:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
+static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Symbols Nerd Font:pixelsize=16:antialias=true:autohint=true", "Font Awesome 6:pixelsize=16:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Terminus:pixelsize=16:antialias=true:autohint=true";
 
 /* alt-tab configuration */
