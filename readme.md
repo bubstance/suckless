@@ -1,14 +1,19 @@
-![](pic-main.png)
+![](hi.png)
 
-![](pic-work.png)
+![](menu.png)
 
+![](tunes.png)
+
+![](nvim.png)
+
+![](web.png)
 
 Overview
 ========
 
-Personal builds of the suckless suite of tools.
+personal builds of the suckless suite of tools
 
-Functionality is not guaranteed.
+*functionality is not guaranteed*
 
 
 Patches
