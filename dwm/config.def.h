@@ -10,10 +10,10 @@
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
-static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 20;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 20;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappih    = 38;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 38;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 38;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 38;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 /* static const int hidevacant         = 1;        /1* 0 means no hiding *1/ */
@@ -119,8 +119,8 @@ static const Rule rules[] = {
 	{ "St",           NULL,         NULL,           0,            0,           1,          0,        -1 },
 	/* { "tabbed",       "tabbed",     NULL,           0,            1,           0,          0,        -1 }, */
 	{ "9term",        "9term",      NULL,           0,            1,           1,          0,        -1 },
-	{ "librewolf",    NULL,         NULL,           1 << 1,       0,           0,          0,        -1 },
-	{ "thunderbird",  NULL,         NULL,           1 << 2,       0,           0,          0,        -1 },
+	/* { "librewolf",    NULL,         NULL,           1 << 1,       0,           0,          0,        -1 }, */
+	/* { "thunderbird",  NULL,         NULL,           1 << 2,       0,           0,          0,        -1 }, */
 	{ "Magnus",       "magnus",     NULL,           0,            1,           0,          0,        -1 },
 	{ "mpv",          "gl",         NULL,           0,            1,           0,          0,        -1 },
 	{ "Galculator",   "galculator", NULL,           0,            1,           0,          0,        -1 },
@@ -286,8 +286,8 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_a,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
 	{ MODKEY|ShiftMask,             XK_s,                       showall,        {0} },
-	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
-	{ MODKEY|ShiftMask,             XK_f,                       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_f,                       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_f,                       togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,                       setcfact,       {.f = +0.25} },
