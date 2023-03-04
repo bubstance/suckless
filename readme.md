@@ -1,8 +1,4 @@
-![](pic1.png)
-
-![](pic2.png)
-
-![](pic3.png)
+![](pic-main.png)
 
 ![](pic-work.png)
 
