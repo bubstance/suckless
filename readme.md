@@ -1,14 +1,8 @@
-![](hello.png)
+![](arch.png)
+
+![](gentoo.png)
 
 ![](menu.png)
-
-![](tunes.png)
-
-![](pic-lf.png)
-
-![](pic-rmd.png)
-
-![](web.png)
 
 ![](colors.png)
 
