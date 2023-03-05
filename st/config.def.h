@@ -6,7 +6,8 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 /* static char *font = "Source Code Pro:pixelsize=20:antialias=true:autohint=true"; */
-static char *font = "JetBrains Mono:pixelsize=18:antialias=true:autohint=true";
+static char *font = "VictorMono:pixelsize=20:antialias=true:autohint=true";
+/* static char *font = "JetBrains Mono:pixelsize=18:antialias=true:autohint=true"; */
 static char *font2[] = { "Symbols Nerd Font:pixelsize=16:antialias=true:autohint=true", "Symbola:pixelsize=16:antialias=true:autohint=true" };
 static int borderpx = 2;
 
