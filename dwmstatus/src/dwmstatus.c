@@ -133,10 +133,10 @@ main(void)
 			   fg_light,
                wifi,
 
-			   fg_orange,
+			   fg_yellow,
 			   fg_light,
 			   date,
-			   fg_color,
+			   fg_orange,
 			   fg_color,
 			   time,
                bat0

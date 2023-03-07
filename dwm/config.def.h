@@ -2,9 +2,8 @@
 
 /* constants */
 #define TERMINAL "st"
-#define ALTTERM "9term"
 #define TERMCLASS "St"
-#define BROWSER "librewolf"
+#define ALTTERM "9term"
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
@@ -85,6 +84,7 @@ const char *spcmd3[] = { TERMINAL, "-n", "sptune", "-g", "120x36", "-e", "ncmpcp
 const char *spcmd4[] = { TERMINAL, "-n", "sppmix", "-g", "120x36", "-e", "alsamixer", NULL };
 const char *spcmd5[] = { TERMINAL, "-n", "spstat", "-g", "120x36", "-e", "htop", NULL };
 const char *spcmd6[] = { TERMINAL, "-n", "spfile", "-g", "120x36", "-e", "lfub", NULL };
+const char *spcmd7[] = { TERMINAL, "-n", "spedit", "-g", "120x36", "-e", "nvim", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
@@ -93,6 +93,7 @@ static Sp scratchpads[] = {
 	{"sppmix",      spcmd4},
 	{"spstat",      spcmd5},
 	{"spfile",      spcmd6},
+	{"spedit",      spcmd7},
 };
 
 /* tagging */
@@ -123,23 +124,27 @@ static const Rule rules[] = {
 	 */
 	/* class          instance      title           tags mask     isfloating   isterminal  noswallow  monitor */
 	{ "St",           NULL,         NULL,           0,            0,           1,          0,        -1 },
-	/* { "tabbed",       "tabbed",     NULL,           0,            1,           0,          0,        -1 }, */
 	{ "9term",        "9term",      NULL,           0,            1,           1,          0,        -1 },
+	/* { "firefox",      NULL,         NULL,           1 << 1,       0,           0,          0,        -1 }, */
+	/* { "Firefox",      NULL,         NULL,           1 << 1,       0,           0,          0,        -1 }, */
 	/* { "librewolf",    NULL,         NULL,           1 << 1,       0,           0,          0,        -1 }, */
+	/* { "Librewolf",    NULL,         NULL,           1 << 1,       0,           0,          0,        -1 }, */
+	/* { "LibreWolf",    NULL,         NULL,           1 << 1,       0,           0,          0,        -1 }, */
 	/* { "thunderbird",  NULL,         NULL,           1 << 2,       0,           0,          0,        -1 }, */
+	/* { "Thunderbird",  NULL,         NULL,           1 << 2,       0,           0,          0,        -1 }, */
 	{ "Magnus",       "magnus",     NULL,           0,            1,           0,          0,        -1 },
 	{ "mpv",          "gl",         NULL,           0,            1,           0,          0,        -1 },
 	{ "Galculator",   "galculator", NULL,           0,            1,           0,          0,        -1 },
+	{ "Xmag",         "xmag",       NULL,           0,            1,           0,          0,        -1 },
+	{ "XTerm",        "xterm",      NULL,           0,            1,           1,          0,        -1 },
 	{ TERMCLASS,      "floatterm",  NULL,           0,            1,           1,          0,        -1 },
-	/* { TERMCLASS,      "bg",         NULL,           1 << 7,       0,           1,          0,        -1 }, */
 	{ TERMCLASS,      "spterm",     NULL,           SPTAG(0),     1,           1,          0,        -1 },
 	{ TERMCLASS,      "spcalc",     NULL,           SPTAG(1),     1,           1,          0,        -1 },
 	{ TERMCLASS,      "sptune",     NULL,           SPTAG(2),     1,           1,          0,        -1 },
 	{ TERMCLASS,      "sppmix",     NULL,           SPTAG(3),     1,           1,          0,        -1 },
 	{ TERMCLASS,      "spstat",     NULL,           SPTAG(4),     1,           1,          0,        -1 },
 	{ TERMCLASS,      "spfile",     NULL,           SPTAG(5),     1,           1,          0,        -1 },
-	{ "Xmag",         "xmag",       NULL,           0,            1,           0,          0,        -1 },
-	{ "XTerm",        "xterm",      NULL,           0,            1,           1,          0,        -1 },
+	{ TERMCLASS,      "spedit",     NULL,           SPTAG(6),     1,           1,          0,        -1 },
 	{ NULL,           NULL,         "Event Tester", 0,            0,           0,          1,        -1 }, /* xev */
 };
 
@@ -153,8 +158,10 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 #include "vanitygaps.c"
 
 static const Layout layouts[] = {
+	/* first entry is default */
  	/* symbol     arrange function */
- 	{ "󰽙",      tile }, /* first entry is default */
+	{ "",      NULL },    /* no layout function means floating behavior */
+ 	{ "󰽙",      tile },
  	{ "󰍉",      monocle },
 	{ "󰘸",      deck },
 	{ "󱍸",      spiral },
@@ -167,7 +174,6 @@ static const Layout layouts[] = {
 	{ "󱗼",      gaplessgrid },
 	{ "󱒅",      centeredmaster },
 	{ "󱒆",      centeredfloatingmaster },
-	{ "",      NULL },    /* no layout function means floating behavior */
 	{ NULL,     NULL },
 };
 
@@ -184,7 +190,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2]         = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run","-F", "-c", "-l", "10", "-g", "5", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#31748f", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
+static const char *dmenucmd[]   = { "dmenu_run","-F", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#31748f", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *tabtermcmd[]   = { "tabbed", "-c", "-r 2", TERMINAL, "-w", "''", NULL };
@@ -198,50 +204,43 @@ static const Key keys[] = {
 	/* modifier                     key                         function        argument */
 
 	/* { MODKEY|ShiftMask,             XK_ ,                       spawn,          {.v = } }, */
-	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[0]}  },
+	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[1]}  },
 	{ Mod1Mask,                     XK_F1,                      spawn,          {.v = dmenucmd }    },
 	/* { MODKEY|ShiftMask,             XK_F1,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[2]}  },
+	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[3]}  },
 	/* { MODKEY|ShiftMask,             XK_F2,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F3,                      setlayout,      {.v = &layouts[3]}  },
+	{ MODKEY,                       XK_F3,                      setlayout,      {.v = &layouts[4]}  },
 	/* { MODKEY|ShiftMask,             XK_F3,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F4,                      setlayout,      {.v = &layouts[4]}  },
+	{ MODKEY,                       XK_F4,                      setlayout,      {.v = &layouts[5]}  },
 	{ Mod1Mask,                     XK_F4,                      killclient,     {0} },
 	/* { MODKEY|ShiftMask,             XK_F4,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F5,                      setlayout,      {.v = &layouts[5]}  },
+	{ MODKEY,                       XK_F5,                      setlayout,      {.v = &layouts[6]}  },
 	/* { MODKEY|ShiftMask,             XK_F5,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F6,                      setlayout,      {.v = &layouts[6]}  },
+	{ MODKEY,                       XK_F6,                      setlayout,      {.v = &layouts[7]}  },
 	/* { MODKEY|ShiftMask,             XK_F6,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F7,                      setlayout,      {.v = &layouts[7]}  },
+	{ MODKEY,                       XK_F7,                      setlayout,      {.v = &layouts[8]}  },
 	/* { MODKEY|ShiftMask,             XK_F7,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F8,                      setlayout,      {.v = &layouts[8]}  },
+	{ MODKEY,                       XK_F8,                      setlayout,      {.v = &layouts[9]}  },
 	/* { MODKEY|ShiftMask,             XK_F8,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F9,                      setlayout,      {.v = &layouts[9]}  },
+	{ MODKEY,                       XK_F9,                      setlayout,      {.v = &layouts[10]}  },
 	/* { MODKEY|ShiftMask,             XK_F9,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F10,                     setlayout,      {.v = &layouts[10]} },
+	{ MODKEY,                       XK_F10,                     setlayout,      {.v = &layouts[11]} },
 	/* { MODKEY|ShiftMask,             XK_F10,                     spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F11,                     setlayout,      {.v = &layouts[11]} },
+	{ MODKEY,                       XK_F11,                     setlayout,      {.v = &layouts[12]} },
 	/* { MODKEY|ShiftMask,             XK_F11,                     spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[12]} },
+	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[13]} },
 	/* { MODKEY|ShiftMask,             XK_F12,                     spawn,          {.v = }  }, */
 
-	/* { MODKEY,                       XK_Home,                    spawn,          SHCMD("") }, */
-	/* { MODKEY|ShiftMask,             XK_Home,                    spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_End,                     setlayout,      {0} },
-	/* { MODKEY|ShiftMask,             XK_End,                     spawn,          {.v = }  }, */
 	{ MODKEY,                       XK_Insert,                  spawn,          SHCMD("dmenumount") },
 	{ MODKEY|ShiftMask,             XK_Insert,                  spawn,          SHCMD("dmenuumount") },
 
 	{ 0,                            XK_Print,                   spawn,          {.v = (const char*[]){ "shootit", NULL } } },
 	{ ShiftMask,                    XK_Print,                   spawn,          {.v = (const char*[]){ "maimpick", NULL } } },
 
-	/* { MODKEY,                       XK_Insert,                  spawn,          SHCMD("") }, */
-
-	/* { MODKEY,                       XK_Delete,                  spawn,          SHCMD("") }, */
 	{ ControlMask|Mod1Mask,         XK_Delete,                  spawn,          {.v = (const char*[]) { "sysact", NULL } } },
 
 	{ MODKEY,                       XK_grave,                   togglefloating, {0} },
-	{ MODKEY|ShiftMask,             XK_grave,                   setlayout,      {.v = &layouts[13]} },
+	{ MODKEY|ShiftMask,             XK_grave,                   setlayout,      {.v = &layouts[0]} },
 
 	TAGKEYS(                        XK_1,                                       0)
 	TAGKEYS(                        XK_2,                                       1)
@@ -256,9 +255,10 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_0,                       view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,                       tag,            {.ui = ~0 } },
 
-	{ MODKEY,                       XK_minus,                   incrgaps,       {.i = +1 } },
-	{ MODKEY,                       XK_equal,                   incrgaps,       {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_equal,                   defaultgaps,    {0} },
+	{ MODKEY,                       XK_minus,                   togglegaps,     {0} },
+	{ MODKEY|ShiftMask,             XK_minus,                   incrgaps,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_equal,                   incrgaps,       {.i = -1 } },
+	{ MODKEY,                       XK_equal,                   defaultgaps,    {0} },
 
 	{ MODKEY,                       XK_BackSpace,               spawn,          {.v = (const char*[]){ "sysact", NULL } } },
 	{ MODKEY|ShiftMask,             XK_BackSpace,               spawn,          SHCMD("slock") },
@@ -268,34 +268,34 @@ static const Key keys[] = {
 
 	{ MODKEY,                       XK_q,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
-	/* { MODKEY,                       XK_w,                       spawn,          {.v = (const char*[]){ BROWSER, NULL } } }, */
+	/* { MODKEY,                       XK_w,                       spawn,          SHCMD("firefox > /dev/null 2>&1") }, */
+	/* { MODKEY,                       XK_w,                       spawn,          SHCMD("firefox-bin > /dev/null 2>&1") }, */
 	{ MODKEY,                       XK_w,                       spawn,          SHCMD("librewolf > /dev/null 2>&1") },
-	{ MODKEY,                       XK_e,                       spawn,          SHCMD("thunderbird-bin") },
+	/* { MODKEY,                       XK_w,                       spawn,          SHCMD("librewolf-bin > /dev/null 2>&1") }, */
+	{ MODKEY,                       XK_e,                       togglescratch,  {.ui = 6 } },
+	/* { MODKEY|ShiftMask,             XK_e,                       spawn,          SHCMD("thunderbird") }, */
+	{ MODKEY|ShiftMask,             XK_e,                       spawn,          SHCMD("thunderbird-bin") },
 	{ MODKEY,                       XK_r,                       togglescratch,  {.ui = 5 } },
 	{ MODKEY|ShiftMask,             XK_r,                       togglescratch,  {.ui = 4 } },
-	/* { MODKEY,                       XK_t,                       spawn,          SHCMD("") }, */
-	{ MODKEY,                       XK_t,                       togglescratch,  {.ui = 2 } },
-	/* { MODKEY,                       XK_i,                       spawn,          {.v = } }, */
-	{ MODKEY|ShiftMask,             XK_i,                       incnmaster,     {.i = +1 } },
-	/* { MODKEY,                       XK_o,                       spawn,          {.v = } }, */
-	{ MODKEY|ShiftMask,             XK_o,                       incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_t,                       spawn,          SHCMD("st > /dev/null 2>&1") },
+	{ MODKEY|ShiftMask,             XK_t,                       spawn,          SHCMD("tabbed -c -r 2 st -w ''") },
+	{ MODKEY,                       XK_u,                       incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_u,                       incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_p,                       spawn,          SHCMD("mpc toggle > /dev/null 2>&1") },
+	{ MODKEY|ShiftMask,             XK_p,                       spawn,          SHCMD("mpc stop > /dev/null 2>&1") },
 
-	/* { MODKEY,                       XK_bracketleft,             spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_bracketleft,             spawn,          {.v = } }, */
-	/* { MODKEY,                       XK_bracketright,            spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_bracketright,            spawn,          {.v = } }, */
+	{ MODKEY,                       XK_bracketright,            spawn,          SHCMD("amixer -q sset Master 5%+") },
+	{ MODKEY|ShiftMask,             XK_bracketright,            spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
+	{ MODKEY,                       XK_bracketleft,             spawn,          SHCMD("amixer -q sset Master 5%-") },
+	{ MODKEY|ShiftMask,             XK_bracketleft,             spawn,          {.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
 
-	/* { MODKEY,                       XK_backslash,               spawn,          SHCMD("") }, */
-	{ MODKEY|ControlMask,           XK_backslash,               spawn,          SHCMD("killall screenkey || screenkey &") },
+	{ MODKEY,                       XK_backslash,               spawn,          SHCMD("highlighter") },
+	{ MODKEY|ShiftMask,             XK_backslash,               spawn,          SHCMD("killall screenkey || screenkey &") },
 
 
-	/* { MODKEY,                       XK_a,                       spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_a,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
-	{ MODKEY|ShiftMask,             XK_s,                       showall,        {0} },
-	{ MODKEY,                       XK_f,                       spawn,          SHCMD("pcmanfm") },
-	{ MODKEY|ShiftMask,             XK_f,                       togglefullscr,  {0} },
-	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
+	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
+	{ MODKEY|ShiftMask,             XK_f,                       spawn,          SHCMD("pcmanfm") },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,                       setcfact,       {.f = +0.25} },
 	{ MODKEY|ControlMask,           XK_h,                       movekeyboard_x, {.i = -20} },
@@ -310,38 +310,32 @@ static const Key keys[] = {
 
 
 	{ MODKEY,                       XK_semicolon,               spawn,          {.v = dmenucmd } },
-	/* { MODKEY|ShiftMask,             XK_semicolon,               spawn,          {.v = } }, */
-	/* { MODKEY,                       XK_apostrophe,              spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_apostrophe,              spawn,          {.v = } }, */
 
 	{ MODKEY,                       XK_Return,                  spawn,          SHCMD("st 2>/dev/null") },
 	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
 	{ Mod1Mask,                     XK_Return,                  spawn,          {.v = tabtermcmd } },
 
-	{ MODKEY,                       XK_x,                       hide,           {0} },
-	/* { MODKEY|ShiftMask,             XK_x,                       show,           {0} }, */
-	/* { MODKEY,                       XK_c,                       spawn,          {.v = } }, */
+	{ MODKEY,                       XK_c,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_c,                       killunsel,      {0} },
-	/* { MODKEY,                       XK_v,                       spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_v,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
-	/* { MODKEY,                       XK_n,                       spawn,          {.v = } }, */
-	/* { MODKEY|ShiftMask,             XK_n,                       spawn,          {.v = } }, */
-	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_n,                       spawn,          SHCMD("st -e nmtui 2>/dev/null") },
+	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_m,                       togglescratch,  {.ui = 3 } },
+	{ MODKEY,                       XK_z,                       hide,           {0} },
+	{ MODKEY|ShiftMask,             XK_z,                       showall,        {0} },
 
-	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
-	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,                   spawn,          SHCMD("mpc prev > /dev/null 2>&1") },
+	{ MODKEY,                       XK_comma,                   spawn,          SHCMD("mpc seek -10 > /dev/null 2>&1") },
+	{ MODKEY|ShiftMask,             XK_period,                  spawn,          SHCMD("mpc next > /dev/null 2>&1") },
+	{ MODKEY,                       XK_period,                  spawn,          SHCMD("mpc seek +10 > /dev/null 2>&1") },
 
 	{ MODKEY,                       XK_space,                   focusmaster,    {0} },
 	{ MODKEY|ShiftMask,             XK_space,                   zoom,           {0} },
 
-	/* { MODKEY,                       XK_Page_Up,                 shiftview,      { .i = -1 } }, */
-	/* { MODKEY|ShiftMask,             XK_Page_Up,                 shifttag,       { .i = -1 } }, */
-	/* { MODKEY,                       XK_Page_Down,               shiftview,      { .i = +1 } }, */
-	/* { MODKEY|ShiftMask,             XK_Page_Down,               shifttag,       { .i = +1 } }, */
+	{ MODKEY,                         XK_Page_Down,             focusmon,       {.i = -1 } },
+	{ MODKEY,                         XK_Page_Up,               focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,               XK_Page_Down,             tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,               XK_Page_Up,               tagmon,         {.i = +1 } },
 
 	{ MODKEY|ControlMask,             XK_Up,                    movekeyboard_y, {.i = -20} },
 	{ MODKEY|ControlMask,             XK_Left,                  movekeyboard_x, {.i = -20} },
@@ -364,21 +358,21 @@ static const Key keys[] = {
 	{ Mod1Mask|ControlMask|ShiftMask, XK_Right,                 incrigaps,      {.i = -1 } },
 
 
-	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("amixer -q sset Master toggle") },
-	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer -q sset Master 5%-") },
-	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          SHCMD("amixer -q sset Master 5%+") },
-	{ 0,                            XF86XK_AudioPrev,           spawn,          SHCMD("mpc prev > /dev/null 2>&1") },
-	{ ShiftMask,                    XF86XK_AudioPrev,           spawn,          SHCMD("mpc seek -10 > /dev/null 2>&1") },
-	{ 0,                            XF86XK_AudioPlay,           spawn,          SHCMD("mpc toggle > /dev/null 2>&1") },
-	{ ShiftMask,                    XF86XK_AudioPlay,           spawn,          SHCMD("mpc stop > /dev/null 2>&1") },
-	{ 0,                            XF86XK_AudioNext,           spawn,          SHCMD("mpc next > /dev/null 2>&1") },
-	{ ShiftMask,                    XF86XK_AudioNext,           spawn,          SHCMD("mpc seek +10 > /dev/null 2>&1") },
+	{ 0,                              XF86XK_AudioMute,         spawn,          SHCMD("amixer -q sset Master toggle") },
+	{ 0,                              XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer -q sset Master 5%-") },
+	{ 0,                              XF86XK_AudioRaiseVolume,  spawn,          SHCMD("amixer -q sset Master 5%+") },
+	{ 0,                              XF86XK_AudioPrev,         spawn,          SHCMD("mpc prev > /dev/null 2>&1") },
+	{ ShiftMask,                      XF86XK_AudioPrev,         spawn,          SHCMD("mpc seek -10 > /dev/null 2>&1") },
+	{ 0,                              XF86XK_AudioPlay,         spawn,          SHCMD("mpc toggle > /dev/null 2>&1") },
+	{ ShiftMask,                      XF86XK_AudioPlay,         spawn,          SHCMD("mpc stop > /dev/null 2>&1") },
+	{ 0,                              XF86XK_AudioNext,         spawn,          SHCMD("mpc next > /dev/null 2>&1") },
+	{ ShiftMask,                      XF86XK_AudioNext,         spawn,          SHCMD("mpc seek +10 > /dev/null 2>&1") },
 
-	{ 0,                            XF86XK_MonBrightnessDown,   spawn,          {.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
-	{ 0,                            XF86XK_MonBrightnessUp,     spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
+	{ 0,                              XF86XK_MonBrightnessDown, spawn,          {.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
+	{ 0,                              XF86XK_MonBrightnessUp,   spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
 
-	{ 0,                            XF86XK_Calculator,          spawn,          SHCMD("galculator") },
-	{ ShiftMask,                    XF86XK_Calculator,          spawn,          {.v = (const char*[]){ ALTTERM, "ivy", "-prompt", "%> ", NULL } } },
+	{ 0,                              XF86XK_Calculator,        spawn,          SHCMD("galculator") },
+	{ ShiftMask,                      XF86XK_Calculator,        spawn,          {.v = (const char*[]){ ALTTERM, "ivy", "-prompt", "%> ", NULL } } },
 };
 
 /* button definitions */
@@ -391,30 +385,30 @@ static const Key keys[] = {
 static const Button buttons[] = {
 	/* click                event mask                          button          function        argument */
 	{ ClkButton,            0,                                  Button1,        spawn,          {.v = lclickcmd } },
+	{ ClkLtSymbol,          0,                                  Button1,        layoutmenu,     {0} },
+	{ ClkRootWin,           0,                                  Button1,        riospawn,       {.v = termcmd } },
 	{ ClkRootWin,           0,                                  Button3,        spawn,          {.v = rclickcmd } },
+	{ ClkTagBar,            0,                                  Button1,        view,           {0} },
+	{ ClkTagBar,            0,                                  Button3,        toggleview,     {0} },
+	{ ClkWinTitle,          0,                                  Button1,        togglewin,      {0} },
 
 	{ ClkRootWin,           MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
-	{ ClkRootWin,           MODKEY|ControlMask,                 Button3,        rioresize,      {0} },
 	{ ClkClientWin,         MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
 	{ ClkClientWin,         MODKEY|ControlMask,                 Button3,        rioresize,      {0} },
-	{ ClkClientWin,         MODKEY|ControlMask|ShiftMask,       Button1,        killclient,     {0} },
+	{ ClkClientWin,         Mod1Mask,                           Button3,        rioresize,      {0} },
+	{ ClkClientWin,         Mod1Mask,                           Button1,        killclient,     {0} },
 
-	/* zoom */
-	{ ClkRootWin,           MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
-	{ ClkClientWin,         MODKEY,               Button2,        spawn,          SHCMD("highlighter") },
-	{ ClkRootWin,           MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus > /dev/null 2>&1 || magnus > /dev/null 2>&1") },
-	{ ClkClientWin,         MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus > /dev/null 2>&1 || magnus > /dev/null 2>&1") },
-
-	{ ClkLtSymbol,          0,                    Button1,        layoutmenu,     {0} },
-
-	{ ClkWinTitle,          0,                    Button1,        togglewin,      {0} },
 	{ ClkClientWin,         MODKEY,               Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,               Button3,        resizemouse,    {0} },
 	{ ClkClientWin,         MODKEY|ShiftMask,     Button1,        dragmfact,      {0} },
 	{ ClkClientWin,         MODKEY|ShiftMask,     Button3,        dragcfact,      {0} },
-	{ ClkTagBar,            0,                    Button1,        view,           {0} },
-	{ ClkTagBar,            0,                    Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,               Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,               Button3,        toggletag,      {0} },
+
+	/* /1* zoom *1/ */
+	/* { ClkRootWin,           MODKEY,               Button2,        spawn,          SHCMD("highlighter") }, */
+	/* { ClkClientWin,         MODKEY,               Button2,        spawn,          SHCMD("highlighter") }, */
+	/* { ClkRootWin,           MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus > /dev/null 2>&1 || magnus > /dev/null 2>&1") }, */
+	/* { ClkClientWin,         MODKEY|ShiftMask,     Button2,        spawn,          SHCMD("killall magnus > /dev/null 2>&1 || magnus > /dev/null 2>&1") }, */
 };
 

@@ -7,8 +7,8 @@
  */
 /* static char *font = "Source Code Pro:pixelsize=20:antialias=true:autohint=true"; */
 /* static char *font = "VictorMono:pixelsize=22:antialias=true:autohint=true"; */
-static char *font = "JetBrains Mono:pixelsize=20:antialias=true:autohint=true";
-static char *font2[] = { "Symbols Nerd Font:pixelsize=20:antialias=true:autohint=true", "Symbola:pixelsize=20:antialias=true:autohint=true" };
+static char *font = "JetBrains Mono:pixelsize=18:antialias=true:autohint=true";
+static char *font2[] = { "Jetbrains Mono:pixelsize=18:antialias=true:autohint=true", "Symbols Nerd Font:pixelsize=20:antialias=true:autohint=true", "Symbola:pixelsize=20:antialias=true:autohint=true" };
 static int borderpx = 2;
 
 /*
