@@ -34,7 +34,8 @@ int   getBattery();
 int   getBatteryStatus();
 int   getMemPercent();
 void  getCpuUsage(int *cpu_percent);
-char* getDateTime();
+char* getDate();
+char* getTime();
 float getFreq(char *file);
 int   getVolume();
 void  setStatus(Display *dpy, char *str);
@@ -60,16 +61,23 @@ main(void)
   char *status;
 
   int cpu_percent[CPU_NBR];
-  char *datetime;
+  char *date;
+  char *time;
   int vol, wifi;
   char *cpu_bar[CPU_NBR];
 
   int mem_percent;
   char *mem_bar;
 
-  char *fg_color = "#e0def4";
-  char *fg_light = "#908caa";
-  char *fg_dark  = "#524f67";
+  char *fg_color  = "#e0def4";
+  char *fg_light  = "#908caa";
+  char *fg_dark   = "#524f67";
+  char *fg_red    = "#eb6f92";
+  char *fg_orange = "#ebbcba";
+  char *fg_yellow = "#f6c177";
+  char *fg_green  = "#9ccfd8";
+  char *fg_blue   = "#31748f";
+  char *fg_violet = "#26233a";
   char cpu_color[8];
 
   char bat0[256];
@@ -88,7 +96,8 @@ main(void)
 
 	  mem_percent = getMemPercent();
 	  mem_bar = hBar(mem_percent, 20, 9,  "#FF0000", "#444444");
-      datetime = getDateTime();
+      date = getDate();
+      time = getTime();
       getBatteryBar(bat0, 256, 30, 11);
       vol = getVolume();
       getCpuUsage(cpu_percent);
@@ -102,38 +111,42 @@ main(void)
       int ret = snprintf(
                status,
                MSIZE,
-               "  ^c%s^VOL ^c%s^%d%%   ^c%s^WiFi ^c%s^%d%%   ^c%s^MEM ^f1^%s^f20^   ^c%s^CPU ^f1^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f3^   ^c%s^%s   %s  ",
+               // "  ^f1^%s^f20^  ^f1^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f4^%s^f3^     ^c%s^󰓃 ^c%s^%d%%  ^c%s^󰤨 ^c%s^%d%%    ^c%s^󰭧 ^c%s^%s  ^c%s^󰥔 ^c%s^%s   %s  ",
+               "  ^c%s^󰓃 ^c%s^%d%%  ^c%s^󰤨 ^c%s^%d%%   ^c%s^󰭧 ^c%s^%s  ^c%s^󰥔 ^c%s^%s   %s  ",
 
-			   fg_dark,
+               /* mem_bar, */
+
+               /* cpu_bar[0], */
+               /* cpu_bar[1], */
+               /* cpu_bar[2], */
+               /* cpu_bar[3], */
+               /* cpu_bar[4], */
+               /* cpu_bar[5], */
+               /* cpu_bar[6], */
+               /* cpu_bar[7], */
+
+			   fg_blue,
 			   fg_light,
                vol,
 
-			   fg_dark,
+			   fg_green,
 			   fg_light,
                wifi,
 
-			   fg_dark,
-               mem_bar,
-
-			   fg_dark,
-               cpu_bar[0],
-               cpu_bar[1],
-               cpu_bar[2],
-               cpu_bar[3],
-               cpu_bar[4],
-               cpu_bar[5],
-               cpu_bar[6],
-               cpu_bar[7],
-
+			   fg_orange,
+			   fg_light,
+			   date,
 			   fg_color,
-			   datetime,
+			   fg_color,
+			   time,
                bat0
 
 			   );
       if(ret >= MSIZE)
 	fprintf(stderr, "error: buffer too small %d/%d\n", MSIZE, ret);
 
-      free(datetime);
+      free(date);
+      free(time);
       for(int i = 0; i < CPU_NBR; ++i)
 	      free(cpu_bar[i]);
 
@@ -397,7 +410,7 @@ getFreq(char *file)
 }
 
 char *
-getDateTime()
+getDate()
 {
   char *buf;
   time_t result;
@@ -417,7 +430,37 @@ getDateTime()
       exit(1);
     }
 
-  if(!strftime(buf, sizeof(char)*65-1, "%a, %b %d @ %H:%M %Z", resulttm))
+  if(!strftime(buf, sizeof(char)*65-1, "%a, %b %d", resulttm))
+    {
+      fprintf(stderr, "strftime is 0.\n");
+      exit(1);
+    }
+
+  return buf;
+}
+
+char *
+getTime()
+{
+  char *buf;
+  time_t result;
+  struct tm *resulttm;
+
+  if((buf = (char*) malloc(sizeof(char)*65)) == NULL)
+    {
+      fprintf(stderr, "Cannot allocate memory for buf.\n");
+      exit(1);
+    }
+
+  result = time(NULL);
+  resulttm = localtime(&result);
+  if(resulttm == NULL)
+    {
+      fprintf(stderr, "Error getting localtime.\n");
+      exit(1);
+    }
+
+  if(!strftime(buf, sizeof(char)*65-1, "%H:%M %Z", resulttm))
     {
       fprintf(stderr, "strftime is 0.\n");
       exit(1);

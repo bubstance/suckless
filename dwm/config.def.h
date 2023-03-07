@@ -8,12 +8,12 @@
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int snap      = 18;       /* snap pixel */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
-static const unsigned int gappih    = 38;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 38;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 38;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 38;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappih    = 32;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 32;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 32;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 32;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 /* static const int hidevacant         = 1;        /1* 0 means no hiding *1/ */
@@ -49,8 +49,8 @@ static const int riodraw_spawnasync = 0;        /* 0 means that the application 
 
 #define ICONSIZE (bh - 8) /* adaptively preserve 4 pixels each side */
 #define ICONSPACING 5     /* space (pixels) between icon and title */
-static const char *fonts[]          = { "Terminus:pixelsize=16:antialias=true:autohint=true", "Symbols Nerd Font:pixelsize=20:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Terminus:pixelsize=16:antialias=true:autohint=true";
+static const char *fonts[]          = { "Terminus:pixelsize=18:antialias=true:autohint=true", "Symbols Nerd Font:pixelsize=20:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Terminus:pixelsize=18:antialias=true:autohint=true";
 
 /* alt-tab configuration */
 static const unsigned int tabModKey 		= 0x40;	/* if this key is hold the alt-tab functionality stays acitve. This key must be the same as key that is used to active functin altTabStart `*/
@@ -274,6 +274,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_r,                       togglescratch,  {.ui = 5 } },
 	{ MODKEY|ShiftMask,             XK_r,                       togglescratch,  {.ui = 4 } },
 	/* { MODKEY,                       XK_t,                       spawn,          SHCMD("") }, */
+	{ MODKEY,                       XK_t,                       togglescratch,  {.ui = 2 } },
 	/* { MODKEY,                       XK_i,                       spawn,          {.v = } }, */
 	{ MODKEY|ShiftMask,             XK_i,                       incnmaster,     {.i = +1 } },
 	/* { MODKEY,                       XK_o,                       spawn,          {.v = } }, */
@@ -292,7 +293,7 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,             XK_a,                       spawn,          {.v = } }, */
 	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
 	{ MODKEY|ShiftMask,             XK_s,                       showall,        {0} },
-	{ MODKEY,                       XK_f,                       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_f,                       spawn,          SHCMD("pcmanfm") },
 	{ MODKEY|ShiftMask,             XK_f,                       togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_g,                       togglegaps,     {0} },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
@@ -326,7 +327,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
 	/* { MODKEY,                       XK_n,                       spawn,          {.v = } }, */
 	/* { MODKEY|ShiftMask,             XK_n,                       spawn,          {.v = } }, */
-	{ MODKEY,                       XK_m,                       togglescratch,  {.ui = 2 } },
+	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_m,                       togglescratch,  {.ui = 3 } },
 
 	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
