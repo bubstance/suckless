@@ -392,11 +392,10 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,                                  Button3,        toggleview,     {0} },
 	{ ClkWinTitle,          0,                                  Button1,        togglewin,      {0} },
 
-	{ ClkRootWin,           MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
-	{ ClkClientWin,         MODKEY|ControlMask,                 Button1,        riospawn,       {.v = termcmd } },
-	{ ClkClientWin,         MODKEY|ControlMask,                 Button3,        rioresize,      {0} },
+	{ ClkRootWin,           Mod1Mask,                           Button1,        riospawn,       {.v = termcmd } },
+	{ ClkClientWin,         Mod1Mask,                           Button1,        riospawn,       {.v = termcmd } },
+	{ ClkClientWin,         Mod1Mask,                           Button2,        killclient,     {0} },
 	{ ClkClientWin,         Mod1Mask,                           Button3,        rioresize,      {0} },
-	{ ClkClientWin,         Mod1Mask,                           Button1,        killclient,     {0} },
 
 	{ ClkClientWin,         MODKEY,               Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,               Button3,        resizemouse,    {0} },
