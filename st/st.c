@@ -1520,10 +1520,10 @@ tsetattr(const int *attr, int l)
 			} else if (BETWEEN(attr[i], 100, 107)) {
 				term.c.attr.bg = attr[i] - 100 + 8;
 			} else {
-				/* fprintf(stderr, */
-					/* "erresc(default): gfx attr %d unknown\n", */
-					/* attr[i]); */
-				/* csidump(); */
+				fprintf(stderr,
+					"erresc(default): gfx attr %d unknown\n",
+					attr[i]);
+					csidump();
 					break;
 			}
 			break;
@@ -1686,8 +1686,8 @@ csihandle(void)
 	switch (csiescseq.mode[0]) {
 	default:
 	unknown:
-		/* fprintf(stderr, "erresc: unknown csi "); */
-		/* csidump(); */
+		fprintf(stderr, "erresc: unknown csi ");
+		csidump();
 		/* die(""); */
 		break;
 	case '@': /* ICH -- Insert <n> blank char */

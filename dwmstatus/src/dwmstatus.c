@@ -23,7 +23,7 @@
 */
 
 #define CPU_NBR 8
-#define BAR_HEIGHT 26
+#define BAR_HEIGHT 28
 #define BAT_NOW_FILE "/sys/class/power_supply/BAT0/charge_now"
 #define BAT_FULL_FILE "/sys/class/power_supply/BAT0/charge_full"
 #define BAT_STATUS_FILE "/sys/class/power_supply/BAT0/status"

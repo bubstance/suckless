@@ -251,7 +251,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                                       6)
 	TAGKEYS(                        XK_8,                                       7)
 	TAGKEYS(                        XK_9,                                       8)
-	{ Mod1Mask|ControlMask,         XK_9,                       spawn,          {.v = (const char*[]){ "9", "9term", "rc", NULL } } },
+	{ Mod1Mask|ControlMask,         XK_9,                       spawn,          SHCMD("9t") },
  	{ MODKEY,                       XK_0,                       view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,                       tag,            {.ui = ~0 } },
 
@@ -270,19 +270,19 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,                       quitprompt,     {0} },
 	/* { MODKEY,                       XK_w,                       spawn,          SHCMD("firefox > /dev/null 2>&1") }, */
 	/* { MODKEY,                       XK_w,                       spawn,          SHCMD("firefox-bin > /dev/null 2>&1") }, */
-	{ MODKEY,                       XK_w,                       spawn,          SHCMD("librewolf > /dev/null 2>&1") },
+	{ MODKEY,                       XK_w,                       spawn,          SHCMD("librewolf") },
 	/* { MODKEY,                       XK_w,                       spawn,          SHCMD("librewolf-bin > /dev/null 2>&1") }, */
 	{ MODKEY,                       XK_e,                       togglescratch,  {.ui = 6 } },
 	/* { MODKEY|ShiftMask,             XK_e,                       spawn,          SHCMD("thunderbird") }, */
 	{ MODKEY|ShiftMask,             XK_e,                       spawn,          SHCMD("thunderbird-bin") },
 	{ MODKEY,                       XK_r,                       togglescratch,  {.ui = 5 } },
 	{ MODKEY|ShiftMask,             XK_r,                       togglescratch,  {.ui = 4 } },
-	{ MODKEY,                       XK_t,                       spawn,          SHCMD("st > /dev/null 2>&1") },
+	{ MODKEY,                       XK_t,                       spawn,          SHCMD("st") },
 	{ MODKEY|ShiftMask,             XK_t,                       spawn,          SHCMD("tabbed -c -r 2 st -w ''") },
 	{ MODKEY,                       XK_u,                       incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_u,                       incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_p,                       spawn,          SHCMD("mpc toggle > /dev/null 2>&1") },
-	{ MODKEY|ShiftMask,             XK_p,                       spawn,          SHCMD("mpc stop > /dev/null 2>&1") },
+	{ MODKEY,                       XK_p,                       spawn,          SHCMD("mpc toggle") },
+	{ MODKEY|ShiftMask,             XK_p,                       spawn,          SHCMD("mpc stop") },
 
 	{ MODKEY,                       XK_bracketright,            spawn,          SHCMD("amixer -q sset Master 5%+") },
 	{ MODKEY|ShiftMask,             XK_bracketright,            spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
@@ -311,23 +311,24 @@ static const Key keys[] = {
 
 	{ MODKEY,                       XK_semicolon,               spawn,          {.v = dmenucmd } },
 
-	{ MODKEY,                       XK_Return,                  spawn,          SHCMD("st 2>/dev/null") },
+	{ MODKEY,                       XK_Return,                  spawn,          SHCMD("st") },
 	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
 	{ Mod1Mask,                     XK_Return,                  spawn,          {.v = tabtermcmd } },
 
+	{ MODKEY,                       XK_z,                       hide,           {0} },
+	{ MODKEY|ShiftMask,             XK_z,                       showall,        {0} },
+	{ MODKEY,                       XK_x,                       spawn,          SHCMD("plumbit") },
 	{ MODKEY,                       XK_c,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_c,                       killunsel,      {0} },
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
-	{ MODKEY|ShiftMask,             XK_n,                       spawn,          SHCMD("st -e nmtui 2>/dev/null") },
+	{ MODKEY|ShiftMask,             XK_n,                       spawn,          SHCMD("st -e nmtui") },
 	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_m,                       togglescratch,  {.ui = 3 } },
-	{ MODKEY,                       XK_z,                       hide,           {0} },
-	{ MODKEY|ShiftMask,             XK_z,                       showall,        {0} },
 
-	{ MODKEY|ShiftMask,             XK_comma,                   spawn,          SHCMD("mpc prev > /dev/null 2>&1") },
-	{ MODKEY,                       XK_comma,                   spawn,          SHCMD("mpc seek -10 > /dev/null 2>&1") },
-	{ MODKEY|ShiftMask,             XK_period,                  spawn,          SHCMD("mpc next > /dev/null 2>&1") },
-	{ MODKEY,                       XK_period,                  spawn,          SHCMD("mpc seek +10 > /dev/null 2>&1") },
+	{ MODKEY|ShiftMask,             XK_comma,                   spawn,          SHCMD("mpc prev") },
+	{ MODKEY,                       XK_comma,                   spawn,          SHCMD("mpc seek -10") },
+	{ MODKEY|ShiftMask,             XK_period,                  spawn,          SHCMD("mpc next") },
+	{ MODKEY,                       XK_period,                  spawn,          SHCMD("mpc seek +10") },
 
 	{ MODKEY,                       XK_space,                   focusmaster,    {0} },
 	{ MODKEY|ShiftMask,             XK_space,                   zoom,           {0} },
@@ -361,12 +362,12 @@ static const Key keys[] = {
 	{ 0,                              XF86XK_AudioMute,         spawn,          SHCMD("amixer -q sset Master toggle") },
 	{ 0,                              XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer -q sset Master 5%-") },
 	{ 0,                              XF86XK_AudioRaiseVolume,  spawn,          SHCMD("amixer -q sset Master 5%+") },
-	{ 0,                              XF86XK_AudioPrev,         spawn,          SHCMD("mpc prev > /dev/null 2>&1") },
-	{ ShiftMask,                      XF86XK_AudioPrev,         spawn,          SHCMD("mpc seek -10 > /dev/null 2>&1") },
-	{ 0,                              XF86XK_AudioPlay,         spawn,          SHCMD("mpc toggle > /dev/null 2>&1") },
-	{ ShiftMask,                      XF86XK_AudioPlay,         spawn,          SHCMD("mpc stop > /dev/null 2>&1") },
-	{ 0,                              XF86XK_AudioNext,         spawn,          SHCMD("mpc next > /dev/null 2>&1") },
-	{ ShiftMask,                      XF86XK_AudioNext,         spawn,          SHCMD("mpc seek +10 > /dev/null 2>&1") },
+	{ 0,                              XF86XK_AudioPrev,         spawn,          SHCMD("mpc prev") },
+	{ ShiftMask,                      XF86XK_AudioPrev,         spawn,          SHCMD("mpc seek -10") },
+	{ 0,                              XF86XK_AudioPlay,         spawn,          SHCMD("mpc toggle") },
+	{ ShiftMask,                      XF86XK_AudioPlay,         spawn,          SHCMD("mpc stop") },
+	{ 0,                              XF86XK_AudioNext,         spawn,          SHCMD("mpc next") },
+	{ ShiftMask,                      XF86XK_AudioNext,         spawn,          SHCMD("mpc seek +10") },
 
 	{ 0,                              XF86XK_MonBrightnessDown, spawn,          {.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
 	{ 0,                              XF86XK_MonBrightnessUp,   spawn,          {.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
