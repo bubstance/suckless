@@ -28,22 +28,19 @@ applications
 		IMG:$HOME/.config/xmenu/icons/libreoffice-math.png	LibreOffice Math	libreoffice --math
 		IMG:$HOME/.config/xmenu/icons/libreoffice-writer.png	LibreOffice Writer	libreoffice --writer
 		IMG:$HOME/.config/xmenu/icons/sc-im.png	sc-im	st -e sc-im
-		IMG:$HOME/.config/xmenu/icons/zathura.svg	zathura	zathura
-	plan9 tools
-		IMG:$HOME/.config/xmenu/icons/9.png		9term 	9 9term rc
-		IMG:$HOME/.config/xmenu/icons/9.png		acme	acme
-		IMG:$HOME/.config/xmenu/icons/9.png		ivy 	9 9term ivy -prompt "%> "
-		IMG:$HOME/.config/xmenu/icons/9.png		sam 	sam
-open terminal...
+		IMG:$HOME/.config/xmenu/icons/pdf.png	zathura	zathura
+open terminal
 	IMG:$HOME/.config/xmenu/icons/st.png		st 	st
 	IMG:$HOME/.config/xmenu/icons/st.png		st (multiplexed) 	st -e tmux
 	IMG:$HOME/.config/xmenu/icons/st.png		st (tabbed) 	tabterm
 settings
 	set wallpaper		wallpick
-	volume mixer		st -e alsamixer
 	compositor settings	st -e nvim $HOME/.config/picom/picom.conf
+	network manager		st -e nmtui
+	volume mixer		st -e alsamixer
+
 kill window...		xkill
-run...			dmenu_run -F -c -l 10 -g 5 -p "Run:" -nb "#191724" -nf "#e0def4" -sb "#31748f" -sf "#e0def4" -nhb "#191724" -nhf "#31748f" -shb "#31748f" -shf "#eb6f92"
+run...			dmenu_run -F -c -l 10 -g 5 -p "Run:" -nb "#26233a" -nf "#e0def4" -sb "#31748f" -sf "#e0def4" -nhb "#26233a" -nhf "#31748f" -shb "#31748f" -shf "#eb6f92"
 
 lock			slock
 reboot			sudo reboot

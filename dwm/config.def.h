@@ -160,7 +160,6 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
 	/* first entry is default */
  	/* symbol     arrange function */
-	{ "",      NULL },    /* no layout function means floating behavior */
  	{ "󰽙",      tile },
  	{ "󰍉",      monocle },
 	{ "󰘸",      deck },
@@ -174,6 +173,7 @@ static const Layout layouts[] = {
 	{ "󱗼",      gaplessgrid },
 	{ "󱒅",      centeredmaster },
 	{ "󱒆",      centeredfloatingmaster },
+	{ "",      NULL },    /* no layout function means floating behavior */
 	{ NULL,     NULL },
 };
 
@@ -204,31 +204,31 @@ static const Key keys[] = {
 	/* modifier                     key                         function        argument */
 
 	/* { MODKEY|ShiftMask,             XK_ ,                       spawn,          {.v = } }, */
-	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[1]}  },
+	{ MODKEY,                       XK_F1,                      setlayout,      {.v = &layouts[0]}  },
 	{ Mod1Mask,                     XK_F1,                      spawn,          {.v = dmenucmd }    },
 	/* { MODKEY|ShiftMask,             XK_F1,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[3]}  },
+	{ MODKEY,                       XK_F2,                      setlayout,      {.v = &layouts[2]}  },
 	/* { MODKEY|ShiftMask,             XK_F2,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F3,                      setlayout,      {.v = &layouts[4]}  },
+	{ MODKEY,                       XK_F3,                      setlayout,      {.v = &layouts[3]}  },
 	/* { MODKEY|ShiftMask,             XK_F3,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F4,                      setlayout,      {.v = &layouts[5]}  },
+	{ MODKEY,                       XK_F4,                      setlayout,      {.v = &layouts[4]}  },
 	{ Mod1Mask,                     XK_F4,                      killclient,     {0} },
 	/* { MODKEY|ShiftMask,             XK_F4,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F5,                      setlayout,      {.v = &layouts[6]}  },
+	{ MODKEY,                       XK_F5,                      setlayout,      {.v = &layouts[5]}  },
 	/* { MODKEY|ShiftMask,             XK_F5,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F6,                      setlayout,      {.v = &layouts[7]}  },
+	{ MODKEY,                       XK_F6,                      setlayout,      {.v = &layouts[6]}  },
 	/* { MODKEY|ShiftMask,             XK_F6,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F7,                      setlayout,      {.v = &layouts[8]}  },
+	{ MODKEY,                       XK_F7,                      setlayout,      {.v = &layouts[7]}  },
 	/* { MODKEY|ShiftMask,             XK_F7,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F8,                      setlayout,      {.v = &layouts[9]}  },
+	{ MODKEY,                       XK_F8,                      setlayout,      {.v = &layouts[8]}  },
 	/* { MODKEY|ShiftMask,             XK_F8,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F9,                      setlayout,      {.v = &layouts[10]}  },
+	{ MODKEY,                       XK_F9,                      setlayout,      {.v = &layouts[9]}  },
 	/* { MODKEY|ShiftMask,             XK_F9,                      spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F10,                     setlayout,      {.v = &layouts[11]} },
+	{ MODKEY,                       XK_F10,                     setlayout,      {.v = &layouts[10]} },
 	/* { MODKEY|ShiftMask,             XK_F10,                     spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F11,                     setlayout,      {.v = &layouts[12]} },
+	{ MODKEY,                       XK_F11,                     setlayout,      {.v = &layouts[11]} },
 	/* { MODKEY|ShiftMask,             XK_F11,                     spawn,          {.v = }  }, */
-	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[13]} },
+	{ MODKEY,                       XK_F12,                     setlayout,      {.v = &layouts[12]} },
 	/* { MODKEY|ShiftMask,             XK_F12,                     spawn,          {.v = }  }, */
 
 	{ MODKEY,                       XK_Insert,                  spawn,          SHCMD("dmenumount") },
@@ -239,7 +239,7 @@ static const Key keys[] = {
 
 	{ ControlMask|Mod1Mask,         XK_Delete,                  spawn,          {.v = (const char*[]) { "sysact", NULL } } },
 
-	{ MODKEY,                       XK_grave,                   togglefloating, {0} },
+	{ MODKEY,                       XK_grave,                   togglefloating, {13} },
 	{ MODKEY|ShiftMask,             XK_grave,                   setlayout,      {.v = &layouts[0]} },
 
 	TAGKEYS(                        XK_1,                                       0)
