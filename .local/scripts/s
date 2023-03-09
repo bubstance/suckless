@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ -z $(pgrep fontsrv) ]; then
+	sam
+else
+	font=$HOME/.cache/9/fonts/JetBrainsMonoNLNerdFontComplete-Regular/16a/font sam
+fi

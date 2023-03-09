@@ -1,0 +1,65 @@
+#!/bin/sh
+
+kernel="$(uname -r)"
+os="$(awk -F'"' '/PRETTY/ {print ($2)}' /etc/os-release)"
+cpu="$(lscpu | awk '/name/ {print $4, $5, $7, $8, $9}')"
+name="${USER:-`id -nu`}@${HOSTNAME:-`hostname`}"
+sys="$(echo $(uname) | awk '{print toupper($0)}')"
+st=$(df -h / | awk '/dev/{print $3" / "$2}')
+mem=$(free -m | awk '/^Mem:/ {print $3 "MiB / " $2 "MiB"}')
+shell=$(printf "$(basename $SHELL)" | awk '{print ($0)}')
+init=$(awk '{print ($0)}' /proc/1/comm)
+pkg="$(ls -d /var/db/pkg/*/*| cut -f5- -d/ | wc -l | sed 's/^[ \t]*//g')"
+manager=$(which emerge 2>/dev/null) && manager=${manager##*/}
+wm="$(awk 'END {print $2}' "$HOME"/.xinitrc)"
+tr="$(printf "$TERM" | awk '{print ($0)}' | sed 's/-.*//')"
+uptime="$(uptime -p | sed 's/up //')"
+#iv="$(printf "$IMAGEVIEWER" | awk '{print toupper($0)}')"
+#file="$(printf "$FILE" | awk '{print toupper($0)}')"
+#ed="$(printf "$EDITOR" | awk '{print toupper($0)}')"
+#br="$(printf "$BROWSER" | awk '{print toupper($0)}')"
+#mn="$(printf "$MENU" | awk '{print toupper($0)}')"
+#font="$(awk -F'"' '/font/ {print toupper($2)}' "${HOME}/.gtkrc-2.0")"
+
+# echo "
+# host .......... ${name}
+# os ............ ${os}
+# kernel ........ ${kernel}
+# init .......... ${init}
+# pkgs .......... ${pkg} (${manager})
+# shell ......... ${shell}
+# term .......... ${tr}
+# wm ............ ${wm}
+# cpu ........... ${cpu}
+# ram ........... ${mem}
+# store ......... ${st}
+# uptime ........ ${uptime}
+# "
+
+# echo "
+# ---{ ${name} }---
+# distro ........ ${os}
+# kernel ........ ${kernel}
+# pkgs .......... ${pkg} (${manager})
+# sh ............ ${shell}
+# wm ............ ${wm}
+# term .......... ${tr}
+# uptime ........ ${uptime}
+# "
+
+echo "      __
+     (  \\
+ __   \\  '\\
+(  \"-_ \\ .-'----._
+ '-_  \"v\"         \"-      ---{ ${name} }---
+    \"Y'             \".    distro ........ ${os}
+     |                |   kernel ........ ${kernel}
+     |        o     o |   pkgs .......... ${pkg} (${manager})
+     |          .<>.  |   sh ............ ${shell}
+      \\         \"Ll\"  |   wm ............ ${wm}
+       |             .'   term .......... ${tr}
+       |             |    uptime ........ ${uptime}
+       (             /
+      /'\\         . \\
+      \"--^--.__,\\_\)-'
+"

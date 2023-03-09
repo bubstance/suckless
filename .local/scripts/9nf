@@ -1,0 +1,2 @@
+#!/bin/sh
+echo; neofetch --config $HOME/.config/neofetch/plan9.conf --stdout

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+prim="$(xclip -o)"; [[ -z "$prim" ]] && exit
+
+pid=$(xprop -id "$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')" | grep -m 1 PID | cut -d " " -f 3)
+for pid in $(pstree -lpA "$pid" | head -1 | grep --color=never -oP '\(\K\d+(?=\))'); do
+	cd -- "$(readlink "/proc/$pid/cwd")" || continue
+	[[ -f "$prim" ]] && xdg-open "$prim" && exit
+	[[ -d "$prim" ]] && "$TERMINAL" "$prim" && exit
+done
+
+websearch() { "$BROWSER" "https://www.duckduckgo.com/lite?q=$@" ;}
+wikipedia() { "$BROWSER" "https://en.wikipedia.org/wiki/$@" ;}
+wiktionary() { "$BROWSER" "https://en.wiktionary.org/wiki/$@" ;}
+maps() { "$BROWSER" "https://www.openstreetmap.org/search?query=$@" ;}
+ebay() { "$BROWSER" "https://www.ebay.com/sch/$@" ;}
+
+echo "$prim" | grep "^.*\.[A-Za-z]\+.*" 2>/dev/null && gotourl() { "$BROWSER" "$@" ;}
+echo "$prim" | grep "^.*@.*\.[A-Za-z]\+$" 2>/dev/null && email() { xdg-email "$@" ;}
+man -k "^$prim$" 2>/dev/null && manual() { man -Tpdf "$prim" 2>/dev/null | zathura - ;}
+
+func="$(declare -F | awk '{print $3}' | dmenu -p "plumb $prim to:" -i -l 15)"
+
+[[ -z "$prim" ]] || "$func" "$prim"

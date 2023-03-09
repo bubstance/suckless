@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -z $(pgrep fontsrv) ]; then
+	echo "no fontsrv running"
+else
+	echo "killing 9p fontsrv"
+	killall fontsrv
+fi

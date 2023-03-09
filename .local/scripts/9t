@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ -z $(pgrep fontsrv) ]; then
+	9 9term -s rc
+else
+	font=$CACHE9/fonts/JetBrainsMonoNLNerdFontComplete-Regular/20a/font 9 9term -s rc
+fi

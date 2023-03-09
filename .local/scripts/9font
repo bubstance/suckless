@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -z $(pgrep fontsrv) ]; then
+	echo "starting 9p fontsrv"
+	fontsrv -m $CACHE9/fonts &
+else
+	echo "fontsrv is running"
+fi
+
+sleep 0.3

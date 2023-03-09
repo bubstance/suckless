@@ -1,0 +1,12 @@
+#!/bin/sh
+
+export SHELL="$PLAN9/bin/rc"
+export acmeshell="$PLAN9/bin/rc"
+export tabstop=4
+export TERM=dumb
+
+if [ -z $(pgrep fontsrv) ]; then
+	acme
+else
+	acme -f $CACHE9/fonts/JetBrainsMonoNLNerdFontComplete-Regular/12a/font -F $CACHE9/fonts/JetBrainsMonoNLNerdFontComplete-Regular/16a/font
+fi

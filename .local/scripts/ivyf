@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ -z $(pgrep fontsrv) ]; then
+	9 9term -s ivy -prompt ">>> "
+else
+	font=$HOME/.cache/9/fonts/JetBrainsMono-Regular/24a/font 9 9term -s ivy -prompt ">>> "
+fi

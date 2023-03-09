@@ -1,0 +1,2 @@
+#!/bin/sh
+doas du -sh /var/tmp/portage/
