@@ -1,12 +1,13 @@
 #!/bin/sh
 
 xmenu <<EOF | sh &
-IMG:$HOME/.config/xmenu/icons/librewolf.png	librewolf	librewolf > /dev/null 2>&1
-IMG:$HOME/.config/xmenu/icons/thunderbird.png	thunderbird	thunderbird-bin > /dev/null 2>&1
+IMG:$HOME/.config/xmenu/icons/firefox.png	firefox	firefox > /dev/null 2>&1
+IMG:$HOME/.config/xmenu/icons/thunderbird.png	thunderbird	thunderbird > /dev/null 2>&1
 
 applications
 	accessories
 		IMG:$HOME/.config/xmenu/icons/calc.png		calculator	galculator
+		IMG:$HOME/.config/xmenu/icons/calendar.png		calendar	st -e calcurse
 		IMG:$HOME/.config/xmenu/icons/htop.png		htop		st -e htop
 		IMG:$HOME/.config/xmenu/icons/ranger.png	lf		st -e lfub
 		IMG:$HOME/.config/xmenu/icons/nvim.png		neovim		st -e nvim
