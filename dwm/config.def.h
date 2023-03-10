@@ -189,13 +189,14 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static char dmenumon[2]         = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run","-F", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#191724", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#191724", "-nhf", "#31748f", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
+static char dmenumon[2]           = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *dmenucmd[]     = { "dmenu_run","-F", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", "#26233a", "-nf", "#e0def4", "-sb", "#31748f", "-sf", "#e0def4", "-nhb", "#26233a", "-nhf", "#31748f", "-shb", "#31748f", "-shf", "#eb6f92", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *tabtermcmd[]   = { "tabbed", "-c", "-r 2", TERMINAL, "-w", "''", NULL };
 static const char *lclickcmd[]    = { "lclick.sh", NULL }; /* status bar application menu */
 static const char *rclickcmd[]    = { "rclick.sh", NULL }; /* desktop right-click menu */
+static const char *roficmd[]      = { "rofi", "-show", "drun", "-theme", "/home/kgr/.config/rofi/launchers/type-1/style-5.rasi", NULL }; /* desktop right-click menu */
 
 /* enable media keys */
 #include <X11/XF86keysym.h>
@@ -310,6 +311,7 @@ static const Key keys[] = {
 
 
 	{ MODKEY,                       XK_semicolon,               spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             XK_semicolon,               spawn,          {.v = roficmd } },
 
 	{ MODKEY,                       XK_Return,                  spawn,          SHCMD("st") },
 	{ MODKEY|ShiftMask,             XK_Return,                  togglescratch,  {.ui = 0 } },
@@ -320,10 +322,11 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_x,                       spawn,          SHCMD("plumbit") },
 	{ MODKEY,                       XK_c,                       killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_c,                       killunsel,      {0} },
+	{ MODKEY|ShiftMask,             XK_v,                       togglescratch,  {.ui = 3 } },
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
 	{ MODKEY|ShiftMask,             XK_n,                       spawn,          SHCMD("st -e nmtui") },
-	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,             XK_m,                       togglescratch,  {.ui = 3 } },
+	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_m,                       togglescratch,  {.ui = 2 } },
 
 	{ MODKEY|ShiftMask,             XK_comma,                   spawn,          SHCMD("mpc prev") },
 	{ MODKEY,                       XK_comma,                   spawn,          SHCMD("mpc seek -10") },
