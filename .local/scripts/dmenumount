@@ -8,7 +8,7 @@
 getmount() { \
 	[ -z "$chosen" ] && exit 1
         # shellcheck disable=SC2086
-	mp="$(find $1 2>/dev/null | dmenu -i -p "Type in mount point.")" || exit 1
+	mp="$(find $1 2>/dev/null | dmenu -i -p "Type in mount point:")" || exit 1
 	test -z "$mp" && exit 1
 	if [ ! -d "$mp" ]; then
 		mkdiryn=$(printf "No\\nYes" | dmenu -i -p "$mp does not exist. Create it?") || exit 1
@@ -19,7 +19,7 @@ getmount() { \
 mountusb() { \
 	chosen="$(echo "$usbdrives" | dmenu -i -p "Mount which drive?")" || exit 1
 	chosen="$(echo "$chosen" | awk '{print $1}')"
-    doas mount "$chosen" 2>/dev/null && notify-send "USB mounting" "$chosen mounted." && exit 0
+    doas mount "$chosen" 2>/dev/null && notify-send "USB mounting" "$chosen mounted" && exit 0
 	alreadymounted=$(lsblk -nrpo "name,type,mountpoint" | awk '$3!~/\/boot|\/home$|SWAP/&&length($3)>1{printf "-not ( -path *%s -prune ) ",$3}')
 	getmount "/mnt /media /mount /home -maxdepth 5 -type d $alreadymounted"
 	partitiontype="$(lsblk -no "fstype" "$chosen")"
@@ -27,8 +27,8 @@ mountusb() { \
 		"vfat") doas mount -t vfat "$chosen" "$mp" -o rw,umask=0000;;
 		"exfat") doas mount "$chosen" "$mp" -o uid="$(id -u)",gid="$(id -g)";;
 		*) doas mount "$chosen" "$mp"; user="$(whoami)"; ug="$(groups | awk '{print $1}')"; doas chown "$user":"$ug" "$mp";;
-	esac && notify-send "USB mounting" "$chosen mounted to $mp." ||
-		notify-send "Drive failed to mount." "Probably a permissions issue or drive is already mounted."
+	esac && notify-send "USB mounting" "$chosen mounted to $mp" ||
+		notify-send "Drive failed to mount" "Probably a permissions issue or drive is already mounted"
 	}
 
 mountandroid() { \
@@ -37,8 +37,8 @@ mountandroid() { \
 	getmount "$HOME -maxdepth 3 -type d"
 	echo "OK" | dmenu -i -p "Tap "allow" on your phone if it asks for permission, then press enter" || exit 1
 	simple-mtpfs --device "$chosen" "$mp" &&
-		notify-send "Android Mounting" "Android device mounted to $mp." ||
-		notify-send "Android failed mounting." "Probably a permissions issue or phone is already mounted."
+		notify-send "Android Mounting" "Android device mounted to $mp" ||
+		notify-send "Android failed mounting" "Probably a permissions issue or phone is already mounted"
 	}
 
 asktype() { \
@@ -54,14 +54,14 @@ usbdrives="$(lsblk -rpo "name,type,size,label,mountpoint,fstype" | grep -v crypt
 
 if [ -z "$usbdrives" ]; then
 	[ -z "$anddrives" ] && echo "No USB drive or Android device detected" && exit
-	echo "Android device(s) detected."
+	echo "Android device(s) detected"
 	mountandroid
 else
 	if [ -z "$anddrives" ]; then
-		echo "USB drive(s) detected."
+		echo "USB drive(s) detected"
 		mountusb
 	else
-		echo "Mountable USB drive(s) and Android device(s) detected."
+		echo "Mountable USB drive(s) and Android device(s) detected"
 		asktype
 	fi
 fi

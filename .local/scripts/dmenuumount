@@ -17,5 +17,5 @@ case "$chosen" in
 		chosen="${chosen% (*}"
         doas umount -l "$chosen"
 		;;
-esac && notify-send "Drive unmounted." "$chosen successfully unmounted." ||
-	notify-send "Drive failed to unmount." "Possibly a permissions or I/O issue."
+esac && notify-send "Drive unmounted" "$chosen successfully unmounted" ||
+	notify-send "Drive failed to unmount" "Possibly a permissions or I/O issue"

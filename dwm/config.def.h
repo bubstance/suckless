@@ -296,7 +296,7 @@ static const Key keys[] = {
 
 	{ MODKEY,                       XK_s,                       togglesticky,   {0} },
 	{ MODKEY,                       XK_f,                       togglefullscr,  {0} },
-	{ MODKEY|ShiftMask,             XK_f,                       spawn,          SHCMD("pcmanfm") },
+	{ MODKEY|ShiftMask,             XK_f,                       spawn,          SHCMD("thunar") },
 	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_h,                       setcfact,       {.f = +0.25} },
 	{ MODKEY|ControlMask,           XK_h,                       movekeyboard_x, {.i = -20} },
